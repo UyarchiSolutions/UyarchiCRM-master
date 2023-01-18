@@ -1190,7 +1190,7 @@ const userPlane_DetailsForSellers = async (userId) => {
   let values = await userPlane
     .findOne({
       active: true,
-      // planValidate: { $gte: currentDate },
+      planValidate: { $gte: currentDate },
       PlanRole: 'Seller',
       // PostNumber: { $gt: 0 },
       userId: userId,
@@ -1204,22 +1204,31 @@ const userPlane_DetailsForSellers = async (userId) => {
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
   }
-  let data = {
-    active: values.active,
-    _id: values._id,
-    Amount: values.Amount,
-    PayMentMethod: values.PayMentMethod,
-    PlanId: values.PlanId,
+  // let data = {
+  //   active: values.active,
+  //   _id: values._id,
+  //   Amount: values.Amount,
+  //   PayMentMethod: values.PayMentMethod,
+  //   PlanId: values.PlanId,
+  //   planName: values.planName,
+  //   PostNumber: values.PostNumber,
+  //   Videos: values.Videos,
+  //   PlanRole: values.PlanRole,
+  //   planValidate: values.planValidate,
+  //   created: values.created,
+  //   userId: values.userId,
+  //   TotalPostNumber: plan.PostNumber,
+  // };
+  let planDetails = {
+    totalPost: plan.PostNumber,
+    currentPost: values.PostNumber,
+    totalVideo: plan.Videos,
+    currentVideo: values.Videos,
+    totalImage: plan.images,
+    currentImage: values.Image,
     planName: values.planName,
-    PostNumber: values.PostNumber,
-    Videos: values.Videos,
-    PlanRole: values.PlanRole,
-    planValidate: values.planValidate,
-    created: values.created,
-    userId: values.userId,
-    TotalPostNumber: plan.PostNumber,
   };
-  return data;
+  return planDetails;
 };
 
 const getAccepUserByProperty = async (id) => {
