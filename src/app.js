@@ -160,13 +160,14 @@ const storage = multer.memoryStorage({
     callback(null, '');
   },
 });
-const upload = multer({ storage }).single('video');
+const upload = multer({ storage }).array('video');
 
 app.put('/videoupload/:id', upload, async (req, res) => {
   let values = await SellerPost.findById(req.params.id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
   }
+  console.log(req.files);
   // let video = req.file.originalname.split('.');
   // const fileType = video[video.length - 1];
   const s3 = new AWS.S3({
@@ -174,19 +175,39 @@ app.put('/videoupload/:id', upload, async (req, res) => {
     secretAccessKey: 'NW7jfKJoom+Cu/Ys4ISrBvCU4n4bg9NsvzAbY07c',
     region: 'ap-south-1',
   });
-  let params = {
-    Bucket: 'realestatevideoupload',
-    Key: req.file.originalname,
-    Body: req.file.buffer,
-  };
-  s3.upload(params, async (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    values = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { $push: { videos: data.Location } }, { new: true });
-    res.send(values);
-  });
+  let Data = [];
+  req.files.forEach((e) => {
+    let params = {
+      Bucket: 'realestatevideoupload',
+      Key: e.originalname,
+      Body: e.buffer,
+    };
 
+    s3.upload(params, async (err, data) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        Data.push(data);
+        if (Data.length === req.files.length) {
+          Data.forEach(async (e) => {
+            values = await SellerPost.findByIdAndUpdate(
+              { _id: values._id },
+              { $push: { videos: e.Location } },
+              { new: true }
+            );
+          });
+          res.send(values);
+        }
+      }
+
+      // values = await SellerPost.findByIdAndUpdate(
+      //   { _id: req.params.id },
+      //   { $push: { videos: data.Location } },
+      //   { new: true }
+      // );
+      // res.send(values);
+    });
+  });
   // let values = await SellerPost.findById(req.params.id);
   // if (!values) {
   //   throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
