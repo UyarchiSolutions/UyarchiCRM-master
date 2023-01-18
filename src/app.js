@@ -189,18 +189,18 @@ app.put('/videoupload/:id', upload, async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
   }
   if (paidPlane) {
-    if (!paidPlane.video > 0) {
+    if (!paidPlane.Videos > 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
     }
-    let currentVideoLimit = paidPlane.video;
+    let currentVideoLimit = paidPlane.Videos;
     if (uploadFile > currentVideoLimit) {
       throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} images Available In plan`);
     }
     let plan = await userPlane.findById(paidPlane._id);
-    let currentVideo = paidPlane.video;
+    let currentVideo = paidPlane.Videos;
     let uploadImageCount = uploadFile;
     let total = currentVideo - uploadImageCount;
-    await userPlane.findByIdAndUpdate({ _id: plan._id }, { video: total }, { new: true });
+    await userPlane.findByIdAndUpdate({ _id: plan._id }, { Videos: total }, { new: true });
   }
   const s3 = new AWS.S3({
     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
