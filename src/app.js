@@ -22,10 +22,10 @@ const MessageRoute = require('./routes/v1/message.route');
 const httpServer = http.createServer(app);
 const { Messages } = require('../src/models/message.model');
 const moment = require('moment');
-const fileUpload = require('express-fileupload');
+const Auth = require('./controllers/BuyerAuth');
 const AWS = require('aws-sdk');
 var bodyParser = require('body-parser');
-const { SellerPost } = require('./models/BuyerSeller.model');
+const { SellerPost, Buyer } = require('./models/BuyerSeller.model');
 const multer = require('multer');
 // const io = require('socket.io')(httpServer, {
 //   cors: {
@@ -167,9 +167,40 @@ app.put('/videoupload/:id', upload, async (req, res) => {
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
   }
-  console.log(req.files);
-  // let video = req.file.originalname.split('.');
-  // const fileType = video[video.length - 1];
+  let userId = values.userId;
+  // plan flow
+
+  const defaultPlan = await Buyer.findById(userId);
+  let defaultPlanCount = defaultPlan.plane;
+  let uploadFile = req.files.length;
+  if (defaultPlanCount > 0) {
+    if (uploadFile > defaultPlanCount) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Only ${defaultPlanCount} video Upload Available`);
+    }
+    let total = defaultPlanCount - uploadFile;
+    await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { plane: total }, { new: true });
+  }
+  const today = moment().toDate();
+  let paidPlane = await userPlane
+    .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
+    .sort({ created: -1 });
+  if (!paidPlane) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
+  }
+  if (paidPlane) {
+    if (!paidPlane.video > 0) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+    }
+    let currentVideoLimit = paidPlane.video;
+    if (uploadFile > currentVideoLimit) {
+      throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} images Available In plan`);
+    }
+    let plan = await userPlane.findById(paidPlane._id);
+    let currentVideo = paidPlane.video;
+    let uploadImageCount = uploadFile;
+    let total = currentVideo - uploadImageCount;
+    await userPlane.findByIdAndUpdate({ _id: plan._id }, { video: total }, { new: true });
+  }
   const s3 = new AWS.S3({
     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
     secretAccessKey: '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',
@@ -196,11 +227,13 @@ app.put('/videoupload/:id', upload, async (req, res) => {
               { new: true }
             );
           });
+
           res.send(values);
         }
       }
     });
   });
+  res.send(defaultPlan);
 });
 // v1 api routes
 app.use('/v1', routes);
