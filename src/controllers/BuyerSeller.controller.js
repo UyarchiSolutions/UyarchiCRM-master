@@ -3,9 +3,11 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const buyersellerService = require('../services/BuyerSeller.service');
 const mailService = require('../services/email.service');
-const { BuyerSeller, BuyerSellerOTP, Buyer } = require('../models/BuyerSeller.model');
+const { BuyerSeller, BuyerSellerOTP, Buyer, SellerPost } = require('../models/BuyerSeller.model');
 const tokenService = require('../services/token.service');
-
+const userPlane = require('../models/usersPlane.model');
+const AWS = require('aws-sdk');
+const moment = require('moment');
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile, Type } = req.body;
   const checkemail = await BuyerSeller.findOne({ email: email, Type: Type });
@@ -404,6 +406,80 @@ const changePassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const VideoUploads = catchAsync(async (req, res) => {
+  let values = await SellerPost.findById(req.params.id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
+  }
+  let userId = values.userId;
+  // plan flow
+
+  const defaultPlan = await Buyer.findById(userId);
+  let defaultPlanCount = defaultPlan.plane;
+  let uploadFile = req.files.length;
+  if (defaultPlanCount > 0) {
+    if (uploadFile > defaultPlanCount) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Only ${defaultPlanCount} video Upload Available`);
+    }
+    let total = defaultPlanCount - uploadFile;
+    await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { plane: total }, { new: true });
+  }
+  const today = moment().toDate();
+  console.log(userId)
+  let paidPlane = await userPlane
+    .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
+    .sort({ created: -1 });
+    console.log(paidPlane)
+  if (!paidPlane) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
+  }
+  if (paidPlane) {
+    if (!paidPlane.Videos > 0) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+    }
+    let currentVideoLimit = paidPlane.Videos;
+    if (uploadFile > currentVideoLimit) {
+      throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} videos Available In plan`);
+    }
+    let plan = await userPlane.findById(paidPlane._id);
+    let currentVideo = paidPlane.Videos;
+    let uploadImageCount = uploadFile;
+    let total = currentVideo - uploadImageCount;
+    await userPlane.findByIdAndUpdate({ _id: plan._id }, { Videos: total }, { new: true });
+  }
+  const s3 = new AWS.S3({
+    accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+    secretAccessKey: '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',
+    region: 'ap-south-1',
+  });
+  let Data = [];
+  req.files.forEach((e) => {
+    let params = {
+      Bucket: 'realestatevideoupload',
+      Key: e.originalname,
+      Body: e.buffer,
+    };
+
+    s3.upload(params, async (err, data) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        Data.push(data);
+        if (Data.length === req.files.length) {
+          Data.forEach(async (e) => {
+            values = await SellerPost.findByIdAndUpdate(
+              { _id: values._id },
+              { $push: { videos: e.Location } },
+              { new: true }
+            );
+          });
+          res.send(values);
+        }
+      }
+    });
+  });
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -460,4 +536,5 @@ module.exports = {
   DeActive_UserAccount,
   changePassword,
   Activate_DeActivatedUsers,
+  VideoUploads,
 };

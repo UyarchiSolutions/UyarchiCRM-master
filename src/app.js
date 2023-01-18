@@ -27,7 +27,7 @@ const AWS = require('aws-sdk');
 var bodyParser = require('body-parser');
 const { SellerPost, Buyer } = require('./models/BuyerSeller.model');
 const multer = require('multer');
-const userPlane = require('./models/usersPlane.model')
+const userPlane = require('./models/usersPlane.model');
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
@@ -194,7 +194,8 @@ app.put('/videoupload/:id', upload, async (req, res) => {
     }
     let currentVideoLimit = paidPlane.Videos;
     if (uploadFile > currentVideoLimit) {
-      throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} images Available In plan`);
+      // throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} videos Available In plan`);
+      res.send({ message: ` Only ${currentVideoLimit} videos Available In plan` }).statusCode(400);
     }
     let plan = await userPlane.findById(paidPlane._id);
     let currentVideo = paidPlane.Videos;
