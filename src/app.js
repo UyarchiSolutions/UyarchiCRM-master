@@ -233,7 +233,6 @@ app.put('/videoupload/:id', upload, async (req, res) => {
       }
     });
   });
-  res.send(defaultPlan);
 });
 // v1 api routes
 app.use('/v1', routes);
