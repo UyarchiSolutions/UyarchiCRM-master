@@ -27,6 +27,7 @@ const AWS = require('aws-sdk');
 var bodyParser = require('body-parser');
 const { SellerPost, Buyer } = require('./models/BuyerSeller.model');
 const multer = require('multer');
+const userPlane = require('./models/usersPlane.model')
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
