@@ -16,6 +16,9 @@ const OTPSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  created: {
+    type: Date,
+  },
 });
 
 const OTP = new mongoose.model('realEstateOtp', OTPSchema);
