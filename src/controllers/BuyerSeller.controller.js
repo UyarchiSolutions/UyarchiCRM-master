@@ -425,30 +425,32 @@ const VideoUploads = catchAsync(async (req, res) => {
     }
     let total = defaultPlanCount - uploadFile;
     await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { videos: total }, { new: true });
-  }
-  const today = moment().toDate();
-  console.log(userId);
-  let paidPlane = await userPlane
-    .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
-    .sort({ created: -1 });
-  console.log(paidPlane);
-  if (!paidPlane) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
-  }
-  if (paidPlane) {
-    if (!paidPlane.Videos > 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+  } else {
+    const today = moment().toDate();
+    console.log(userId);
+    let paidPlane = await userPlane
+      .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
+      .sort({ created: -1 });
+    console.log(paidPlane);
+    if (!paidPlane) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
     }
-    let currentVideoLimit = paidPlane.Videos;
-    if (uploadFile > currentVideoLimit) {
-      throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} videos Available In plan`);
+    if (paidPlane) {
+      if (!paidPlane.Videos > 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Image Limited Over');
+      }
+      let currentVideoLimit = paidPlane.Videos;
+      if (uploadFile > currentVideoLimit) {
+        throw new ApiError(httpStatus.BAD_REQUEST, ` Only ${currentVideoLimit} videos Available In plan`);
+      }
+      let plan = await userPlane.findById(paidPlane._id);
+      let currentVideo = paidPlane.Videos;
+      let uploadImageCount = uploadFile;
+      let total = currentVideo - uploadImageCount;
+      await userPlane.findByIdAndUpdate({ _id: plan._id }, { Videos: total }, { new: true });
     }
-    let plan = await userPlane.findById(paidPlane._id);
-    let currentVideo = paidPlane.Videos;
-    let uploadImageCount = uploadFile;
-    let total = currentVideo - uploadImageCount;
-    await userPlane.findByIdAndUpdate({ _id: plan._id }, { Videos: total }, { new: true });
   }
+
   const s3 = new AWS.S3({
     accessKeyId: 'AKIA3323XNN7Y2RU77UG',
     secretAccessKey: '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',
