@@ -455,6 +455,8 @@ const getApprover_Property = async (page, query, userId) => {
         landSize: 1,
         noOfFloor: 1,
         whistListStatus: 1,
+        lat: 1,
+        long: 1,
         IntrestedStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } }, false],
         },
