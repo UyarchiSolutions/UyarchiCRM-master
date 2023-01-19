@@ -874,8 +874,6 @@ const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   let checkProperty = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
-
-  console.log(users)
   if (users.contactView <= 0) {
     if (!checkProperty) {
       let userPlan = await userPlane
