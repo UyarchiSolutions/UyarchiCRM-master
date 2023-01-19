@@ -873,29 +873,35 @@ const updatePlanes = async (id, body) => {
 const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
-  if (users.plane <= 0) {
-    let userPlan = await userPlane
-      .findOne({
-        userId: userId,
-        planValidate: { $gte: planValidate },
-        PlanRole: 'Buyer',
-        active: true,
-        ContactNumber: { $gt: 0 },
-      })
-      .sort({ created: -1 });
-    if (!userPlan) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
-    }
-    let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
-    if (!property) {
-      let exist = parseInt(userPlan.ContactNumber);
-      let total = exist - 1;
-      let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
-      if (plans.ContactNumber === 0) {
-        await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+  let checkProperty = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
+
+  console.log(users)
+  if (users.contactView <= 0) {
+    if (!checkProperty) {
+      let userPlan = await userPlane
+        .findOne({
+          userId: userId,
+          planValidate: { $gte: planValidate },
+          PlanRole: 'Buyer',
+          active: true,
+          ContactNumber: { $gt: 0 },
+        })
+        .sort({ created: -1 });
+      if (!userPlan) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+      }
+      let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
+      if (!property) {
+        let exist = parseInt(userPlan.ContactNumber);
+        let total = exist - 1;
+        let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
+        if (plans.ContactNumber === 0) {
+          await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+        }
       }
     }
   }
+
   if (users.contactView > 0) {
     let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
     if (!property) {
