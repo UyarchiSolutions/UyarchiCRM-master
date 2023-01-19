@@ -38,6 +38,12 @@ const BuyerSchema = new mongoose.Schema({
   plane: {
     type: Number,
   },
+  videos: {
+    type: Number,
+  },
+  Image: {
+    type: Number,
+  },
   password: {
     type: String,
   },

@@ -20,7 +20,7 @@ const createBuyerSeller = async (body, otp) => {
 
 const createBuyer = async (body, otp) => {
   const { email, mobile } = body;
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2 } };
+  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2, videos: 5, Image: 5 } };
   let values1 = { Otp: otp, email: email, mobile: mobile };
   const buyerSeller = await Buyer.create(values);
   await BuyerSellerOTP.create(values1);
@@ -627,7 +627,7 @@ const getOTP = async (body) => {
       if (otp.active == true) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
       }
-    }else{
+    } else {
       return await OTP.Otp(body);
     }
   }

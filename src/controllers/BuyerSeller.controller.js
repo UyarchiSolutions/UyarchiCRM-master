@@ -417,14 +417,14 @@ const VideoUploads = catchAsync(async (req, res) => {
   // plan flow
 
   const defaultPlan = await Buyer.findById(userId);
-  let defaultPlanCount = defaultPlan.plane;
+  let defaultPlanCount = defaultPlan.videos;
   let uploadFile = req.files.length;
   if (defaultPlanCount > 0) {
     if (uploadFile > defaultPlanCount) {
       throw new ApiError(httpStatus.BAD_REQUEST, `Only ${defaultPlanCount} video Upload Available`);
     }
     let total = defaultPlanCount - uploadFile;
-    await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { plane: total }, { new: true });
+    await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { videos: total }, { new: true });
   }
   const today = moment().toDate();
   console.log(userId);
