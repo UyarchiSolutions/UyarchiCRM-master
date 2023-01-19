@@ -615,9 +615,8 @@ const OTPVerify = async (body) => {
   }
   // await StoreOtp.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
   let value = await Buyer.findOne({ mobile: values.number });
-  await Buyer.findByIdAndUpdate({ _id: value._id }, { active: true }, { new: true });
   let value1 = { _id: value._id, userName: value.userName, mobile: value.mobile, email: value.email };
-  return { Message: 'otp verified successfully message', value: value1, active: true };
+  return { Message: 'otp verified successfully message', value: value1 };
 };
 
 const VerifyOtpRealEstate = async (body) => {
