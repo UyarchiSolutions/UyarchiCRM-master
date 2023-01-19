@@ -576,16 +576,16 @@ const UpdateSellerPost = async (id, updatebody, imageCount, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'No Post Available');
   }
   let users = await Buyer.findById(userId);
-  if (users.plane > 0) {
-    let userDefault = users.plane;
+  if (users.Image > 0) {
+    let userDefault = users.Image;
     console.log(commingCount, 'kjfshsdkfjh');
     if (commingCount > userDefault) {
-      throw new ApiError(httpStatus.BAD_REQUEST, `Only ${users.plane} Image Available in Free plan`);
+      throw new ApiError(httpStatus.BAD_REQUEST, `Only ${users.Image} Image Available in Free plan`);
     }
-    let userplanCount = parseInt(users.plane);
+    let userplanCount = parseInt(users.Image);
     let imgCount = parseInt(commingCount);
     let total = userplanCount - imgCount;
-    await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+    await Buyer.findByIdAndUpdate({ _id: userId }, { Image: total }, { new: true });
     sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
   } else {
     let paidPlane = await userPlane
