@@ -260,47 +260,71 @@ const getApprover_Property = async (page, query, userId) => {
   let HouseOrCommercialTypeMatch = { active: true };
   let typeMatch = { active: true };
 
-  if (query.area) {
-    cityMatch = { city: { $regex: query.area, $options: 'i' } };
+  let area = query.area;
+  // area filter
+  if (area) {
+    console.log(area, 'sdl;h');
+    if (area != 'null') {
+      cityMatch = { city: { $regex: query.area, $options: 'i' } };
+    } else {
+      cityMatch;
+    }
   } else {
     cityMatch;
   }
+
   if (query.propertType) {
-    propertMatch = { propertType: { $regex: query.propertType, $options: 'i' } };
+    if (query.propertType != 'null') {
+      propertMatch = { propertType: { $regex: query.propertType, $options: 'i' } };
+    } else {
+      propertMatch;
+    }
   } else {
     propertMatch;
   }
+
   if (query.BHKType) {
-    BHKTypeMatch = { BHKType: { $regex: query.BHKType, $options: 'i' } };
+    if (query.BHKType != 'null') {
+      BHKTypeMatch = { BHKType: { $regex: query.BHKType, $options: 'i' } };
+    } else {
+      BHKTypeMatch;
+    }
   } else {
     BHKTypeMatch;
   }
-  console.log(query.MonthlyRentFrom);
+
   if (query.MonthlyRentFrom) {
-    let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
-    console.log(MonthlyRentFrom);
-    MonthlyRentFromMatch = { MonthlyRentFrom: { $gte: MonthlyRentFrom } };
-  } else if (query.MonthlyRentTo) {
-    let MonthlyRentTo = parseInt(query.MonthlyRentTo);
-    MonthlyRentToMatch = { MonthlyRentFrom: { $gte: MonthlyRentTo } };
+    if (query.MonthlyRentFrom != 'null') {
+      let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
+      MonthlyRentFromMatch = { MonthlyRentFrom: { $gte: MonthlyRentFrom } };
+    } else if (query.MonthlyRentTo) {
+      let MonthlyRentTo = parseInt(query.MonthlyRentTo);
+      MonthlyRentToMatch = { MonthlyRentFrom: { $gte: MonthlyRentTo } };
+    } else {
+      MonthlyRentFromMatch;
+    }
   }
-  {
-    MonthlyRentFromMatch;
-  }
+
   if (query.HouseOrCommercialType) {
-    HouseOrCommercialTypeMatch = { HouseOrCommercialType: query.HouseOrCommercialType };
+    if (query.HouseOrCommercialType != 'null') {
+      HouseOrCommercialTypeMatch = { HouseOrCommercialType: query.HouseOrCommercialType };
+    } else {
+      HouseOrCommercialTypeMatch;
+    }
   } else {
     HouseOrCommercialTypeMatch;
   }
-
   if (query.Type) {
-    typeMatch = { Type: query.Type };
+    if (query.Type != 'null') {
+      typeMatch = { Type: query.Type };
+    } else {
+      typeMatch;
+    }
   } else {
     typeMatch;
   }
 
   let today = moment().toDate();
-  console.log(userId);
   let values = await SellerPost.aggregate([
     {
       $match: {
