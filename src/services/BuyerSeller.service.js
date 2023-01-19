@@ -20,7 +20,10 @@ const createBuyerSeller = async (body, otp) => {
 
 const createBuyer = async (body, otp) => {
   const { email, mobile } = body;
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2, videos: 5, Image: 5 } };
+  let values = {
+    ...body,
+    ...{ created: moment(), date: moment().format('YYYY-MM-DD'), plane: 2, videos: 5, Image: 5, contactView: 2 },
+  };
   let values1 = { Otp: otp, email: email, mobile: mobile };
   const buyerSeller = await Buyer.create(values);
   await BuyerSellerOTP.create(values1);
@@ -871,13 +874,15 @@ const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   if (users.plane <= 0) {
-    let userPlan = await userPlane.findOne({
-      userId: userId,
-      planValidate: { $gte: planValidate },
-      PlanRole: 'Buyer',
-      active: true,
-      ContactNumber: { $gt: 0 },
-    });
+    let userPlan = await userPlane
+      .findOne({
+        userId: userId,
+        planValidate: { $gte: planValidate },
+        PlanRole: 'Buyer',
+        active: true,
+        ContactNumber: { $gt: 0 },
+      })
+      .sort({ created: -1 });
     if (!userPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
@@ -891,11 +896,12 @@ const AddViewed_Data = async (id, userId) => {
       }
     }
   }
-  if (users.plane > 0) {
+  if (users.contactView > 0) {
+    let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
     if (!property) {
-      let existCount = users.plane;
+      let existCount = users.contactView;
       let total = existCount - 1;
-      users = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+      users = await Buyer.findByIdAndUpdate({ _id: userId }, { contactView: total }, { new: true });
     }
   }
   let values = await SellerPost.findById(id);

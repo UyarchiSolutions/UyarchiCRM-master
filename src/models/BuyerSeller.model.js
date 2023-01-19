@@ -44,6 +44,9 @@ const BuyerSchema = new mongoose.Schema({
   Image: {
     type: Number,
   },
+  contactView: {
+    type: Number,
+  },
   password: {
     type: String,
   },
