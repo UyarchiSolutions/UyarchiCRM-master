@@ -20,9 +20,11 @@ const createBuyerSeller = catchAsync(async (req, res) => {
   }
   let values;
   if (Type === 'Seller') {
+    values = await mailService.sendEmailSeller(req.body.email, mobile);
+  }
+  if (Type === 'Buyer') {
     values = await mailService.sendEmail(req.body.email, mobile);
   }
-  values = await mailService.sendEmailSeller(req.body.email, mobile);
 
   const data = await buyersellerService.createBuyerSeller(req.body, values.otp);
   res.send(data);
@@ -425,11 +427,11 @@ const VideoUploads = catchAsync(async (req, res) => {
     await Buyer.findByIdAndUpdate({ _id: defaultPlan._id }, { plane: total }, { new: true });
   }
   const today = moment().toDate();
-  console.log(userId)
+  console.log(userId);
   let paidPlane = await userPlane
     .findOne({ planValidate: { $gt: today }, active: true, userId: userId })
     .sort({ created: -1 });
-    console.log(paidPlane)
+  console.log(paidPlane);
   if (!paidPlane) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded Please Reacharge');
   }
