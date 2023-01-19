@@ -397,6 +397,8 @@ const getApprover_Property = async (page, query, userId) => {
         expiredDate: 1,
         intrestedUsers: 1,
         WhishList: 1,
+        lat: 1,
+        long: 1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
