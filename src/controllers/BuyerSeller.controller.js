@@ -391,7 +391,7 @@ const GetBuyerPost = catchAsync(async (req, res) => {
 // map api neighbour
 
 const neighbour_api = catchAsync(async (req, res) => {
-  const { lat, long, type, radius } = req.query;
+  const { lat, long, type, radius} = req.query;
   const data = await buyersellerService.neighbour_api(lat, long, type, radius);
   res.send(data);
 });
