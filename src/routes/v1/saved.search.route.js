@@ -6,4 +6,5 @@ const Auth = require('../../controllers/BuyerAuth');
 router.route('/').post(Auth, SavedSearchController.CreateSavedSearch);
 router.route('/SavedSearch').get(Auth, SavedSearchController.getSavedSearch);
 router.route('/:id').get(SavedSearchController.getSavedSearchById);
+router.route('/recentSearch').get(Auth, SavedSearchController.getRecentSearch);
 module.exports = router;

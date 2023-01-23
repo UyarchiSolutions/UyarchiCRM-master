@@ -21,8 +21,15 @@ const getSavedSearchById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getRecentSearch = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SavedSearchService.getRecentSearch(userId);
+  res.send(data);
+});
+
 module.exports = {
   CreateSavedSearch,
   getSavedSearch,
   getSavedSearchById,
+  getRecentSearch,
 };

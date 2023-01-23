@@ -22,8 +22,14 @@ const getSavedSearchById = async (id) => {
   return data;
 };
 
+const getRecentSearch = async (id) => {
+  const data = await SavedSearch.find({ userId: id }).sort({ created: -1 });
+  res.send(data);
+};
+
 module.exports = {
   CreateSavedSearch,
   getSavedSearch,
   getSavedSearchById,
+  getRecentSearch,
 };
