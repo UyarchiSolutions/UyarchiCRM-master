@@ -33,6 +33,11 @@ const getPlanesDetails = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getPlaneDetailsWithUsers = catchAsync(async (req, res) => {
+  const data = await AdminPlanService.getPlaneDetailsWithUsers(req.params.planId);
+  res.send(data);
+});
+
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
@@ -40,4 +45,5 @@ module.exports = {
   getPlanForBuyer,
   getPlanForAdmin,
   getPlanesDetails,
+  getPlaneDetailsWithUsers,
 };

@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const moment = require('moment');
 const AdminPlan = require('../models/AdminPlan.model');
+const userPlan = require('../models/usersPlane.model');
 
 const createAdminPlane = async (body) => {
   let tomorrow = moment().add(body.PlanValidate, 'days');
@@ -112,6 +113,47 @@ const getPlanesDetails = async (planType, page) => {
   return { values: values, total: total.length };
 };
 
+// get plan Details And Users Details
+
+const getPlaneDetailsWithUsers = async (planId) => {
+  let values = await userPlan.aggregate([
+    {
+      $match: {
+        PlanId: planId,
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        path: '$users',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'adminplans',
+        localField: 'PlanId',
+        foreignField: '_id',
+        as: 'plan',
+      },
+    },
+    {
+      $unwind: {
+        path: '$plan',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
@@ -119,4 +161,5 @@ module.exports = {
   getPlanForBuyer,
   getPlanForAdmin,
   getPlanesDetails,
+  getPlaneDetailsWithUsers,
 };
