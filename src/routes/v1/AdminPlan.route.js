@@ -8,4 +8,5 @@ router.route('/GetAll_Planes').get(AdminPlanController.GetAll_Planes);
 router.route('/updatePlan/:id').put(AdminPlanController.updatePlan);
 router.route('/buyerPlanes').get(AdminPlanController.getPlanForBuyer);
 router.route('/getPlanForAdmin').get(AdminPlanController.getPlanForAdmin);
+router.route('/getPlanesDetails/:planType/:page').get(AdminPlanController.getPlanesDetails);
 module.exports = router;

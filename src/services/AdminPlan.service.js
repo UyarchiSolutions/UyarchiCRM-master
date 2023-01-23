@@ -45,10 +45,78 @@ const getPlanForAdmin = async () => {
   return values;
 };
 
+const getPlanesDetails = async (planType, page) => {
+  // plane planeTypes (Seller, Buyer)
+  let values = await AdminPlan.aggregate([
+    {
+      $match: {
+        PlanRole: planType,
+      },
+    },
+    {
+      $lookup: {
+        from: 'userplans',
+        localField: '_id',
+        foreignField: 'PlanId',
+        as: 'usedplanes',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        active: 1,
+        Amount: 1,
+        planName: 1,
+        PlanValidate: 1,
+        offer: 1,
+        ContactNumber: 1,
+        PlanRole: 1,
+        UsedCount: { $size: '$usedplanes' },
+      },
+    },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  let total = await AdminPlan.aggregate([
+    {
+      $match: {
+        PlanRole: planType,
+      },
+    },
+    {
+      $lookup: {
+        from: 'userplans',
+        localField: '_id',
+        foreignField: 'PlanId',
+        as: 'usedplanes',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        active: 1,
+        Amount: 1,
+        planName: 1,
+        PlanValidate: 1,
+        offer: 1,
+        ContactNumber: 1,
+        PlanRole: 1,
+        UsedCount: { $size: '$usedplanes' },
+      },
+    },
+  ]);
+  return { values: values, total: total.length };
+};
+
 module.exports = {
   createAdminPlane,
   GetAll_Planes,
   updatePlan,
   getPlanForBuyer,
   getPlanForAdmin,
+  getPlanesDetails,
 };
