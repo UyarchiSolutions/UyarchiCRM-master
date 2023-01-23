@@ -174,6 +174,9 @@ const sellerPostSchema = new mongoose.Schema({
   secondaryContactNumber: {
     type: Number,
   },
+  userName: {
+    type: String,
+  },
   maintainenceCost: {
     type: Number,
   },
