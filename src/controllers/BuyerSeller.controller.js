@@ -500,6 +500,11 @@ const DocumentUpload = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getBuyers_And_Owners = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getBuyers_And_Owners(req.params.type);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -558,4 +563,5 @@ module.exports = {
   Activate_DeActivatedUsers,
   VideoUploads,
   DocumentUpload,
+  getBuyers_And_Owners,
 };

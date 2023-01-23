@@ -1379,6 +1379,13 @@ const DocumentUpload = async (id, body) => {
   return sellerposts;
 };
 
+// get Buyer And Owners BY Type
+
+const getBuyers_And_Owners = async (type) => {
+  const endUsers = await Buyer.find({ Type: type });
+  return endUsers;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1436,4 +1443,5 @@ module.exports = {
   changePassword,
   Activate_DeActivatedUsers,
   DocumentUpload,
+  getBuyers_And_Owners,
 };
