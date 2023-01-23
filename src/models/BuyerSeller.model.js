@@ -168,6 +168,12 @@ const sellerPostSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  primaryContactNumber: {
+    type: Number,
+  },
+  secondaryContactNumber: {
+    type: Number,
+  },
   maintainenceCost: {
     type: Number,
   },
