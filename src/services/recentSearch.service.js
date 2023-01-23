@@ -15,7 +15,16 @@ const getRecentlysearched = async (userId) => {
   return data;
 };
 
+const getRecentlysearchedById = async (id) => {
+  const data = await RecentSearch.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'There Is no recent Search Available');
+  }
+  return data;
+};
+
 module.exports = {
   createRcentSearch,
   getRecentlysearched,
+  getRecentlysearchedById,
 };

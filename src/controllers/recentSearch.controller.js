@@ -15,7 +15,14 @@ const getRecentlysearched = catchAsync(async (req, res) => {
   const data = await recentSearchService.getRecentlysearched(userId);
   res.send(data);
 });
+
+const getRecentlysearchedById = catchAsync(async (req, res) => {
+  const data = await recentSearchService.getRecentlysearchedById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createRcentSearch,
   getRecentlysearched,
+  getRecentlysearchedById,
 };
