@@ -34,6 +34,7 @@ const createBuyerSeller = catchAsync(async (req, res) => {
 const Activate_DeActivatedUsers = catchAsync(async (req, res) => {
   const { email, number } = req.body;
   let values = await Buyer.findOne({ active: false, email: email, mobile: number });
+  console.log(values);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Exist OR User Not De-Activated');
   }
