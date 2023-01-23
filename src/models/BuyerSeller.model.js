@@ -171,6 +171,9 @@ const sellerPostSchema = new mongoose.Schema({
   maintainenceCost: {
     type: Number,
   },
+  contructionDocuments: {
+    type: Array,
+  },
   ifMaintenence: {
     type: String,
   },
@@ -335,10 +338,10 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   roomType: {
-    type: String,
+    type: Array,
   },
   floorType: {
-    type: String,
+    type: Array,
   },
   propStatus: {
     type: String,

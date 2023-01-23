@@ -1368,6 +1368,17 @@ const Activate_DeActivatedUsers = async (body) => {
   return body;
 };
 
+// contructionDocuments upload
+
+const DocumentUpload = async (id, body) => {
+  let sellerposts = await SellerPost.findById(id);
+  if (!sellerposts) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Seller Post Not Available');
+  }
+  sellerposts = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return sellerposts;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1424,4 +1435,5 @@ module.exports = {
   DeActive_UserAccount,
   changePassword,
   Activate_DeActivatedUsers,
+  DocumentUpload,
 };

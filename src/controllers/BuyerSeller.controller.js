@@ -391,7 +391,7 @@ const GetBuyerPost = catchAsync(async (req, res) => {
 // map api neighbour
 
 const neighbour_api = catchAsync(async (req, res) => {
-  const { lat, long, type, radius} = req.query;
+  const { lat, long, type, radius } = req.query;
   const data = await buyersellerService.neighbour_api(lat, long, type, radius);
   res.send(data);
 });
@@ -484,6 +484,22 @@ const VideoUploads = catchAsync(async (req, res) => {
   });
 });
 
+// contructionDocuments
+
+const DocumentUpload = catchAsync(async (req, res) => {
+  const data = await buyersellerService.DocumentUpload(req.params.id, req.body);
+  if (req.files) {
+    console.log(req.files);
+    if (req.files.contructionDocuments !== null) {
+      req.files.map((e) => {
+        data.contructionDocuments.push('/images/sellerDocument/' + e.filename);
+      });
+    }
+  }
+  await data.save();
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -541,4 +557,5 @@ module.exports = {
   changePassword,
   Activate_DeActivatedUsers,
   VideoUploads,
+  DocumentUpload,
 };

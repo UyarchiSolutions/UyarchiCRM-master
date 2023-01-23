@@ -6,6 +6,7 @@ const BuyerAuth = require('../../controllers/BuyerAuth');
 const sellerBuyrimg = require('../../middlewares/buyrSeller');
 const Video = require('../../middlewares/videoUpload');
 const Vid = require('../../middlewares/vide');
+const sellerDocument = require('../../middlewares/seller.document');
 
 router.route('/Register').post(BuyerSellerController.createBuyerSeller);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
@@ -70,6 +71,7 @@ router.route('/DeActive_UserAccount').get(BuyerAuth, BuyerSellerController.DeAct
 router.route('/changePassword').post(BuyerAuth, BuyerSellerController.changePassword);
 router.route('/activate/deActivatedusers').post(BuyerSellerController.Activate_DeActivatedUsers);
 router.route('/VideoUploads/:id').put(Vid, BuyerSellerController.VideoUploads);
+router.route('/document/upload/:id').put(sellerDocument.array('contructionDocuments'), BuyerSellerController.DocumentUpload);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 module.exports = router;
