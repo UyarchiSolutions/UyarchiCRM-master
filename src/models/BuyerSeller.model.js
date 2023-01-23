@@ -177,6 +177,9 @@ const sellerPostSchema = new mongoose.Schema({
   ifMaintenence: {
     type: String,
   },
+  openHouse: {
+    type: String,
+  },
   viewedUsers: {
     type: Array,
   },
