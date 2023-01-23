@@ -501,7 +501,7 @@ const DocumentUpload = catchAsync(async (req, res) => {
 });
 
 const getBuyers_And_Owners = catchAsync(async (req, res) => {
-  const data = await buyersellerService.getBuyers_And_Owners(req.params.type);
+  const data = await buyersellerService.getBuyers_And_Owners(req.params.type, req.params.page);
   res.send(data);
 });
 

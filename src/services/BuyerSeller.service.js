@@ -1381,9 +1381,28 @@ const DocumentUpload = async (id, body) => {
 
 // get Buyer And Owners BY Type
 
-const getBuyers_And_Owners = async (type) => {
-  const endUsers = await Buyer.find({ Type: type });
-  return endUsers;
+const getBuyers_And_Owners = async (type, page) => {
+  const endUsers = await Buyer.aggregate([
+    {
+      $match: {
+        Type: type,
+      },
+    },
+    {
+      $skip: 10 * page,
+    },
+    {
+      $limit: 10,
+    },
+  ]);
+  const total = await Buyer.aggregate([
+    {
+      $match: {
+        Type: type,
+      },
+    },
+  ]);
+  return { endUsers: endUsers, total: total.length };
 };
 
 module.exports = {

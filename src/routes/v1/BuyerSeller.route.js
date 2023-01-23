@@ -72,7 +72,7 @@ router.route('/changePassword').post(BuyerAuth, BuyerSellerController.changePass
 router.route('/activate/deActivatedusers').post(BuyerSellerController.Activate_DeActivatedUsers);
 router.route('/VideoUploads/:id').put(Vid, BuyerSellerController.VideoUploads);
 router.route('/document/upload/:id').put(sellerDocument.array('contructionDocuments'), BuyerSellerController.DocumentUpload);
-router.route('/getBuyers_And_Owners/:type').get(BuyerSellerController.getBuyers_And_Owners);
+router.route('/getBuyers_And_Owners/:type/:page').get(BuyerSellerController.getBuyers_And_Owners);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 module.exports = router;
