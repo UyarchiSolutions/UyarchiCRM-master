@@ -10,6 +10,12 @@ const createRcentSearch = async (body, userId) => {
   return recentSearch;
 };
 
+const getRecentlysearched = async (userId) => {
+  const data = await RecentSearch.find({ userId: userId }).sort({ created: -1 }).limit(5);
+  return data;
+};
+
 module.exports = {
   createRcentSearch,
+  getRecentlysearched,
 };

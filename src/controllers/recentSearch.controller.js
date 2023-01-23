@@ -10,6 +10,12 @@ const createRcentSearch = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getRecentlysearched = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await recentSearchService.getRecentlysearched(userId);
+  res.send(data);
+});
 module.exports = {
   createRcentSearch,
+  getRecentlysearched,
 };

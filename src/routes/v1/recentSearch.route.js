@@ -4,5 +4,5 @@ const router = express.Router();
 const Auth = require('../../controllers/BuyerAuth');
 
 router.route('/').post(Auth, RecentSearchController.createRcentSearch);
-
+router.route('/Recentlysearched').get(Auth, RecentSearchController.getRecentlysearched);
 module.exports = router;
