@@ -6,10 +6,22 @@ const moment = require('moment');
 
 const createUserPlan = async (body, id) => {
   let today = moment().toDate();
-  let values = { ...body, ...{ created: moment(), userId: id } };
-  // if (plan.Amount !== body.Amount) {
-  //   throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'In Valid Amount');
-  // }
+  const { PlanRole } = body;
+  let values;
+  const plan = await AdminPlan.findById(body.PlanId);
+  if (!plan) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'plan Not Found');
+  }
+  if (PlanRole === 'Buyer') {
+    let planvalid = moment().add(plan.PlanValidate, 'days');
+    values = { ...body, ...{ created: moment(), userId: id, planValidate: planvalid } };
+  }
+  if (PlanRole === 'Seller') {
+    let planvalid = moment().add(plan.PlanValidate, 'days');
+    let postvalid = moment().add(plan.postValidate, 'days');
+    values = { ...body, ...{ created: moment(), userId: id, planValidate: planvalid, postValidate: postvalid } };
+  }
+
   let data = await usersPlan.create(values);
   return data;
 };
