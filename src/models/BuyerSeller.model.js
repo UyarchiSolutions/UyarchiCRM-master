@@ -29,6 +29,10 @@ const BuyerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  accountActive: {
+    type: Boolean,
+    default: false,
+  },
   created: {
     type: Date,
   },

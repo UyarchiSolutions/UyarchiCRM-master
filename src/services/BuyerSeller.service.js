@@ -690,7 +690,7 @@ const createPassword = async (id, body) => {
   // let password1 = await bcrypt.hash(confirmPassword, salt);
   const data = await Buyer.findByIdAndUpdate(
     { _id: values._id },
-    { password: confirmPassword, active: true },
+    { password: confirmPassword, active: true, accountActive: true },
     { new: true }
   );
   return data;
@@ -1405,6 +1405,37 @@ const getBuyers_And_Owners = async (type, page) => {
   return { endUsers: endUsers, total: total.length };
 };
 
+// delete the users from DataBase
+
+const DeleteByUserId = async (userId) => {
+  let values = await Buyer.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Found');
+  }
+  values = await Buyer.findByIdAndDelete(id);
+  return { Message: 'Deleted' };
+};
+
+// Admin Flow
+
+const deActivatedAccount = async (userId) => {
+  let users = await Buyer.findById(userId);
+  if (!users) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Activated Or Not Found');
+  }
+  users = await Buyer.findByIdAndUpdate({ _id: userId }, { active: false }, { new: true });
+  return users;
+};
+
+const ActivatedAccount = async (userId) => {
+  let users = await Buyer.findById(userId);
+  if (!users) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Activated Or Not Found');
+  }
+  users = await Buyer.findByIdAndUpdate({ _id: userId }, { active: true }, { new: true });
+  return users;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1463,4 +1494,7 @@ module.exports = {
   Activate_DeActivatedUsers,
   DocumentUpload,
   getBuyers_And_Owners,
+  DeleteByUserId,
+  deActivatedAccount,
+  ActivatedAccount,
 };

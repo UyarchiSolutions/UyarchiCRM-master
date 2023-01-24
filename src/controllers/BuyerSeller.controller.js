@@ -506,6 +506,21 @@ const getBuyers_And_Owners = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const DeleteByUserId = catchAsync(async (req, res) => {
+  const data = await buyersellerService.DeleteByUserId(req.params.id);
+  res.send(data);
+});
+
+const deActivatedAccount = catchAsync(async (req, res) => {
+  const data = await buyersellerService.deActivatedAccount(req.params.id);
+  res.send(data);
+});
+
+const ActivatedAccount = catchAsync(async (req, res) => {
+  const data = await buyersellerService.ActivatedAccount(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -565,4 +580,7 @@ module.exports = {
   VideoUploads,
   DocumentUpload,
   getBuyers_And_Owners,
+  DeleteByUserId,
+  deActivatedAccount,
+  ActivatedAccount,
 };

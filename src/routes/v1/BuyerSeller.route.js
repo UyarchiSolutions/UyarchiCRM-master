@@ -73,6 +73,12 @@ router.route('/activate/deActivatedusers').post(BuyerSellerController.Activate_D
 router.route('/VideoUploads/:id').put(Vid, BuyerSellerController.VideoUploads);
 router.route('/document/upload/:id').put(sellerDocument.array('contructionDocuments'), BuyerSellerController.DocumentUpload);
 router.route('/getBuyers_And_Owners/:type/:page').get(BuyerSellerController.getBuyers_And_Owners);
+router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
+
+// Admin Flow
+router.route('/ActivatedAccount/:id').get(BuyerSellerController.ActivatedAccount);
+router.route('/de/ActivatedAccount/:id').get(BuyerSellerController.deActivatedAccount);
+
 module.exports = router;
