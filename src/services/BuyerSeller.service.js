@@ -1086,6 +1086,7 @@ const WhishList = async (propId, id) => {
   let datas = await SellerPost.findOne({ _id: data._id, WhishList: { $in: [id] } });
   if (!datas) {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $push: { WhishList: id } }, { new: true });
+    await whishListDetails.create({ created: moment(), propertyId: data._id, userId: id });
   }
   return data;
 };
