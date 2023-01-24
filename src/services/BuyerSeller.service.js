@@ -1408,7 +1408,7 @@ const getBuyers_And_Owners = async (type, page) => {
 // delete the users from DataBase
 
 const DeleteByUserId = async (userId) => {
-  let values = await Buyer.findById(id);
+  let values = await Buyer.findById(userId);
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Found');
   }
