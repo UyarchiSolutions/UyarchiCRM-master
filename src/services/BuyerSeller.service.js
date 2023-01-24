@@ -618,7 +618,7 @@ const VideoUpload = async (id) => {
 };
 // Otp Send
 const getOTP = async (body) => {
-  let otp = await StoreOtp.findOne({ number: body.number}).sort({ created: -1 });
+  let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
   if (otp) {
     if (!body.resend) {
       if (otp.active == true) {
@@ -656,7 +656,7 @@ const VerifyOtpRealEstate = async (body) => {
   let verify = await StoreOtp.findOne({ otp: body.otp });
   await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
   let values = await Buyer.findOne({ mobile: verify.number });
-  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { verified: true, active: true }, { new: true });
+  values = await Buyer.findByIdAndUpdate({ _id: values._id }, { active: true }, { new: true });
   return values;
 };
 
@@ -681,7 +681,7 @@ const createPassword = async (id, body) => {
   // let password1 = await bcrypt.hash(confirmPassword, salt);
   const data = await Buyer.findByIdAndUpdate(
     { _id: values._id },
-    { password: confirmPassword, active: true, accountActive: true },
+    { password: confirmPassword, active: true, accountActive: true, verified: true },
     { new: true }
   );
   return data;
