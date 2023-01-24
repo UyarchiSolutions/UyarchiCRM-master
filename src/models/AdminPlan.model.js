@@ -34,6 +34,9 @@ const AdminPlanSchema = new mongoose.Schema({
   postValidate: {
     type: Date,
   },
+  description: {
+    type: String,
+  },
   images: {
     type: Number,
   },

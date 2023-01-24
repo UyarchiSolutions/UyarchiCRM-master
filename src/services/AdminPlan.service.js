@@ -70,6 +70,7 @@ const getPlanesDetails = async (planType, page) => {
         Amount: 1,
         planName: 1,
         PlanValidate: 1,
+        postValidate:1,
         offer: 1,
         ContactNumber: 1,
         PlanRole: 1,
