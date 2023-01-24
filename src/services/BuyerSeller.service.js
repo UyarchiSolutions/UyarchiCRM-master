@@ -1412,7 +1412,7 @@ const DeleteByUserId = async (userId) => {
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Found');
   }
-  values = await Buyer.findByIdAndDelete(id);
+  values = await Buyer.findByIdAndDelete(userId);
   return { Message: 'Deleted' };
 };
 
