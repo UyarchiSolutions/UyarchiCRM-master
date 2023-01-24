@@ -47,6 +47,9 @@ const AdminPlanSchema = new mongoose.Schema({
   ContactNumber: {
     type: Number,
   },
+  created: {
+    type: Date,
+  },
 });
 
 const AdminPlan = mongoose.model('AdminPlan', AdminPlanSchema);
