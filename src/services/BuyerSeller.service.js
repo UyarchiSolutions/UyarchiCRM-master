@@ -674,11 +674,9 @@ const updatePassword = async (id, body) => {
 const createPassword = async (id, body) => {
   let { password, confirmPassword } = body;
   let values = await Buyer.findById(id);
-  if (!values || values.verified == false) {
+  if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Verified');
   }
-  // const salt = await bcrypt.genSalt(10);
-  // let password1 = await bcrypt.hash(confirmPassword, salt);
   const data = await Buyer.findByIdAndUpdate(
     { _id: values._id },
     { password: confirmPassword, active: true, accountActive: true, verified: true },
