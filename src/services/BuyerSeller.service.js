@@ -7,7 +7,7 @@ const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
-const { ViewedDetails, whishListDetails } = require('../models/BuyerPropertyRelation.model');
+const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerPropertyRelation.model');
 const Axios = require('axios');
 
 const createBuyerSeller = async (body, otp) => {
@@ -653,9 +653,10 @@ const OTPVerify = async (body) => {
 };
 
 const VerifyOtpRealEstate = async (body) => {
+  const { type } = body;
   let verify = await StoreOtp.findOne({ otp: body.otp });
   await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
-  let values = await Buyer.findOne({ mobile: verify.number });
+  let values = await Buyer.findOne({ mobile: verify.number, Type: type });
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { active: true }, { new: true });
   return values;
 };
@@ -677,8 +678,8 @@ const createPassword = async (id, body) => {
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Verified');
   }
-  const data = await Buyer.findByIdAndUpdate(
-    { _id: values._id },
+  let data = await Buyer.findByIdAndUpdate(
+    { _id: id },
     { password: confirmPassword, active: true, accountActive: true, verified: true },
     { new: true }
   );
@@ -719,9 +720,11 @@ const giveInterest = async (id, userId) => {
   let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { $eq: userId } } });
   if (!matchValue) {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $push: { intrestedUsers: userId } }, { new: true });
+    await shortList.create({ created: moment(), propertyId: post._id, userId: userId });
     await post.save();
   } else {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $pull: { intrestedUsers: userId } }, { new: true });
+    await shortList.deleteOne({ propertyId: post._id, userId: userId });
     await post.save();
   }
 
@@ -1438,6 +1441,117 @@ const InserDataExist = async (id, body) => {
   return values;
 };
 
+const getViewdInformationByProperty = async (id) => {
+  let values = await ViewedDetails.aggregate([
+    {
+      $match: {
+        propertyId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        propertyId: 1,
+        userId: 1,
+        created: 1,
+        userName: '$users.userName',
+        mobile: '$users.mobile',
+        email: '$users.email',
+        Type: '$users.Type',
+      },
+    },
+  ]);
+  return values;
+};
+
+const getwishListInformationByProperty = async (id) => {
+  let values = await whishListDetails.aggregate([
+    {
+      $match: {
+        propertyId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        propertyId: 1,
+        userId: 1,
+        created: 1,
+        userName: '$users.userName',
+        mobile: '$users.mobile',
+        email: '$users.email',
+        Type: '$users.Type',
+      },
+    },
+  ]);
+  return values;
+};
+
+const getshortListinformationByproperty = async (id) => {
+  let values = await shortList.aggregate([
+    {
+      $match: {
+        propertyId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        propertyId: 1,
+        userId: 1,
+        created: 1,
+        userName: '$users.userName',
+        mobile: '$users.mobile',
+        email: '$users.email',
+        Type: '$users.Type',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1500,4 +1614,7 @@ module.exports = {
   deActivatedAccount,
   ActivatedAccount,
   InserDataExist,
+  getViewdInformationByProperty,
+  getwishListInformationByProperty,
+  getshortListinformationByproperty,
 };

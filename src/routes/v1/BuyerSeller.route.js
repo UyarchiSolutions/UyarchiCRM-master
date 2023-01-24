@@ -73,6 +73,7 @@ router.route('/activate/deActivatedusers').post(BuyerSellerController.Activate_D
 router.route('/VideoUploads/:id').put(Vid, BuyerSellerController.VideoUploads);
 router.route('/document/upload/:id').put(sellerDocument.array('contructionDocuments'), BuyerSellerController.DocumentUpload);
 router.route('/getBuyers_And_Owners/:type/:page').get(BuyerSellerController.getBuyers_And_Owners);
+router.route('/getpropertyRelation/:id').put(BuyerSellerController.getViewdInformationByProperty);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 

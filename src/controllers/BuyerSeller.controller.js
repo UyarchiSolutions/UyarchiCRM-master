@@ -526,6 +526,21 @@ const InserDataExist = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getViewdInformationByProperty = catchAsync(async (req, res) => {
+  const { type } = req.body;
+  let data;
+  if (type === 'viewed') {
+    data = await buyersellerService.getViewdInformationByProperty(req.params.id);
+  }
+  if (type === 'wishlist') {
+    data = await buyersellerService.getwishListInformationByProperty(req.params.id);
+  }
+  if (type === 'shortlist') {
+    data = await buyersellerService.getshortListinformationByproperty(req.params.id);
+  }
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -589,4 +604,5 @@ module.exports = {
   deActivatedAccount,
   ActivatedAccount,
   InserDataExist,
+  getViewdInformationByProperty,
 };
