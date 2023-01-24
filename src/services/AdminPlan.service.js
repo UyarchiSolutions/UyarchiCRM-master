@@ -7,7 +7,7 @@ const userPlan = require('../models/usersPlane.model');
 const createAdminPlane = async (body) => {
   let tomorrow = moment().add(body.PlanValidate, 'days');
   let postvalid = moment().add(body.postValidate, 'days');
-  let values = { ...body, ...{ PlanValidate: tomorrow, postValidate: postvalid, created: moment() } };
+  let values = { ...body, ...{ PlanValidate: body.PlanValidate, postValidate: body.postValidate, created: moment() } };
   let data = await AdminPlan.create(values);
   return data;
 };

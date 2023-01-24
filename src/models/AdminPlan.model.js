@@ -14,7 +14,7 @@ const AdminPlanSchema = new mongoose.Schema({
     type: Number,
   },
   PlanValidate: {
-    type: Date,
+    type: Number,
   },
   Videos: {
     type: Number,
@@ -32,7 +32,7 @@ const AdminPlanSchema = new mongoose.Schema({
     type: String,
   },
   postValidate: {
-    type: Date,
+    type: Number,
   },
   description: {
     type: String,
