@@ -736,8 +736,8 @@ const getIntrestedUsersByProperty = async (id) => {
   }
   for (let i = 0; i < values.intrestedUsers.length; i++) {
     let ff = await Buyer.findById(values.intrestedUsers[i]);
-    if(!ff){
-      throw new ApiError(httpStatus.BAD_REQUEST, "Intrsted User May Deleted Or There Is No Intrested")
+    if (!ff) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Intrsted User May Deleted Or There Is No Intrested');
     }
     let accept = await SellerPost.findOne({ Accept: { $elemMatch: { $eq: ff._id } } });
     let acceptStatus = true;
