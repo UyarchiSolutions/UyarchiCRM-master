@@ -5,7 +5,6 @@ const AdminPlan = require('../models/AdminPlan.model');
 const moment = require('moment');
 
 const createUserPlan = async (body, id) => {
-  let today = moment().toDate();
   const { PlanRole } = body;
   let values;
   const plan = await AdminPlan.findById(body.PlanId);

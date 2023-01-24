@@ -521,6 +521,11 @@ const ActivatedAccount = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const InserDataExist = catchAsync(async (req, res) => {
+  const data = await buyersellerService.InserDataExist(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -583,4 +588,5 @@ module.exports = {
   DeleteByUserId,
   deActivatedAccount,
   ActivatedAccount,
+  InserDataExist,
 };

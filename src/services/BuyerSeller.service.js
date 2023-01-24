@@ -7,6 +7,7 @@ const OTP = require('../config/textLocal');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
+const { ViewedDetails, whishListDetails } = require('../models/BuyerPropertyRelation.model');
 const Axios = require('axios');
 
 const createBuyerSeller = async (body, otp) => {
@@ -182,17 +183,6 @@ const AutoMatches_ForBuyer_rentiee = async (userId) => {
       },
     },
   ]);
-  // let values = await BuyerRentie.aggregate([
-  //   { $match: { userId: { $eq: userId } } },
-  //   {
-  //     $lookup: {
-  //       from: 'sellerposts',
-  //       let: { locations: '$PrefferedCities' },
-  //       pipeline: [{ $match: { $expr: { $or: [{ $eq: ['$location', '$$locations'] }] } } }],
-  //       as: 'sellerPost',
-  //     },
-  //   },
-  // ]);
   return values;
 };
 
@@ -919,6 +909,7 @@ const AddViewed_Data = async (id, userId) => {
   let data = await SellerPost.findOne({ _id: values._id, viewedUsers: { $in: [userId] } });
   if (!data) {
     await SellerPost.findByIdAndUpdate({ _id: values._id }, { $push: { viewedUsers: userId } }, { new: true });
+    await ViewedDetails.create({ created: moment(), propertyId: values._id, userId: userId });
   }
   return values;
 };
@@ -1436,6 +1427,15 @@ const ActivatedAccount = async (userId) => {
   return users;
 };
 
+const InserDataExist = async (id, body) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1497,4 +1497,5 @@ module.exports = {
   DeleteByUserId,
   deActivatedAccount,
   ActivatedAccount,
+  InserDataExist,
 };
