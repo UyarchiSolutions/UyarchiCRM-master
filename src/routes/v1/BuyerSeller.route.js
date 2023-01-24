@@ -18,7 +18,7 @@ router.route('/buyer/render').post(SellerBuyerAuth, BuyerSellerController.create
 router.route('/SearchHouse').get(SellerBuyerAuth, BuyerSellerController.SearchHouseFlatByBuyer_Or_Rentiee);
 router.route('/DisplayAvailable/HouseOr/Flat').get(BuyerSellerController.DisplayAvailable_HouseOr_Flat);
 router.route('/AutoMatches/ForBuyer/rentiee').get(SellerBuyerAuth, BuyerSellerController.AutoMatches_ForBuyer_rentiee);
-router.route('/createBuyer').post(BuyerSellerController.createBuyer);
+router.route('/createBuyer').post(BuyerSellerController.createBuyerSeller);
 router.route('/verifyOtpBuyer').post(BuyerSellerController.verifyOtpBuyer);
 router.route('/createAdmin').post(BuyerSellerController.createAdmin);
 router.route('/AdminLogin').post(BuyerSellerController.AdminLogin);
