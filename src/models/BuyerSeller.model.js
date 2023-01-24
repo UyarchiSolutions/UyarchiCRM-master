@@ -212,6 +212,9 @@ const sellerPostSchema = new mongoose.Schema({
   availability: {
     type: String,
   },
+  availabilityDate: {
+    type: String,
+  },
   HouseOrCommercialType: {
     type: String,
   },
