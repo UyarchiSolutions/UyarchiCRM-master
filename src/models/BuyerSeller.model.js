@@ -27,7 +27,7 @@ const BuyerSchema = new mongoose.Schema({
   },
   active: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   created: {
     type: Date,
