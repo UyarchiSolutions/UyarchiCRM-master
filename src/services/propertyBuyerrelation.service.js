@@ -25,6 +25,14 @@ const getPropertyBuyerRelations = async (id) => {
       },
     },
     {
+      $lookup: {
+        from: 'buyerrenties',
+        localField: 'userId',
+        foreignField: 'userId',
+        as: 'needPost',
+      },
+    },
+    {
       $project: {
         _id: 1,
         active: 1,
@@ -37,6 +45,23 @@ const getPropertyBuyerRelations = async (id) => {
         mobile: '$users.mobile',
         email: '$users.email',
         Type: '$users.Type',
+        needPost: { $size: '$needPost' },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        active: 1,
+        created: 1,
+        propertyId: 1,
+        userId: 1,
+        status: 1,
+        history: 1,
+        userName: 1,
+        mobile: 1,
+        email: 1,
+        Type: 1,
+        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: 'yes', else: 'no' } },
       },
     },
   ]);
