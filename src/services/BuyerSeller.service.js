@@ -721,11 +721,15 @@ const giveInterest = async (id, userId) => {
   let matchValue = await SellerPost.findOne({ _id: id, intrestedUsers: { $elemMatch: { $eq: userId } } });
   if (!matchValue) {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $push: { intrestedUsers: userId } }, { new: true });
+    let viewdData = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: post._id });
+    if (!viewdData) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'This User Not Viewd this Property');
+    }
+    viewdData = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: viewdData._id },
+      { status: 'Intrested', intrestedDate: moment().toDate(), $push: { history: { intrested: moment().toDate() } } }
+    );
     await shortList.create({ created: moment(), propertyId: post._id, userId: userId });
-    await post.save();
-  } else {
-    post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $pull: { intrestedUsers: userId } }, { new: true });
-    await shortList.deleteOne({ propertyId: post._id, userId: userId });
     await post.save();
   }
 

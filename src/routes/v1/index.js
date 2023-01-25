@@ -26,6 +26,7 @@ const propertVisitRoute = require('./propertyVisit.route');
 const savedSearch = require('./saved.search.route');
 const AmentiesRoute = require('./amenties.route');
 const RecentSearch = require('./recentSearch.route');
+const properBuyerrelation = require('./propertyBuyerrelation.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -36,6 +37,10 @@ const defaultRoutes = [
   {
     path: '/BuyerSeller',
     route: BuyerSellerRoute,
+  },
+  {
+    path: '/properBuyerrelation',
+    route: properBuyerrelation,
   },
   {
     path: '/amenties',

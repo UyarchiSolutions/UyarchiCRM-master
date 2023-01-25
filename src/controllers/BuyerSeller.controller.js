@@ -8,6 +8,8 @@ const tokenService = require('../services/token.service');
 const userPlane = require('../models/usersPlane.model');
 const AWS = require('aws-sdk');
 const moment = require('moment');
+const properBuyerrelation = require('../models/propertyBuyerRelation.model');
+
 const createBuyerSeller = catchAsync(async (req, res) => {
   const { email, mobile, Type } = req.body;
   const checkemail = await BuyerSeller.findOne({ email: email, Type: Type });

@@ -21,6 +21,9 @@ const PropertyBuyerRelataionSchema = new mongoose.Schema({
   created: {
     type: Date,
   },
+  intrestedDate: {
+    type: Date,
+  },
   active: {
     type: Boolean,
     default: true,
