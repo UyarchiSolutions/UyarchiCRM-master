@@ -9,7 +9,7 @@ const createAdminPlane = catchAsync(async (req, res) => {
 });
 
 const GetAll_Planes = catchAsync(async (req, res) => {
-  const data = await AdminPlanService.GetAll_Planes();
+  const data = await AdminPlanService.GetAll_Planes(req.params.role);
   res.send(data);
 });
 

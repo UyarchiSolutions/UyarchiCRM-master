@@ -4,7 +4,7 @@ const app = express();
 const AdminPlanController = require('../../controllers/AdminPlan.controller');
 const Auth = require('../../controllers/BuyerAuth');
 router.route('/').post(AdminPlanController.createAdminPlane);
-router.route('/GetAll_Planes').get(AdminPlanController.GetAll_Planes);
+router.route('/GetAll_Planes/:role').get(AdminPlanController.GetAll_Planes);
 router.route('/updatePlan/:id').put(AdminPlanController.updatePlan);
 router.route('/buyerPlanes').get(AdminPlanController.getPlanForBuyer);
 router.route('/getPlanForAdmin').get(AdminPlanController.getPlanForAdmin);

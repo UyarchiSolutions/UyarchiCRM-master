@@ -12,8 +12,16 @@ const createAdminPlane = async (body) => {
   return data;
 };
 
-const GetAll_Planes = async () => {
-  let data = await AdminPlan.find();
+const GetAll_Planes = async (role) => {
+  let rolmatch = { active: true };
+  if (role !== 'null') {
+    rolmatch = { PlanRole: role };
+  }
+  let data = await AdminPlan.aggregate([
+    {
+      $match: rolmatch,
+    },
+  ]);
   return data;
 };
 
