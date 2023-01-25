@@ -100,7 +100,6 @@ const createSellerPost = async (body, userId) => {
     planedata = {
       planId: userplanes._id,
       imageUpload: userplanes.Image,
-      PostNumber: userplanes.PostNumber,
       videoUpload: userplanes.Videos,
     };
     let existplane = parseInt(userplanes.PostNumber);
@@ -111,7 +110,7 @@ const createSellerPost = async (body, userId) => {
   let total = plancount - 1;
   let buyers = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
   console.log(buyers);
-  planedata = { videoUpload: buyers.videos, imageUpload: buyers.Image, PostNumber: buyers.plane };
+  planedata = { videoUpload: buyers.videos, imageUpload: buyers.Image,};
   let values = {
     ...body,
     ...{
