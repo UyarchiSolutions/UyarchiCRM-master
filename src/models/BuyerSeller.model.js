@@ -168,6 +168,9 @@ const sellerPostSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  planedata: {
+    type: Object,
+  },
   Ignore: {
     type: Array,
     default: [],

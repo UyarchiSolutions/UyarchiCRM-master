@@ -83,6 +83,7 @@ const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
   let postValidate = moment().add(body.validity, 'minutes').toDate();
   let Sellers = await Buyer.findById(userId);
+  let = planedata;
   if (Sellers.plane <= 0) {
     let userplanes = await userPlane
       .findOne({
@@ -92,16 +93,25 @@ const createSellerPost = async (body, userId) => {
         PostNumber: { $gt: 0 },
       })
       .sort({ created: -1 });
+
     if (!userplanes) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
     }
+    planedata = {
+      planId: userplanes._id,
+      imageUpload: userplanes.Image,
+      PostNumber: userplanes.PostNumber,
+      videoUpload: userplanes.Videos,
+    };
     let existplane = parseInt(userplanes.PostNumber);
     let totals = existplane - 1;
     userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: totals }, { new: true });
   }
   let plancount = parseInt(Sellers.plane);
   let total = plancount - 1;
-  await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+  let buyers = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+  console.log(buyers);
+  planedata = { videoUpload: buyers.videos, imageUpload: buyers.Image, PostNumber: buyers.plane };
   let values = {
     ...body,
     ...{
@@ -109,6 +119,7 @@ const createSellerPost = async (body, userId) => {
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
       propertyExpiredDate: postValidate,
+      planedata,
     },
   };
   // let reduceplane = userplanes.PostNumber;
@@ -621,7 +632,7 @@ const getOTP = async (body) => {
   // let otps = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
   // let epireTime = moment(otps.created).add(15, 'minutes').toDate()
   // console.log(epireTime)
-  let otp = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
+  let otp = await StoreOtp.findOne({ number: body.number, active: true }).sort({ created: -1 });
   if (otp) {
     if (!body.resend) {
       if (otp.active == true) {
@@ -658,7 +669,7 @@ const OTPVerify = async (body) => {
 const VerifyOtpRealEstate = async (body) => {
   const { type } = body;
   let verify = await StoreOtp.findOne({ otp: body.otp });
-  console.log(verify)
+  console.log(verify);
   await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
   let values = await Buyer.findOne({ mobile: verify.number, Type: type });
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { active: true }, { new: true });
