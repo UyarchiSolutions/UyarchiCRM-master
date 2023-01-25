@@ -618,9 +618,9 @@ const VideoUpload = async (id) => {
 };
 // Otp Send
 const getOTP = async (body) => {
-  let otps = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
-  let epireTime = moment(otps.created).add(15, 'minutes').toDate()
-  console.log(epireTime)
+  // let otps = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
+  // let epireTime = moment(otps.created).add(15, 'minutes').toDate()
+  // console.log(epireTime)
   let otp = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
   if (otp) {
     if (!body.resend) {
