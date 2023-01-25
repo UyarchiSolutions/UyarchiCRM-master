@@ -48,6 +48,9 @@ const BuyerSchema = new mongoose.Schema({
   Image: {
     type: Number,
   },
+  Role: {
+    type: String,
+  },
   contactView: {
     type: Number,
   },
