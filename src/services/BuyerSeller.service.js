@@ -8,6 +8,7 @@ const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
 const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerPropertyRelation.model');
+const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
 
 const createBuyerSeller = async (body, otp) => {
@@ -913,6 +914,13 @@ const AddViewed_Data = async (id, userId) => {
   let data = await SellerPost.findOne({ _id: values._id, viewedUsers: { $in: [userId] } });
   if (!data) {
     await SellerPost.findByIdAndUpdate({ _id: values._id }, { $push: { viewedUsers: userId } }, { new: true });
+    await PropertyBuyerRelation.create({
+      created: moment(),
+      propertyId: values._id,
+      userId: userId,
+      history: { viewd: moment().toDate() },
+      status: 'Viewd',
+    });
     await ViewedDetails.create({ created: moment(), propertyId: values._id, userId: userId });
   }
   return values;
@@ -1242,6 +1250,9 @@ const userPlane_DetailsForSellers = async (userId) => {
       userId: userId,
     })
     .sort({ created: -1 });
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found ');
+  }
   let plan = await AdminPlan.findById(values.PlanId);
   if (!plan) {
     throw new ApiError(httpStatus.NOT_FOUND, 'There is No Plan');
@@ -1267,7 +1278,7 @@ const userPlane_DetailsForSellers = async (userId) => {
   // };
   let planDetails = {
     totalPost: plan.PostNumber,
-    currentPost: values.PostNumber,
+    currentPost: plan.PostNumber - values.PostNumber,
     totalVideo: plan.Videos,
     currentVideo: values.Videos,
     totalImage: plan.images,
