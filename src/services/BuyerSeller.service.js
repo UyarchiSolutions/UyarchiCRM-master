@@ -620,21 +620,15 @@ const VideoUpload = async (id) => {
 };
 // Otp Send
 const getOTP = async (body) => {
-  // let otps = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
-  // let epireTime = moment(otps.created).add(15, 'minutes').toDate()
-  // console.log(epireTime)
-  let otp = await StoreOtp.findOne({ number: body.number, active: true }).sort({ created: -1 });
-  if (otp) {
+  let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
+  if (otp.active == true) {
     if (!body.resend) {
-      if (otp.active == true) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
-      }
+      throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
     } else {
       return await OTP.Otp(body);
     }
   }
   return await OTP.Otp(body);
-  // console.log(otp);
   // return { message: 'Under Working.....' };
 };
 
