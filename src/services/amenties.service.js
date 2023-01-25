@@ -15,7 +15,16 @@ const getAllAmenties = async () => {
   return data;
 };
 
+const getAmentiesById = async (id) => {
+  const data = await Amenties.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Amenties Not Found');
+  }
+  return data;
+};
+
 module.exports = {
   createAmenties,
   getAllAmenties,
+  getAmentiesById,
 };

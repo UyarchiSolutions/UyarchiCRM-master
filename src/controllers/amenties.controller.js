@@ -13,7 +13,13 @@ const getAllAmenties = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAmentiesById = catchAsync(async (req, res) => {
+  const data = await Amenties.getAmentiesById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createAmenties,
   getAllAmenties,
+  getAmentiesById,
 };
