@@ -1139,6 +1139,12 @@ const AcceptIgnore = async (propId, body, userId) => {
     console.log(values);
     if (!values) {
       values = await SellerPost.findByIdAndUpdate({ _id: propId }, { $push: { Accept: userId } }, { new: true });
+      let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
+      users = await PropertyBuyerRelation.findByIdAndUpdate(
+        { _id: users._id },
+        { created: moment().toDate(), status: 'Accepted', $push: { history: { accept: moment().toDate() } } },
+        { new: true }
+      );
     }
   }
   if (body.type === 'Ignore') {
@@ -1146,6 +1152,12 @@ const AcceptIgnore = async (propId, body, userId) => {
     console.log(values);
     if (!values) {
       values = await SellerPost.findByIdAndUpdate({ _id: propId }, { $push: { Ignore: userId } }, { new: true });
+      let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
+      users = await PropertyBuyerRelation.findByIdAndUpdate(
+        { _id: users._id },
+        { created: moment().toDate(), status: 'Ignored', $push: { history: { Ignored: moment().toDate() } } },
+        { new: true }
+      );
     }
   }
   return values;
