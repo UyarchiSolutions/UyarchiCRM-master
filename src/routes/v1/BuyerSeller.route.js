@@ -8,7 +8,7 @@ const Video = require('../../middlewares/videoUpload');
 const Vid = require('../../middlewares/vide');
 const sellerDocument = require('../../middlewares/seller.document');
 
-router.route('/Register').post(BuyerSellerController.createBuyerSeller);
+router.route('/Register').post(BuyerSellerController.createBuyer);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
 router
   .route('/createSellerPost')

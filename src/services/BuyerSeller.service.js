@@ -618,7 +618,10 @@ const VideoUpload = async (id) => {
 };
 // Otp Send
 const getOTP = async (body) => {
-  let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
+  let otps = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
+  let epireTime = moment(otps.created).add(15, 'minutes').toDate()
+  console.log(epireTime)
+  let otp = await StoreOtp.findOne({ number: body.number, active:true }).sort({ created: -1 });
   if (otp) {
     if (!body.resend) {
       if (otp.active == true) {
@@ -655,6 +658,7 @@ const OTPVerify = async (body) => {
 const VerifyOtpRealEstate = async (body) => {
   const { type } = body;
   let verify = await StoreOtp.findOne({ otp: body.otp });
+  console.log(verify)
   await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
   let values = await Buyer.findOne({ mobile: verify.number, Type: type });
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { active: true }, { new: true });
