@@ -83,7 +83,7 @@ const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
   let postValidate = moment().add(body.validity, 'minutes').toDate();
   let Sellers = await Buyer.findById(userId);
-  let = planedata;
+  let planedata;
   if (Sellers.plane <= 0) {
     let userplanes = await userPlane
       .findOne({
@@ -102,15 +102,16 @@ const createSellerPost = async (body, userId) => {
       imageUpload: userplanes.Image,
       videoUpload: userplanes.Videos,
     };
+    console.log(planedata);
     let existplane = parseInt(userplanes.PostNumber);
     let totals = existplane - 1;
     userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: totals }, { new: true });
+  } else {
+    let plancount = parseInt(Sellers.plane);
+    let total = plancount - 1;
+    await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+    planedata = { videoUpload: Sellers.videos, imageUpload: Sellers.Image };
   }
-  let plancount = parseInt(Sellers.plane);
-  let total = plancount - 1;
-  let buyers = await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
-  console.log(buyers);
-  planedata = { videoUpload: buyers.videos, imageUpload: buyers.Image,};
   let values = {
     ...body,
     ...{
@@ -121,9 +122,6 @@ const createSellerPost = async (body, userId) => {
       planedata,
     },
   };
-  // let reduceplane = userplanes.PostNumber;
-  // let total = reduceplane - 1;
-  // userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: total }, { new: true });
   const sellerPost = await SellerPost.create(values);
   return sellerPost;
 };
