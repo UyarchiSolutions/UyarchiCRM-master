@@ -1457,6 +1457,14 @@ const getViewdInformationByProperty = async (id) => {
       },
     },
     {
+      $lookup: {
+        from: 'buyerrenties',
+        localField: 'userId',
+        foreignField: 'userId',
+        as: 'needPost',
+      },
+    },
+    {
       $unwind: {
         preserveNullAndEmptyArrays: true,
         path: '$users',
@@ -1472,6 +1480,20 @@ const getViewdInformationByProperty = async (id) => {
         mobile: '$users.mobile',
         email: '$users.email',
         Type: '$users.Type',
+        needPost: { $size: '$needPost' },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        propertyId: 1,
+        userId: 1,
+        created: 1,
+        userName: 1,
+        mobile: 1,
+        email: 1,
+        Type: 1,
+        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: 'yes', else: 'no' } },
       },
     },
   ]);
