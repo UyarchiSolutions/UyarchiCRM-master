@@ -9,6 +9,12 @@ const getPropertyBuyerRelations = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const rejectForSellerSide = catchAsync(async (req, res) => {
+  const data = await propertyBuyerRelation.rejectForSellerSide(req.params.propId, req.params.userId);
+  res.send(data);
+});
+
 module.exports = {
   getPropertyBuyerRelations,
+  rejectForSellerSide,
 };

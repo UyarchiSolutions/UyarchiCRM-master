@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const properBuyerrelation = require('../models/propertyBuyerRelation.model');
+const moment = require('moment/moment');
 
 const getPropertyBuyerRelations = async (id) => {
   let values = await properBuyerrelation.aggregate([
@@ -120,6 +121,20 @@ const getPropertyBuyerRelations = async (id) => {
   return values;
 };
 
+const rejectForSellerSide = async (propId, userId) => {
+  let propRelationData = await properBuyerrelation.findOne({ propertyId: propId, userId });
+  if (!propRelationData) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'this user Not intresed this property');
+  }
+  propRelationData = await properBuyerrelation.findByIdAndUpdate(
+    { _id: propRelationData._id },
+    { status: 'Rejected', created: moment().toDate(), $push: { history: { Reject: moment().toDate() } } },
+    { new: true }
+  );
+  return propRelationData;
+};
+
 module.exports = {
   getPropertyBuyerRelations,
+  rejectForSellerSide,
 };

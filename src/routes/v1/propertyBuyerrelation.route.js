@@ -3,5 +3,5 @@ const propertyRelationController = require('../../controllers/propertyBuyerrelat
 const router = express.Router();
 
 router.route('/property/:id').get(propertyRelationController.getPropertyBuyerRelations);
-
+router.route('/reject/:propId/:userId').get(propertyRelationController.rejectForSellerSide);
 module.exports = router;
