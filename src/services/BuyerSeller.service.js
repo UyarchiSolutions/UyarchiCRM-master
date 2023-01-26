@@ -348,8 +348,9 @@ const getApprover_Property = async (page, query, userId) => {
     {
       $lookup: {
         from: 'properbuyerrelations',
-        localField: 'userId',
-        foreignField: 'userId',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }],
         as: 'users',
       },
     },
@@ -412,6 +413,7 @@ const getApprover_Property = async (page, query, userId) => {
         WhishList: 1,
         lat: 1,
         usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
+        users: '$users',
         long: 1,
         status: {
           $cond: {
@@ -465,6 +467,7 @@ const getApprover_Property = async (page, query, userId) => {
         HouseOrCommercialType: 1,
         propertType: 1,
         ageOfBuilding: 1,
+        users: 1,
         BHKType: 1,
         furnishingStatus: 1,
         bathRoomCount: 1,
