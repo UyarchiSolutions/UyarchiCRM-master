@@ -2,11 +2,26 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const usersPlan = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
+const { Buyer } = require('../models/BuyerSeller.model');
 const moment = require('moment');
 
 const createUserPlan = async (body, id) => {
   const { PlanRole, PlanId } = body;
   let values;
+  if (PlanRole === 'Buyer') {
+    let user = await Buyer.findById(id);
+    let viewPlan = user.contactView;
+    if (viewPlan > 0) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Please Use Default Plan ');
+    }
+  }
+  if (PlanRole === 'Seller') {
+    let user = await Buyer.findById(id);
+    let postPlan = user.plane;
+    if (postPlan > 0) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Please Use Default Plan');
+    }
+  }
   const plan = await AdminPlan.findById(body.PlanId);
   if (!plan) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'plan Not Found');
@@ -37,8 +52,8 @@ const createUserPlan = async (body, id) => {
     values = { ...body, ...{ created: moment(), userId: id, planValidate: planvalid, postValidate: postvalid } };
   }
 
-  // let data = await usersPlan.create(values);
-  return plan;
+  let data = await usersPlan.create(values);
+  return data;
 };
 
 const getLatestUserPlan = async (userId) => {
