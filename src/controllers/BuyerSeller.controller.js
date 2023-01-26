@@ -544,6 +544,11 @@ const getViewdInformationByProperty = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updateBuyerPost = catchAsync(async (req, res) => {
+  const data = await buyersellerService.updateBuyerPost(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -608,4 +613,5 @@ module.exports = {
   ActivatedAccount,
   InserDataExist,
   getViewdInformationByProperty,
+  updateBuyerPost,
 };

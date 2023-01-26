@@ -1640,6 +1640,15 @@ const getshortListinformationByproperty = async (id) => {
   return values;
 };
 
+const updateBuyerPost = async (id, updatebody) => {
+  let data = await BuyerRentie.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'post Not Availabale');
+  }
+  data = await BuyerRentie.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
+  return data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1705,4 +1714,5 @@ module.exports = {
   getViewdInformationByProperty,
   getwishListInformationByProperty,
   getshortListinformationByproperty,
+  updateBuyerPost,
 };
