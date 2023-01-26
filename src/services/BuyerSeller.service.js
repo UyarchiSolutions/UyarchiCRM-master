@@ -346,6 +346,20 @@ const getApprover_Property = async (page, query, userId) => {
       $sort: { created: -1 },
     },
     {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: 'userId',
+        foreignField: 'userId',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
       $project: {
         _id: 1,
         AdditionalDetails: 1,
@@ -397,6 +411,7 @@ const getApprover_Property = async (page, query, userId) => {
         intrestedUsers: 1,
         WhishList: 1,
         lat: 1,
+        usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
         long: 1,
         status: {
           $cond: {
@@ -454,6 +469,7 @@ const getApprover_Property = async (page, query, userId) => {
         furnishingStatus: 1,
         bathRoomCount: 1,
         landSize: 1,
+        usersStatus: 1,
         noOfFloor: 1,
         whistListStatus: 1,
         lat: 1,
