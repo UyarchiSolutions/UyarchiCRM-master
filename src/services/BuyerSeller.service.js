@@ -961,7 +961,9 @@ const AddViewed_Data = async (id, userId) => {
     });
     await ViewedDetails.create({ created: moment(), propertyId: values._id, userId: userId });
   }
-  return values;
+  let userPropRelation = await PropertyBuyerRelation.findOne({ propertyId: id, userId: userId });
+  console.log(userPropRelation);
+  return { values: values, userStatus: userPropRelation };
 };
 
 const BuyerSeller_Profile = async (userId) => {
