@@ -51,13 +51,13 @@ const getPropertyBuyerRelations = async (id) => {
         from: 'sellerposts',
         localField: 'propertyId',
         foreignField: '_id',
-        as: 'sellerpost',
+        as: 'sellerposts',
       },
     },
     {
       $unwind: {
         preserveNullAndEmptyArrays: true,
-        path: '$sellerpost',
+        path: '$sellerposts',
       },
     },
     {
@@ -75,6 +75,10 @@ const getPropertyBuyerRelations = async (id) => {
         Type: '$users.Type',
         buyerProperty: '$buyerposts',
         needPost: { $size: '$needPost' },
+        sellerposts: '$sellerposts',
+        //sellerType
+        BHKMatch: { $cond: { if: { $eq: ['$buyerposts.BHKType', 'sellerposts.BHKType'] }, then: 20, else: 0 } },
+        TypeMatch: { $cond: { if: { $eq: ['$sellerposts.Type', '$buyerposts.sellerType'] }, then: 20, else: 0 } },
       },
     },
     {
@@ -91,7 +95,11 @@ const getPropertyBuyerRelations = async (id) => {
         email: 1,
         Type: 1,
         buyerProperty: 1,
-        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: { yes: { $mathc: {} } }, else: 'no' } },
+        sellerposts: '$sellerposts',
+        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: 'yes', else: 'no' } },
+        BHKMatch: 1,
+        TypeMatch: 1,
+        matchPercentage: { $add: ['$BHKMatch', '$TypeMatch'] },
       },
     },
   ]);

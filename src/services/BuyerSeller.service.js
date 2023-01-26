@@ -130,7 +130,18 @@ const createSellerPost = async (body, userId) => {
 // create BuyerRentiee
 
 const createBuyerRentiee = async (body, userId) => {
-  let values = { ...body, ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId } };
+  const { Type } = body;
+  let sellerType;
+  if (Type === 'rentiee') {
+    sellerType = 'rent';
+  }
+  if (Type === 'Buyer') {
+    sellerType = 'sell';
+  }
+  let values = {
+    ...body,
+    ...{ created: moment(), date: moment().format('YYYY-MM-DD'), userId: userId, sellerType: sellerType },
+  };
   let BR = await BuyerRentie.create(values);
   return BR;
 };

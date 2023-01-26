@@ -421,6 +421,9 @@ const BuyerRentieSchema = mongoose.Schema({
   BHKType: {
     type: String,
   },
+  sellerType: {
+    type: String,
+  },
   userId: {
     type: String,
   },
