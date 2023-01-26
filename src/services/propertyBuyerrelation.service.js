@@ -134,7 +134,32 @@ const rejectForSellerSide = async (propId, userId) => {
   return propRelationData;
 };
 
+// fixed And Dumbed Property
+
+const FixedAndDumbedProperty = async (propId, userId, type) => {
+  let data = await properBuyerrelation.findOne({ propertyId: propId, userId: userId });
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'this User Not Relationed This Propety');
+  }
+  if (type === 'fixed') {
+    data = await properBuyerrelation.findByIdAndUpdate(
+      { _id: data._id },
+      { status: 'Fixed', created: moment().toDate(), $push: { history: { Fixed: moment().toDate() } } },
+      { new: true }
+    );
+  }
+  if (type === 'dumped') {
+    data = await properBuyerrelation.findByIdAndUpdate(
+      { _id: data._id },
+      { status: 'Dumped', created: moment().toDate(), $push: { history: { dumped: moment().toDate() } } },
+      { new: true }
+    );
+  }
+  return data;
+};
+
 module.exports = {
   getPropertyBuyerRelations,
   rejectForSellerSide,
+  FixedAndDumbedProperty,
 };

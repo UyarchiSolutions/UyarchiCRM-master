@@ -14,7 +14,13 @@ const rejectForSellerSide = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const FixedAndDumbedProperty = catchAsync(async (req, res) => {
+  const data = await propertyBuyerRelation.FixedAndDumbedProperty(req.params.propId, req.params.userId, req.params.type);
+  res.send(data);
+});
+
 module.exports = {
   getPropertyBuyerRelations,
   rejectForSellerSide,
+  FixedAndDumbedProperty,
 };
