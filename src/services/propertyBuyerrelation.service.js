@@ -158,8 +158,31 @@ const FixedAndDumbedProperty = async (propId, userId, type) => {
   return data;
 };
 
+const visiteAndNoShow = async (propId, userId, type) => {
+  let data = await properBuyerrelation.findOne({ propertyId: propId, userId: userId });
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'This user Not Relation In this Property');
+  }
+  if (type === 'visited') {
+    data = await properBuyerrelation.findByIdAndUpdate(
+      { _id: data._id },
+      { status: 'Visited', created: moment().toDate(), $push: { history: { visited: moment().toDate() } } },
+      { new: true }
+    );
+  }
+  if (type === 'noshow') {
+    data = await properBuyerrelation.findByIdAndUpdate(
+      { _id: data._id },
+      { status: 'NoShow', created: moment().toDate(), $push: { history: { noshow: moment().toDate() } } },
+      { new: true }
+    );
+  }
+  return data;
+};
+
 module.exports = {
   getPropertyBuyerRelations,
   rejectForSellerSide,
   FixedAndDumbedProperty,
+  visiteAndNoShow,
 };

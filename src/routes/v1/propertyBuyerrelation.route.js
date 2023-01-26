@@ -5,4 +5,5 @@ const router = express.Router();
 router.route('/property/:id').get(propertyRelationController.getPropertyBuyerRelations);
 router.route('/reject/:propId/:userId').get(propertyRelationController.rejectForSellerSide);
 router.route('/FixedAndDumbedProperty/:propId/:userId/:type').get(propertyRelationController.FixedAndDumbedProperty);
+router.route('/visiteAndNoShow/:propId/:userId/:type').get(propertyRelationController.visiteAndNoShow);
 module.exports = router;
