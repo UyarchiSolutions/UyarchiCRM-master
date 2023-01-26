@@ -680,11 +680,12 @@ const getOtpWithRegisterNumber = async (body) => {
 const OTPVerify = async (body) => {
   let values = await StoreOtp.findOne({ otp: body.otp, active: true });
   if (!values) {
-    throw new ApiError(httpStatus.BAD_GATEWAY, 'Invalid OTP');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid OTP');
   }
-  // await StoreOtp.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
-  let value = await Buyer.findOne({ mobile: values.number });
-  let value1 = { _id: value._id, userName: value.userName, mobile: value.mobile, email: value.email };
+  await StoreOtp.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
+  let value = await Buyer.findOne({ mobile: values.number, Type: body.type });
+  console.log(value.Type);
+  let value1 = { _id: value._id, userName: value.userName, mobile: value.mobile, email: value.email, Type: values.Type };
   return { Message: 'otp verified successfully message', value: value1 };
 };
 
