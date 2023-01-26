@@ -79,6 +79,17 @@ const getPropertyBuyerRelations = async (id) => {
         //sellerType
         BHKMatch: { $cond: { if: { $eq: ['$buyerposts.BHKType', 'sellerposts.BHKType'] }, then: 20, else: 0 } },
         TypeMatch: { $cond: { if: { $eq: ['$sellerposts.Type', '$buyerposts.sellerType'] }, then: 20, else: 0 } },
+        priceMatch: {
+          $cond: {
+            if: {
+              $gte: ['$buyerposts.FromPrice', '$sellerposts.MonthlyRentFrom'],
+            },
+            then: 20,
+            else: 0,
+          },
+        },
+        cityMatch: { $cond: { if: { $eq: ['$sellerposts.city', '$buyerposts.PrefferedCities'] }, then: 30, else: 0 } },
+        areaMatch: { $cond: { if: { $eq: ['$sellerposts.locality', '$buyerposts.Locality'] }, then: 20, else: 10 } },
       },
     },
     {
@@ -99,7 +110,10 @@ const getPropertyBuyerRelations = async (id) => {
         needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: 'yes', else: 'no' } },
         BHKMatch: 1,
         TypeMatch: 1,
-        matchPercentage: { $add: ['$BHKMatch', '$TypeMatch'] },
+        priceMatch: 1,
+        cityMatch: 1,
+        areaMatch: 1,
+        matchPercentage: { $add: ['$BHKMatch', '$TypeMatch', '$priceMatch', '$cityMatch', '$areaMatch'] },
       },
     },
   ]);
