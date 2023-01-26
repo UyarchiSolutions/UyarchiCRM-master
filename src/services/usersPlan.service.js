@@ -31,7 +31,7 @@ const createUserPlan = async (body, id) => {
     let planvalid = moment().add(plan.PlanValidate, 'days');
     let current = moment().toDate();
     let existPlan = await usersPlan
-      .findOne({ userId: id, PlanId: PlanId, ContactNumber: { $gt: 0 }, planValidate: { $gt: current } })
+      .findOne({ userId: id, ContactNumber: { $gt: 0 }, planValidate: { $gt: current } })
       .sort({ created: -1 });
     if (existPlan) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'plan Limit Not Exceeded or Plan Validity Not Expired');
@@ -43,7 +43,7 @@ const createUserPlan = async (body, id) => {
     let postvalid = moment().add(plan.postValidate, 'days');
     let currentDate = moment().toDate();
     let existPlan = await usersPlan
-      .findOne({ PlanId: PlanId, userId: id, PostNumber: { $gt: 0 }, planValidate: { $gt: currentDate } })
+      .findOne({ userId: id, PostNumber: { $gt: 0 }, planValidate: { $gt: currentDate } })
       .sort({ created: -1 });
     console.log(existPlan);
     if (existPlan) {
