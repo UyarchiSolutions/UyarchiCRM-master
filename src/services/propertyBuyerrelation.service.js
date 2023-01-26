@@ -90,7 +90,7 @@ const getPropertyBuyerRelations = async (id) => {
           },
         },
         cityMatch: { $cond: { if: { $eq: ['$sellerposts.city', '$buyerposts.PrefferedCities'] }, then: 30, else: 0 } },
-        areaMatch: { $cond: { if: { $eq: ['$sellerposts.locality', '$buyerposts.Locality'] }, then: 20, else: 10 } },
+        areaMatch: { $cond: { if: { $eq: ['$sellerposts.locality', '$buyerposts.Locality'] }, then: 20, else: 0 } },
       },
     },
     {
