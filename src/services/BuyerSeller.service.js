@@ -1272,6 +1272,7 @@ const userPlane_Details = async (userId) => {
     created: values.created,
     userId: values.userId,
     totalContactNumber: plan.ContactNumber,
+    description: plan.description,
   };
   return data;
 };

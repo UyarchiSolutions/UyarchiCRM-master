@@ -47,6 +47,20 @@ const getPropertyBuyerRelations = async (id) => {
       },
     },
     {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'propertyId',
+        foreignField: '_id',
+        as: 'sellerpost',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$sellerpost',
+      },
+    },
+    {
       $project: {
         _id: 1,
         active: 1,
@@ -77,7 +91,7 @@ const getPropertyBuyerRelations = async (id) => {
         email: 1,
         Type: 1,
         buyerProperty: 1,
-        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: 'yes', else: 'no' } },
+        needPost: { $cond: { if: { $gt: ['$needPost', 0] }, then: { yes: { $mathc: {} } }, else: 'no' } },
       },
     },
   ]);
