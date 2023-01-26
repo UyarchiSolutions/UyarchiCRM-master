@@ -17,6 +17,7 @@ const createPropertyVisit = async (body) => {
     { _id: intrestedUsers._id },
     {
       status: 'Scheduled',
+      scheduleDate: body.visitDate_Time,
       created: moment().toDate(),
       $push: { history: { schedule: moment().toDate(), scheduleDate: moment().toDate() } },
     },
