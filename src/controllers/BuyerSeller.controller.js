@@ -479,6 +479,7 @@ const VideoUploads = catchAsync(async (req, res) => {
       } else {
         Data.push(data);
         if (Data.length === req.files.length) {
+          values = await SellerPost.findByIdAndUpdate({ _id: values._id }, { $set: { videos: [] } }, { new: true });
           Data.forEach(async (e) => {
             values = await SellerPost.findByIdAndUpdate(
               { _id: values._id },
@@ -486,11 +487,11 @@ const VideoUploads = catchAsync(async (req, res) => {
               { new: true }
             );
           });
-          res.send(values);
         }
       }
     });
   });
+  res.send(values);
 });
 
 // contructionDocuments
@@ -499,6 +500,7 @@ const DocumentUpload = catchAsync(async (req, res) => {
   const data = await buyersellerService.DocumentUpload(req.params.id, req.body);
   if (req.files) {
     console.log(req.files);
+    data.contructionDocuments = [];
     if (req.files.contructionDocuments !== null) {
       req.files.map((e) => {
         data.contructionDocuments.push('/images/sellerDocument/' + e.filename);
