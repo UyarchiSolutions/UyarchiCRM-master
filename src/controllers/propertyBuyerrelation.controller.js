@@ -24,9 +24,16 @@ const visiteAndNoShow = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getviewedAndMore_Reports = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await propertyBuyerRelation.getviewedAndMore_Reports(userId);
+  res.send(data);
+});
+
 module.exports = {
   getPropertyBuyerRelations,
   rejectForSellerSide,
   FixedAndDumbedProperty,
   visiteAndNoShow,
+  getviewedAndMore_Reports,
 };

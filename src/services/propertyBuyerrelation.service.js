@@ -200,9 +200,32 @@ const visiteAndNoShow = async (propId, userId, type) => {
   return data;
 };
 
+const getviewedAndMore_Reports = async (id) => {
+  let values = await properBuyerrelation.aggregate([
+    {
+      $match: {
+        userId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'propertyId',
+        foreignField: '_id',
+        as: 'sellerposts',
+      },
+    },
+    {
+      $unwind: '$sellerposts',
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   getPropertyBuyerRelations,
   rejectForSellerSide,
   FixedAndDumbedProperty,
   visiteAndNoShow,
+  getviewedAndMore_Reports,
 };
