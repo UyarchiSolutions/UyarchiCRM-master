@@ -192,6 +192,7 @@ const sellerPostSchema = new mongoose.Schema({
   },
   contructionDocuments: {
     type: Array,
+    default: [],
   },
   ifMaintenence: {
     type: String,
