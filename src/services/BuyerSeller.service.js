@@ -425,7 +425,7 @@ const getApprover_Property = async (page, query, userId) => {
         scheduleDate: '$users.scheduleDate',
         lat: 1,
         usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
-        userscreated:{$ifNull:['$users.created', 'unViewed']},
+        userscreated: { $ifNull: ['$users.created', 'unViewed'] },
         users: '$users',
         long: 1,
         status: {
@@ -489,6 +489,7 @@ const getApprover_Property = async (page, query, userId) => {
         noOfFloor: 1,
         whistListStatus: 1,
         scheduleDate: 1,
+        userscreated: 1,
         lat: 1,
         long: 1,
         IntrestedStatus: {
