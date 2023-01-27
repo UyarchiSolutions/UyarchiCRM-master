@@ -725,6 +725,10 @@ const createPassword = async (id, body) => {
 };
 
 const Login = async (body) => {
+  const getEmailBy = await Buyer.findOne({ email: body.email, Type: body.Type });
+  if (!getEmailBy) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Email not Registered');
+  }
   let values = await Buyer.findOne({ email: body.email, password: body.password, active: true, Type: body.Type });
   if (!values) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
