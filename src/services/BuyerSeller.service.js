@@ -666,6 +666,8 @@ const getOTP = async (body) => {
       } else {
         return await OTP.Otp(body);
       }
+    } else {
+      return await OTP.Otp(body);
     }
   } else {
     return await OTP.Otp(body);
