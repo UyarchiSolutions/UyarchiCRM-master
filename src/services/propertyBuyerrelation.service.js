@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const properBuyerrelation = require('../models/propertyBuyerRelation.model');
+const { SellerPost } = require('../models/BuyerSeller.model');
 const moment = require('moment/moment');
 
 const getPropertyBuyerRelations = async (id) => {
@@ -123,7 +124,21 @@ const getPropertyBuyerRelations = async (id) => {
       },
     },
   ]);
-  return values;
+  let counts = await SellerPost.aggregate([
+    {
+      $match: { _id: id },
+    },
+    {
+      $project: {
+        AcceptedCount: { $size: '$Accept' },
+        IgnoreCount: { $size: '$Ignore' },
+        viewedCount: { $size: '$viewedUsers' },
+        WhishListCount: { $size: '$WhishList' },
+        intrestedUsers: { $size: '$intrestedUsers' },
+      },
+    },
+  ]);
+  return { values: values, counts: counts.length === 1 ? counts[0] : '' };
 };
 
 const rejectForSellerSide = async (propId, userId) => {
