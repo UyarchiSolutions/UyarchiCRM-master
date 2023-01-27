@@ -609,41 +609,44 @@ const BuyerLike_Property = async (id, userId) => {
 };
 // update Seller Renter Post
 const UpdateSellerPost = async (id, updatebody, imageCount, userId) => {
+  const { type } = updatebody;
   let today = moment().toDate();
   let commingCount = imageCount;
   let sellerpost = await SellerPost.findById(id);
   if (!sellerpost) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No Post Available');
   }
-  if (!sellerpost.planedata.planId) {
-    let imageCount = sellerpost.planedata.imageUpload;
-    if (sellerpost.planedata.imageUpload <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Image Upload Plan Exceeded');
+  if (!type === 'edit') {
+    if (!sellerpost.planedata.planId) {
+      let imageCount = sellerpost.planedata.imageUpload;
+      if (sellerpost.planedata.imageUpload <= 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Image Upload Plan Exceeded');
+      }
+      let data = {
+        imageUpload: sellerpost.planedata.imageUpload - commingCount,
+        videoUpload: sellerpost.planedata.videoUpload,
+      };
+      await SellerPost.findByIdAndUpdate({ _id: id }, { planedata: data }, { new: true });
+    } else {
+      let plan = await userPlane.findById(sellerpost.planedata.planId);
+      let planValidate = plan.planValidate;
+      let currentDate = moment().toDate();
+      let imageCount = sellerpost.planedata.imageUpload;
+      if (!planValidate > currentDate) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'plan validate Expired');
+      }
+      let post = await SellerPost.findById(id);
+      if (post.planedata.imageUpload <= 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Image Upload Plan Exceeded');
+      }
+      let data = {
+        planId: post.planedata.planId,
+        imageUpload: post.planedata.imageUpload - commingCount,
+        videoUpload: post.planedata.videoUpload,
+      };
+      await SellerPost.findByIdAndUpdate({ _id: id }, { planedata: data }, { new: true });
+      console.log(data);
     }
-    let data = {
-      imageUpload: sellerpost.planedata.imageUpload - commingCount,
-      videoUpload: sellerpost.planedata.videoUpload,
-    };
-    await SellerPost.findByIdAndUpdate({ _id: id }, { planedata: data }, { new: true });
-  } else {
-    let plan = await userPlane.findById(sellerpost.planedata.planId);
-    let planValidate = plan.planValidate;
-    let currentDate = moment().toDate();
-    let imageCount = sellerpost.planedata.imageUpload;
-    if (!planValidate > currentDate) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'plan validate Expired');
-    }
-    let post = await SellerPost.findById(id);
-    if (post.planedata.imageUpload <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Image Upload Plan Exceeded');
-    }
-    let data = {
-      planId: post.planedata.planId,
-      imageUpload: post.planedata.imageUpload - commingCount,
-      videoUpload: post.planedata.videoUpload,
-    };
-    await SellerPost.findByIdAndUpdate({ _id: id }, { planedata: data }, { new: true });
-    console.log(data);
   }
   sellerpost = await SellerPost.findByIdAndUpdate({ _id: id }, updatebody, { new: true });
   return sellerpost;
