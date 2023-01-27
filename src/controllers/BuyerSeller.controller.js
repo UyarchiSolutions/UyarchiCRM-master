@@ -419,40 +419,44 @@ const changePassword = catchAsync(async (req, res) => {
 
 const VideoUploads = catchAsync(async (req, res) => {
   let values = await SellerPost.findById(req.params.id);
+  console.log(req.body.type);
+  const { type } = req.body;
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Available');
   }
   let userId = values.userId;
   // plan flow
   let uploadFile = req.files.length;
-  if (!values.planedata.planId) {
-    let videoCount = uploadFile;
-    console.log(videoCount);
-    if (values.planedata.videoUpload <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Video Plan Exceeded');
+  if (!type == 'edit') {
+    if (!values.planedata.planId) {
+      let videoCount = uploadFile;
+      console.log(videoCount);
+      if (values.planedata.videoUpload <= 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Video Plan Exceeded');
+      }
+      let data = {
+        imageUpload: values.planedata.imageUpload,
+        videoUpload: values.planedata.videoUpload - videoCount,
+      };
+      await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { planedata: data }, { new: true });
+    } else {
+      let plan = await userPlane.findById(values.planedata.planId);
+      let planValidate = plan.planValidate;
+      let currentDate = moment().toDate();
+      if (!planValidate > currentDate) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'plan validate Expired');
+      }
+      let post = await SellerPost.findById(req.params.id);
+      if (post.planedata.videoUpload <= 0) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'video Upload Plan Exceeded');
+      }
+      let data = {
+        planId: post.planedata.planId,
+        imageUpload: post.planedata.imageUpload,
+        videoUpload: post.planedata.videoUpload - uploadFile,
+      };
+      await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { planedata: data }, { new: true });
     }
-    let data = {
-      imageUpload: values.planedata.imageUpload,
-      videoUpload: values.planedata.videoUpload - videoCount,
-    };
-    await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { planedata: data }, { new: true });
-  } else {
-    let plan = await userPlane.findById(values.planedata.planId);
-    let planValidate = plan.planValidate;
-    let currentDate = moment().toDate();
-    if (!planValidate > currentDate) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'plan validate Expired');
-    }
-    let post = await SellerPost.findById(req.params.id);
-    if (post.planedata.videoUpload <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'video Upload Plan Exceeded');
-    }
-    let data = {
-      planId: post.planedata.planId,
-      imageUpload: post.planedata.imageUpload,
-      videoUpload: post.planedata.videoUpload - uploadFile,
-    };
-    await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { planedata: data }, { new: true });
   }
 
   const s3 = new AWS.S3({
