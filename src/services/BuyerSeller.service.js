@@ -1661,6 +1661,32 @@ const updateBuyerPost = async (id, updatebody) => {
   return data;
 };
 
+const getUserPlan = async (userId) => {
+  const userData = await Buyer.findById(userId);
+  if (!userData) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Found');
+  }
+  let data;
+  if (userData.Type === 'Buyer') {
+    data = {
+      userName: userData.userName,
+      mobile: userData.mobile,
+      email: userData.email,
+      contactView: userData.contactView,
+    };
+    return data;
+  }
+  if (userData.Type === 'Seller') {
+    data = {
+      userName: userData.userName,
+      mobile: userData.mobile,
+      email: userData.email,
+      postPlan: userData.plane,
+    };
+    return data;
+  }
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1727,4 +1753,5 @@ module.exports = {
   getwishListInformationByProperty,
   getshortListinformationByproperty,
   updateBuyerPost,
+  getUserPlan,
 };

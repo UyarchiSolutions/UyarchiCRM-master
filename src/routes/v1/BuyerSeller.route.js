@@ -75,6 +75,7 @@ router.route('/document/upload/:id').put(sellerDocument.array('contructionDocume
 router.route('/getBuyers_And_Owners/:type/:page').get(BuyerSellerController.getBuyers_And_Owners);
 router.route('/getpropertyRelation/:id').put(BuyerSellerController.getViewdInformationByProperty);
 router.route('/updateBuyerPost/:id').put(BuyerSellerController.updateBuyerPost);
+router.route('/getUserPlan').get(BuyerAuth, BuyerSellerController.getUserPlan)
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 
