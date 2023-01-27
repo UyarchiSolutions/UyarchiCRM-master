@@ -1682,6 +1682,8 @@ const getUserPlan = async (userId) => {
       mobile: userData.mobile,
       email: userData.email,
       postPlan: userData.plane,
+      video: userData.videos,
+      image: userData.Image,
     };
     return data;
   }
