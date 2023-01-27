@@ -186,6 +186,7 @@ const UpdateSellerPost = catchAsync(async (req, res) => {
   let userId = req.userId;
   const data = await buyersellerService.UpdateSellerPost(req.params.id, req.body, req.files.image.length, userId);
   if (req.files) {
+    data.image = [];
     if (req.files.image !== null) {
       req.files.image.map((e) => {
         data.image.push('images/buyrSeller/' + e.filename);
