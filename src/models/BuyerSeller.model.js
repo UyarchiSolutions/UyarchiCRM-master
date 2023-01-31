@@ -166,6 +166,9 @@ const sellerPostSchema = new mongoose.Schema({
   BuildingName: {
     type: String,
   },
+  maintanencetype: {
+    type: String,
+  },
   advanceNegotiable: {
     type: String,
   },
