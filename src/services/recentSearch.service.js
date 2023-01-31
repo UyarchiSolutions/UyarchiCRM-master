@@ -5,7 +5,29 @@ const RecentSearch = require('../models/recentSearch.model');
 const moment = require('moment');
 
 const createRcentSearch = async (body, userId) => {
-  const data = { ...body, ...{ created: moment(), userId: userId } };
+  const { BHKType, HouseOrCommercialType, MonthlyRentFrom, MonthlyRentTo, Type, area, propertType } = body;
+  let data = { ...{ created: moment(), userId: userId } };
+  if (!BHKType == '' || !BHKType == null) {
+    data = { ...data, ...{ BHKType: BHKType } };
+  }
+  if (!HouseOrCommercialType == '' || !HouseOrCommercialType == null) {
+    data = { ...data, ...{ HouseOrCommercialType: HouseOrCommercialType } };
+  }
+  if (!MonthlyRentFrom == '' || !MonthlyRentFrom == null) {
+    data = { ...data, ...{ MonthlyRentFrom: MonthlyRentFrom } };
+  }
+  if (!MonthlyRentTo == '' || !MonthlyRentTo == null) {
+    data = { ...data, ...{ MonthlyRentTo: MonthlyRentTo } };
+  }
+  if (!Type == '' || !Type == null) {
+    data = { ...data, ...{ Type: Type } };
+  }
+  if (!area == '' || !area == null) {
+    data = { ...data, ...{ area: area } };
+  }
+  if (!propertType == '' || !propertType == null) {
+    data = { ...data, ...{ propertType: propertType } };
+  }
   const recentSearch = await RecentSearch.create(data);
   return recentSearch;
 };
