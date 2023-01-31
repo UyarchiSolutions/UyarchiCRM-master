@@ -166,6 +166,9 @@ const sellerPostSchema = new mongoose.Schema({
   BuildingName: {
     type: String,
   },
+  advanceNegotiable: {
+    type: String,
+  },
   Type: {
     // type like seller render
     type: String,
