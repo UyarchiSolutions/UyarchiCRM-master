@@ -190,6 +190,9 @@ const sellerPostSchema = new mongoose.Schema({
   maintainenceCost: {
     type: Number,
   },
+  leaseRent: {
+    type: String,
+  },
   contructionDocuments: {
     type: Array,
     default: [],
