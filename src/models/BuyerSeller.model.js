@@ -157,6 +157,9 @@ const sellerPostSchema = new mongoose.Schema({
   location: {
     type: String,
   },
+  landMark: {
+    type: String,
+  },
   pineCode: {
     type: Number,
   },
