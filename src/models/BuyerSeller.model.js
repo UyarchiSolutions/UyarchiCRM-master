@@ -170,7 +170,10 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   parkingCount: {
-    type: Array,
+    type: String,
+  },
+  fourWheelerCount: {
+    type: String,
   },
   advanceNegotiable: {
     type: String,
