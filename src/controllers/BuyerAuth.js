@@ -14,19 +14,19 @@ const authorization = async (req, res, next) => {
   // console.log(req.headers.auth);
   // console.log(req.headers['auth']);
   if (!token) {
-    return res.send({ status: httpStatus.UNAUTHORIZED, message: 'user must be LoggedIn....' });
+    return res.send(httpStatus.UNAUTHORIZED, {message:'user must be LoggedIn....'});
   }
   try {
     const payload = jwt.verify(token, config.jwt.secret);
     console.log(payload);
     const userss = await Buyer.findOne({ _id: payload.sub, active: true });
     if (!userss) {
-      return res.send({ status: httpStatus.UNAUTHORIZED, message: 'User Not Available' });
+      return res.send(httpStatus.UNAUTHORIZED, {message:'User Not Available'});
     }
     req.userId = payload.sub;
     return next();
   } catch {
-    return res.send({ status: httpStatus.UNAUTHORIZED, message: 'Invalid Access Token' });
+    return res.send(httpStatus.UNAUTHORIZED, {message:'Invalid Access Token'});
   }
 };
 
