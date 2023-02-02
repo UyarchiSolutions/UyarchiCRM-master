@@ -27,7 +27,7 @@ router
   .get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
 router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject);
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
-router.route('/getApprover/Property/:page').get(BuyerAuth, BuyerSellerController.getApprover_Property);
+router.route('/getApprover/Property/:page').get(BuyerSellerController.getApprover_Property);
 router.route('/BuyerLike/Property/:id').get(BuyerAuth, BuyerSellerController.BuyerLike_Property);
 router
   .route('/Update/Seller/Post/:id')
@@ -75,7 +75,7 @@ router.route('/document/upload/:id').put(sellerDocument.array('contructionDocume
 router.route('/getBuyers_And_Owners/:type/:page').get(BuyerSellerController.getBuyers_And_Owners);
 router.route('/getpropertyRelation/:id').put(BuyerSellerController.getViewdInformationByProperty);
 router.route('/updateBuyerPost/:id').put(BuyerSellerController.updateBuyerPost);
-router.route('/getUserPlan').get(BuyerAuth, BuyerSellerController.getUserPlan)
+router.route('/getUserPlan').get(BuyerAuth, BuyerSellerController.getUserPlan);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 
