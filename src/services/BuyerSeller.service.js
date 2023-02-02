@@ -84,35 +84,38 @@ const createSellerPost = async (body, userId) => {
   let expiredDate = moment().toDate();
   let postValidate = moment().add(body.validity, 'minutes').toDate();
   let Sellers = await Buyer.findById(userId);
-  let planedata;
-  if (Sellers.plane <= 0) {
-    let userplanes = await userPlane
-      .findOne({
-        userId: userId,
-        planValidate: { $gt: expiredDate },
-        PlanRole: 'Seller',
-        PostNumber: { $gt: 0 },
-      })
-      .sort({ created: -1 });
+  // let planedata;
+  // const { finishSubmit } = body;
+  // if (finishSubmit == true) {
+  //   if (Sellers.plane <= 0) {
+  //     let userplanes = await userPlane
+  //       .findOne({
+  //         userId: userId,
+  //         planValidate: { $gt: expiredDate },
+  //         PlanRole: 'Seller',
+  //         PostNumber: { $gt: 0 },
+  //       })
+  //       .sort({ created: -1 });
 
-    if (!userplanes) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
-    }
-    planedata = {
-      planId: userplanes._id,
-      imageUpload: userplanes.Image,
-      videoUpload: userplanes.Videos,
-    };
-    console.log(planedata);
-    let existplane = parseInt(userplanes.PostNumber);
-    let totals = existplane - 1;
-    userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: totals }, { new: true });
-  } else {
-    let plancount = parseInt(Sellers.plane);
-    let total = plancount - 1;
-    await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
-    planedata = { videoUpload: Sellers.videos, imageUpload: Sellers.Image };
-  }
+  //     if (!userplanes) {
+  //       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+  //     }
+  //     planedata = {
+  //       planId: userplanes._id,
+  //       imageUpload: userplanes.Image,
+  //       videoUpload: userplanes.Videos,
+  //     };
+  //     console.log(planedata);
+  //     let existplane = parseInt(userplanes.PostNumber);
+  //     let totals = existplane - 1;
+  //     userplanes = await userPlane.findByIdAndUpdate({ _id: userplanes._id }, { PostNumber: totals }, { new: true });
+  //   } else {
+  //     let plancount = parseInt(Sellers.plane);
+  //     let total = plancount - 1;
+  //     await Buyer.findByIdAndUpdate({ _id: userId }, { plane: total }, { new: true });
+  //     planedata = { videoUpload: Sellers.videos, imageUpload: Sellers.Image };
+  //   }
+  // }
   let values = {
     ...body,
     ...{
@@ -120,7 +123,6 @@ const createSellerPost = async (body, userId) => {
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
       propertyExpiredDate: postValidate,
-      planedata,
     },
   };
   const sellerPost = await SellerPost.create(values);
