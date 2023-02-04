@@ -78,6 +78,8 @@ router.route('/updateBuyerPost/:id').put(BuyerSellerController.updateBuyerPost);
 router.route('/getUserPlan').get(BuyerAuth, BuyerSellerController.getUserPlan);
 // map api neighbour
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
+router.route('/Places/AutoComplete').get(BuyerSellerController.Places_AutoComplete);
+router.route('/verify_locality/:city').put(BuyerSellerController.verify_locality);
 
 // Admin Flow
 router.route('/ActivatedAccount/:id').get(BuyerSellerController.ActivatedAccount);

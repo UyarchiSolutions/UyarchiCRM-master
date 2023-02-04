@@ -911,6 +911,8 @@ const AdminLoginFlow = async (body) => {
   return values;
 };
 
+// map Api's
+
 const getCoordinatesByAddress = async (location) => {
   let response = await Axios.get(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
@@ -1420,6 +1422,25 @@ const neighbour_api = async (lat, long, type, radius) => {
   return response.data;
 };
 
+const Places_AutoComplete = async (input, city) => {
+  //https://maps.googleapis.com/maps/api/place/autocomplete/json?input=alwarepet&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI
+  let res = await Axios.get(
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input},${city}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+  );
+  return res.data;
+};
+
+const verify_locality = async (city, body) => {
+  const { terms } = body;
+  let filters = terms.filter((e) => e.value == city);
+  if (filters.length > 0) {
+    let values = body;
+    return values;
+  } else {
+    throw new ApiError(httpStatus.BAD_REQUEST, `Please select another locality`);
+  }
+};
+
 const DeActive_UserAccount = async (userId) => {
   let users = await BuyerSeller.findOne({ _id: userId });
   if (!users) {
@@ -1758,4 +1779,6 @@ module.exports = {
   getshortListinformationByproperty,
   updateBuyerPost,
   getUserPlan,
+  Places_AutoComplete,
+  verify_locality,
 };

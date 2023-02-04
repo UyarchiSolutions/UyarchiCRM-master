@@ -562,6 +562,17 @@ const getUserPlan = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const Places_AutoComplete = catchAsync(async (req, res) => {
+  const { input, city } = req.query;
+  const data = await buyersellerService.Places_AutoComplete(input, city);
+  res.send(data);
+});
+
+const verify_locality = catchAsync(async (req, res) => {
+  const data = await buyersellerService.verify_locality(req.params.city, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -628,4 +639,6 @@ module.exports = {
   getViewdInformationByProperty,
   updateBuyerPost,
   getUserPlan,
+  Places_AutoComplete,
+  verify_locality,
 };
