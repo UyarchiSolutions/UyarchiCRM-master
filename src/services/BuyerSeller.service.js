@@ -1425,7 +1425,7 @@ const neighbour_api = async (lat, long, type, radius) => {
 const Places_AutoComplete = async (input, city) => {
   //https://maps.googleapis.com/maps/api/place/autocomplete/json?input=alwarepet&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI
   let res = await Axios.get(
-    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input},${city}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input},&type=${city}&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
   );
   return res.data;
 };
