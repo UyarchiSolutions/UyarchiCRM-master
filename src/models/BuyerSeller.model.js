@@ -169,6 +169,9 @@ const sellerPostSchema = new mongoose.Schema({
   maintanencetype: {
     type: String,
   },
+  formatedAddress: {
+    type: String,
+  },
   parkingCount: {
     type: String,
   },
