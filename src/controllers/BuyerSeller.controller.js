@@ -573,6 +573,11 @@ const verify_locality = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getDataById = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getDataById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -641,4 +646,5 @@ module.exports = {
   getUserPlan,
   Places_AutoComplete,
   verify_locality,
+  getDataById
 };

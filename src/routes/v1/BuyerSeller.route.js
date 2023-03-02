@@ -10,9 +10,7 @@ const sellerDocument = require('../../middlewares/seller.document');
 
 router.route('/Register').post(BuyerSellerController.createBuyer);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
-router
-  .route('/createSellerPost')
-  .post(sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
+router.route('/createSellerPost').post(sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
 router.route('/login').post(BuyerSellerController.LoginWithmail);
 router.route('/buyer/render').post(SellerBuyerAuth, BuyerSellerController.createBuyerRentiee);
 router.route('/SearchHouse').get(SellerBuyerAuth, BuyerSellerController.SearchHouseFlatByBuyer_Or_Rentiee);
@@ -85,5 +83,6 @@ router.route('/verify_locality/:city').put(BuyerSellerController.verify_locality
 router.route('/ActivatedAccount/:id').get(BuyerSellerController.ActivatedAccount);
 router.route('/de/ActivatedAccount/:id').get(BuyerSellerController.deActivatedAccount);
 router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
+router.route('/sellerPost/:id').get(BuyerSellerController.getDataById);
 
 module.exports = router;

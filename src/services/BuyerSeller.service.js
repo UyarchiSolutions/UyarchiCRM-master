@@ -1712,6 +1712,14 @@ const getUserPlan = async (userId) => {
   }
 };
 
+const getDataById = async (id) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'SellerPost Not Found');
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1781,4 +1789,5 @@ module.exports = {
   getUserPlan,
   Places_AutoComplete,
   verify_locality,
+  getDataById
 };
