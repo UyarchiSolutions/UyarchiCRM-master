@@ -175,6 +175,9 @@ const sellerPostSchema = new mongoose.Schema({
   parkingCount: {
     type: String,
   },
+  rentDetails: {
+    type: String,
+  },
   fourWheelerCount: {
     type: String,
   },
@@ -268,8 +271,8 @@ const sellerPostSchema = new mongoose.Schema({
   RentNegociable: {
     type: String,
   },
-  depositeNegociable:{
-    type:String
+  depositeNegociable: {
+    type: String,
   },
   propertStatus: {
     type: String,
