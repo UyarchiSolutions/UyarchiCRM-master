@@ -265,8 +265,11 @@ const sellerPostSchema = new mongoose.Schema({
   IfCommercial: {
     type: String,
   },
-  Negociable: {
+  RentNegociable: {
     type: String,
+  },
+  depositeNegociable:{
+    type:String
   },
   propertStatus: {
     type: String,
