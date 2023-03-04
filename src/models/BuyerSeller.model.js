@@ -357,10 +357,10 @@ const sellerPostSchema = new mongoose.Schema({
     type: Number,
   },
   floorNo: {
-    type: Number,
+    type: String,
   },
   noOfFloor: {
-    type: Number,
+    type: String,
   },
   propertyExpired: {
     type: Boolean,
