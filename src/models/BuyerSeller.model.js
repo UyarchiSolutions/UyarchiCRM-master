@@ -308,7 +308,7 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   parkingFacilities: {
-    type: Array,
+    type: String,
   },
   bathRoomType: {
     type: String,
@@ -317,6 +317,12 @@ const sellerPostSchema = new mongoose.Schema({
     type: Number,
   },
   balconyCount: {
+    type: String,
+  },
+  waterSupply: {
+    type: String,
+  },
+  toiletType: {
     type: String,
   },
   AdditionalDetails: {
@@ -402,6 +408,32 @@ const sellerPostSchema = new mongoose.Schema({
   propStatus: {
     type: String,
     default: 'Pending',
+  },
+  Non_veg: {
+    type: String,
+  },
+  gate_Security: {
+    type: String,
+  },
+  // flooring Tpe
+  kitchen: {
+    type: String,
+  },
+  hall_FLoor: {
+    type: String,
+  },
+  bedRoom: {
+    type: String,
+  },
+  bathRoom: {
+    type: String,
+  },
+  balCony: {
+    type: String,
+  },
+  Amenities: {
+    type: Array,
+    default: [],
   },
 });
 
