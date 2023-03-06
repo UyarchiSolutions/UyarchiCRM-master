@@ -314,7 +314,7 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   bathRoomCount: {
-    type: Number,
+    type: String,
   },
   balconyCount: {
     type: String,
