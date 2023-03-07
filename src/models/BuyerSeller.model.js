@@ -309,7 +309,7 @@ const sellerPostSchema = new mongoose.Schema({
   },
   parkingFacilities: {
     type: String,
-    default:""
+    default: '',
   },
   bathRoomType: {
     type: String,
@@ -435,6 +435,9 @@ const sellerPostSchema = new mongoose.Schema({
   Amenities: {
     type: Array,
     default: [],
+  },
+  contactName: {
+    type: String,
   },
 });
 

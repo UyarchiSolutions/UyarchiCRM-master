@@ -614,7 +614,6 @@ const UpdateSellerPost = async (id, updatebody, imageCount, userId) => {
   // const { type } = updatebody;
   // let today = moment().toDate();
   // let commingCount = imageCount;
-  console.log(":asldkfjsdlafkj")
   let sellerpost = await SellerPost.findById(id);
   if (!sellerpost) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No Post Available');
@@ -1790,5 +1789,5 @@ module.exports = {
   getUserPlan,
   Places_AutoComplete,
   verify_locality,
-  getDataById
+  getDataById,
 };
