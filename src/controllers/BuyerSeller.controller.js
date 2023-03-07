@@ -646,5 +646,5 @@ module.exports = {
   getUserPlan,
   Places_AutoComplete,
   verify_locality,
-  getDataById
+  getDataById,
 };

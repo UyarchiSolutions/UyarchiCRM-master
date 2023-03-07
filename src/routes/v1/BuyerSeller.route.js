@@ -29,7 +29,7 @@ router.route('/getApprover/Property/:page').get(BuyerSellerController.getApprove
 router.route('/BuyerLike/Property/:id').get(BuyerAuth, BuyerSellerController.BuyerLike_Property);
 router
   .route('/Update/Seller/Post/:id')
-  .put(BuyerAuth, sellerBuyrimg.fields([{ name: 'image' }]), BuyerSellerController.UpdateSellerPost);
+  .put( sellerBuyrimg.fields([{ name: 'image' }]), BuyerSellerController.UpdateSellerPost);
 router.route('/VideoUpload/:id').put(Video.single('video'), BuyerSellerController.VideoUpload);
 router.route('/Send-OTP').post(BuyerSellerController.getOTP);
 router.route('/VerifyOtpRealEstate').post(BuyerSellerController.VerifyOtpRealEstate);
