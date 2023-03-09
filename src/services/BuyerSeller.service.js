@@ -1726,7 +1726,7 @@ const getAddress_By_Lat_long = async (query) => {
   let values = await Axios.get(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}8&sensor=true&key=${apikey}`
   );
-  return values.data.results
+  return values.data.results;
 };
 
 module.exports = {

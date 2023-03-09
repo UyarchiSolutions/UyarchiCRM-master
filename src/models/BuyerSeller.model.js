@@ -439,6 +439,9 @@ const sellerPostSchema = new mongoose.Schema({
   contactName: {
     type: String,
   },
+  facingDirection:{
+    type: String,
+  }
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
