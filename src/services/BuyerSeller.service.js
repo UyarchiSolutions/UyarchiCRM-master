@@ -1720,6 +1720,15 @@ const getDataById = async (id) => {
   return values;
 };
 
+const getAddress_By_Lat_long = async (query) => {
+  const { lat, long } = query;
+  let apikey = 'AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI';
+  let values = await Axios.get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}8&sensor=true&key=${apikey}`
+  );
+  return values.data.results
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1790,4 +1799,5 @@ module.exports = {
   Places_AutoComplete,
   verify_locality,
   getDataById,
+  getAddress_By_Lat_long,
 };

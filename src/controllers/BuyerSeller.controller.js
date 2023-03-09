@@ -578,6 +578,11 @@ const getDataById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAddress_By_Lat_long = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getAddress_By_Lat_long(req.query);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -647,4 +652,5 @@ module.exports = {
   Places_AutoComplete,
   verify_locality,
   getDataById,
+  getAddress_By_Lat_long,
 };
