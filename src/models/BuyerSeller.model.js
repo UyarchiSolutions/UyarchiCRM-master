@@ -157,6 +157,9 @@ const sellerPostSchema = new mongoose.Schema({
   location: {
     type: String,
   },
+  kitchenType: {
+    type: String,
+  },
   landMark: {
     type: String,
   },
