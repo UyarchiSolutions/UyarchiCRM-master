@@ -163,6 +163,9 @@ const sellerPostSchema = new mongoose.Schema({
   landMark: {
     type: String,
   },
+  Completion_certificate: {
+    type: String,
+  },
   pineCode: {
     type: Number,
   },
