@@ -211,6 +211,9 @@ const sellerPostSchema = new mongoose.Schema({
   maintainenceCost: {
     type: Number,
   },
+  ownerType: {
+    type: String,
+  },
   leaseRent: {
     type: String,
   },
@@ -238,6 +241,12 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   long: {
+    type: String,
+  },
+  expectedPrice: {
+    type: String,
+  },
+  current_in_loan: {
     type: String,
   },
   availability: {
@@ -394,6 +403,18 @@ const sellerPostSchema = new mongoose.Schema({
   periodOfRentTo: {
     type: String,
   },
+  powerBackup: {
+    type: String,
+  },
+  property_Tax: {
+    type: String,
+  },
+  sale_Deed_Certificate: {
+    type: String,
+  },
+  occuPency_certificate: {
+    type: String,
+  },
   locality: {
     type: String,
   },
@@ -439,9 +460,9 @@ const sellerPostSchema = new mongoose.Schema({
   contactName: {
     type: String,
   },
-  facingDirection:{
+  facingDirection: {
     type: String,
-  }
+  },
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
