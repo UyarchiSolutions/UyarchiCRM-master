@@ -158,6 +158,9 @@ const sellerPostSchema = new mongoose.Schema({
   otherFeature: {
     type: String,
   },
+  buildingType: {
+    type: String,
+  },
   leaseDuration: {
     type: String,
   },
