@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
 const bcrypt = require('bcryptjs');
+const { string } = require('joi');
 
 // seller and buyer register Schema
 
@@ -153,6 +154,42 @@ const sellerPostSchema = new mongoose.Schema({
   _id: {
     type: String,
     default: v4,
+  },
+  otherFeature: {
+    type: String,
+  },
+  leaseDuration: {
+    type: String,
+  },
+  lock_in_period: {
+    type: String,
+  },
+  security: {
+    type: String,
+  },
+  escalator: {
+    type: String,
+  },
+  waterStorage: {
+    type: String,
+  },
+  wifi: {
+    type: String,
+  },
+  Lift: {
+    type: String,
+  },
+  washroom: {
+    type: String,
+  },
+  preOccupy: {
+    type: String,
+  },
+  ideaFor: {
+    type: String,
+  },
+  AdvanceAmt: {
+    type: String,
   },
   location: {
     type: String,
