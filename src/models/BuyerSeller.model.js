@@ -284,10 +284,10 @@ const sellerPostSchema = new mongoose.Schema({
     default: [],
   },
   lat: {
-    type: String,
+    type: Number,
   },
   long: {
-    type: String,
+    type: Number,
   },
   expectedPrice: {
     type: String,
