@@ -509,6 +509,9 @@ const sellerPostSchema = new mongoose.Schema({
   facingDirection: {
     type: String,
   },
+  final: {
+    type: String,
+  },
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
