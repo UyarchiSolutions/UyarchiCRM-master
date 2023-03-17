@@ -501,6 +501,8 @@ const getApprover_Property = async (page, query, userId) => {
         whistListStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$whistListStatus'] }, then: true, else: false } }, false],
         },
+        MonthlyRentFrom: 1,
+        expectedPrice: 1,
       },
     },
     // {
