@@ -512,6 +512,9 @@ const sellerPostSchema = new mongoose.Schema({
   final: {
     type: String,
   },
+  area: {
+    type: String,
+  },
 });
 
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
