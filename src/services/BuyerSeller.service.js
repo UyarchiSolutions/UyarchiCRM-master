@@ -431,6 +431,7 @@ const getApprover_Property = async (page, query, userId) => {
         userscreated: { $ifNull: ['$users.created', 'unViewed'] },
         users: '$users',
         long: 1,
+        expectedPrice:1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
