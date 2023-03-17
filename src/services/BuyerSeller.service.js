@@ -10,7 +10,7 @@ const AdminPlan = require('../models/AdminPlan.model');
 const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerPropertyRelation.model');
 const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
 
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
@@ -1778,33 +1778,35 @@ const videoUpload = async (req) => {
     region: 'ap-south-1',
   });
   let Data = [];
-  req.files.forEach((e) => {
-    let params = {
-      Bucket: 'realestatevideoupload',
-      Key: e.originalname,
-      Body: e.buffer,
-    };
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < req.files.length; i++) {
+      let params = {
+        Bucket: 'realestatevideoupload',
+        Key: req.files[i].originalname,
+        Body: req.files[i].buffer,
+      };
 
-    return new Promise((resolve,reject) => {
       s3.upload(params, async (err, data) => {
         if (err) {
-          reject(err)
+          reject(err);
         } else {
           Data.push(data);
           if (Data.length === req.files.length) {
             values = await SellerPost.findByIdAndUpdate({ _id: values._id }, { $set: { videos: [] } }, { new: true });
-            Data.forEach(async (e) => {
+            for (let j = 0; j < Data.length; j++) {
               values = await SellerPost.findByIdAndUpdate(
                 { _id: values._id },
-                { $push: { videos: e.Location } },
+                { $push: { videos: Data[i].Location } },
                 { new: true }
               );
-            });
-            resolve(values)
+            }   
           }
         }
       });
-    });
+    }
+    setTimeout(()=>{
+      resolve(values);
+    },1000)
   });
 };
 
