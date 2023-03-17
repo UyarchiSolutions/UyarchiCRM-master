@@ -352,7 +352,7 @@ const getApprover_Property = async (page, query, userId) => {
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
           typeMatch,
-          { propStatus: 'Approved' },
+          // { propStatus: 'Approved' },
         ],
       },
     },
@@ -1799,14 +1799,14 @@ const videoUpload = async (req) => {
                 { $push: { videos: Data[i].Location } },
                 { new: true }
               );
-            }   
+            }
           }
         }
       });
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       resolve(values);
-    },1000)
+    }, 1000);
   });
 };
 
