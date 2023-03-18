@@ -122,7 +122,7 @@ const createSellerPost = async (body, userId) => {
     ...{
       created: moment(),
       date: moment().format('YYYY-MM-DD'),
-      // userId: userId,
+      userId: userId,
       propertyExpiredDate: postValidate,
     },
   };
