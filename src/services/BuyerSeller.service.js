@@ -275,7 +275,7 @@ const getApprover_Property = async (page, query, userId) => {
   let MonthlyRentToMatch = { active: true };
   let HouseOrCommercialTypeMatch = { active: true };
   let typeMatch = { active: true };
-
+  const { page, range } = query;
   let area = query.area;
   // area filter
   if (area) {
@@ -514,10 +514,10 @@ const getApprover_Property = async (page, query, userId) => {
     //   $match: { status: { $eq: 'Pending' } },
     // },
     {
-      $skip: 10 * page,
+      $skip: range * page,
     },
     {
-      $limit: 10,
+      $limit: range,
     },
   ]);
   let total = await SellerPost.aggregate([
