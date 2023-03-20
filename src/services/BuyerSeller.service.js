@@ -531,7 +531,7 @@ const getApprover_Property = async (page, query, userId) => {
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
           typeMatch,
-          { propStatus: 'Approved' },
+          // { propStatus: 'Approved' },
         ],
       },
     },
