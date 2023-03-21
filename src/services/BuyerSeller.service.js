@@ -1240,8 +1240,8 @@ const getWhishListed_Property_By_Buyer = async (id) => {
 
 // update Seller Post Raw Data
 
-const UpdateSellerPost_As_Raw_Data = async (id, body) => {
-  let values = await SellerPost.findOne({ _id: id, active: true });
+const UpdateSellerPost_As_Raw_Data = async (id, body, userId) => {
+  let values = await SellerPost.findOne({ _id: id, active: true, userId: userId });
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'POst Not Found');
   }

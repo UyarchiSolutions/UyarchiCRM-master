@@ -344,7 +344,8 @@ const getWhishListed_Property_By_Buyer = catchAsync(async (req, res) => {
 });
 
 const UpdateSellerPost_As_Raw_Data = catchAsync(async (req, res) => {
-  const data = await buyersellerService.UpdateSellerPost_As_Raw_Data(req.params.id, req.body);
+  let userId = req.userId;
+  const data = await buyersellerService.UpdateSellerPost_As_Raw_Data(req.params.id, req.body, userId);
   res.send(data);
 });
 
