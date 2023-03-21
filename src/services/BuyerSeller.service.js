@@ -267,7 +267,7 @@ const ApproveAndReject = async (id, body) => {
   return values;
 };
 
-const getApprover_Property = async ( query, userId) => {
+const getApprover_Property = async (query, userId) => {
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -276,14 +276,12 @@ const getApprover_Property = async ( query, userId) => {
   let HouseOrCommercialTypeMatch = { active: true };
   let typeMatch = { active: true };
   // const { page, range } = query;
-  let page = parseInt(query.page)
-  let range = parseInt(query.range)
-
+  let page = parseInt(query.page);
+  let range = parseInt(query.range);
   let area = query.area;
   // area filter
   if (area) {
-    console.log(area, 'sdl;h');
-    if (area != 'null') {
+    if ((area != 'null') | (area != '')) {
       cityMatch = { city: { $regex: query.area, $options: 'i' } };
     } else {
       cityMatch;
