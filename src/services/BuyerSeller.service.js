@@ -276,10 +276,12 @@ const getApprover_Property = async (query, userId) => {
   let MonthlyRentToMatch = { active: true };
   let HouseOrCommercialTypeMatch = { active: true };
   let typeMatch = { active: true };
+  let formatAdd = { active: true };
   // const { page, range } = query;
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
+
   // area filter
   if (area) {
     if ((area != 'null') | (area != '')) {
@@ -343,6 +345,13 @@ const getApprover_Property = async (query, userId) => {
   }
 
   let today = moment().toDate();
+
+  if (query.formatAdd) {
+    if (query.formatAdd != '') {
+      formatAdd = { formatedAddress: { $regex: query.formatAdd, $options: 'i' } };
+    }
+  }
+
   let values = await SellerPost.aggregate([
     {
       $match: {
@@ -354,6 +363,7 @@ const getApprover_Property = async (query, userId) => {
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
           typeMatch,
+          formatAdd,
           // { propStatus: 'Approved' },
         ],
       },
@@ -436,6 +446,7 @@ const getApprover_Property = async (query, userId) => {
         expectedPrice: 1,
         area: 1,
         city: 1,
+        formatedAddress: 1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -500,6 +511,7 @@ const getApprover_Property = async (query, userId) => {
         userscreated: 1,
         lat: 1,
         long: 1,
+        formatedAddress: 1,
         IntrestedStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } }, false],
         },
@@ -533,6 +545,7 @@ const getApprover_Property = async (query, userId) => {
           MonthlyRentToMatch,
           HouseOrCommercialTypeMatch,
           typeMatch,
+          formatAdd,
           // { propStatus: 'Approved' },
         ],
       },
