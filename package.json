@@ -64,6 +64,7 @@
     "express-mongo-sanitize": "^2.0.0",
     "express-rate-limit": "^5.0.0",
     "generate-api-key": "^1.0.2",
+    "geolib": "^3.3.3",
     "helmet": "^4.1.0",
     "http-status": "^1.4.0",
     "joi": "^17.3.0",

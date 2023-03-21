@@ -419,9 +419,8 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const VideoUploads = catchAsync(async (req, res) => {
-
   const data = await buyersellerService.videoUpload(req);
-  
+
   res.send(data);
 });
 
@@ -514,6 +513,11 @@ const getAddress_By_Lat_long = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const localities = catchAsync(async (req, res) => {
+  const data = await buyersellerService.localities(req.query);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -584,4 +588,5 @@ module.exports = {
   verify_locality,
   getDataById,
   getAddress_By_Lat_long,
+  localities,
 };

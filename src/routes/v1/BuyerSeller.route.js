@@ -57,7 +57,7 @@ router.route('/getIntrestedPropertyByUser').get(BuyerAuth, BuyerSellerController
 router.route('/WhishList/:id').get(BuyerAuth, BuyerSellerController.WhishList);
 router.route('/RemoveWhishList/:id').get(BuyerAuth, BuyerSellerController.RemoveWhishList);
 router.route('/getWhishListed_Property_By_Buyer').get(BuyerAuth, BuyerSellerController.getWhishListed_Property_By_Buyer);
-router.route('/UpdateSellerPost_As_Raw_Data/:id').put(BuyerSellerController.UpdateSellerPost_As_Raw_Data);
+router.route('/UpdateSellerPost_As_Raw_Data/:id').put(BuyerAuth, BuyerSellerController.UpdateSellerPost_As_Raw_Data);
 router.route('/Disable_Seller_Post/:id').get(BuyerSellerController.Disable_Seller_Post);
 router.route('/getSellerPost/:id').get(BuyerSellerController.getSellerPost);
 router.route('/getProperty_And_Shedule_Visite/:id').put(BuyerSellerController.getProperty_And_Shedule_Visite);
@@ -87,5 +87,7 @@ router.route('/ActivatedAccount/:id').get(BuyerSellerController.ActivatedAccount
 router.route('/de/ActivatedAccount/:id').get(BuyerSellerController.deActivatedAccount);
 router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
 router.route('/sellerPost/:id').get(BuyerSellerController.getDataById);
+// localities
+router.route('/localities').get(BuyerSellerController.localities);
 
 module.exports = router;

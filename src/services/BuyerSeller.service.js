@@ -11,6 +11,7 @@ const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerP
 const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
 const AWS = require('aws-sdk');
+const geolib = require('geolib');
 
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
@@ -1819,6 +1820,12 @@ const videoUpload = async (req) => {
   });
 };
 
+const localities = async (coordinates) => {
+  const { lat, long } = coordinates;
+
+  return coordinates;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1891,4 +1898,5 @@ module.exports = {
   getDataById,
   getAddress_By_Lat_long,
   videoUpload,
+  localities,
 };
