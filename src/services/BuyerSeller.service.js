@@ -351,7 +351,13 @@ const getApprover_Property = async (query, userId) => {
       formatAdd = { formatedAddress: { $regex: query.formatAdd, $options: 'i' } };
     }
   }
-
+  console.log(typeof query.finish);
+  let finish;
+  if (query.finish == 'false') {
+    finish = false;
+  } else {
+    finish = true;
+  }
   let values = await SellerPost.aggregate([
     {
       $match: {
@@ -365,7 +371,9 @@ const getApprover_Property = async (query, userId) => {
           typeMatch,
           formatAdd,
           // { propStatus: 'Approved' },
-          { finsh: query.finish },
+          {
+            finsh: finish,
+          },
         ],
       },
     },
