@@ -558,7 +558,9 @@ const getApprover_Property = async (query, userId) => {
           typeMatch,
           formatAdd,
           // { propStatus: 'Approved' },
-          { finsh: query.finish },
+          {
+            finsh: finish,
+          },
         ],
       },
     },
