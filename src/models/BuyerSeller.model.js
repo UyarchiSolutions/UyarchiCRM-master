@@ -176,6 +176,13 @@ const sellerPostSchema = new mongoose.Schema({
   waterStorage: {
     type: String,
   },
+  finsh: {
+    type: Boolean,
+    default: false,
+  },
+  routeLink: {
+    type: String,
+  },
   wifi: {
     type: String,
   },
