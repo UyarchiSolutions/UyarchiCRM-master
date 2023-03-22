@@ -524,6 +524,7 @@ const getApprover_Property = async (query, userId) => {
         lat: 1,
         long: 1,
         formatedAddress: 1,
+        routeLink:1,
         IntrestedStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } }, false],
         },
