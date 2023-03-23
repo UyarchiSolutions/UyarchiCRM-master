@@ -345,10 +345,14 @@ const getApprover_Property = async (query, userId) => {
   }
 
   let today = moment().toDate();
-
   if (query.formatAdd) {
     if (query.formatAdd != '') {
-      formatAdd = { formatedAddress: { $regex: query.formatAdd, $options: 'i' } };
+      let formatAddrs = [];
+      console.log(query.formatAdd.split(','));
+      query.formatAdd.split(',').forEach((e) => {
+        formatAddrs.push({ formatedAddress: { $regex: e, $options: 'i' } });
+      });
+      formatAdd = { $and: formatAddrs };
     }
   }
   console.log(typeof query.finish);
