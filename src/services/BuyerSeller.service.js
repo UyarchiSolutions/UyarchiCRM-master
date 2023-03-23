@@ -334,9 +334,9 @@ const getApprover_Property = async (query, userId) => {
   } else {
     HouseOrCommercialTypeMatch;
   }
-  if (query.Type) {
-    if (query.Type != 'null') {
-      typeMatch = { Type: query.Type };
+  if (query.type) {
+    if (query.type != 'null') {
+      typeMatch = { Type: query.type };
     } else {
       typeMatch;
     }
