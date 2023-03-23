@@ -302,17 +302,6 @@ const getApprover_Property = async (query, userId) => {
   } else {
     propertMatch;
   }
-
-  if (query.BHKType) {
-    if (query.BHKType != 'null') {
-      BHKTypeMatch = { BHKType: { $regex: query.BHKType, $options: 'i' } };
-    } else {
-      BHKTypeMatch;
-    }
-  } else {
-    BHKTypeMatch;
-  }
-
   if (query.MonthlyRentFrom) {
     if (query.MonthlyRentFrom != 'null') {
       let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
@@ -353,9 +342,18 @@ const getApprover_Property = async (query, userId) => {
         formatAddrs.push({ formatedAddress: { $regex: e, $options: 'i' } });
       });
       formatAdd = { $and: formatAddrs };
+      console.log(formatAdd);
     }
   }
-  console.log(typeof query.finish);
+  if (query.BHKType) {
+    let arr = [];
+    query.BHKType.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    BHKTypeMatch = { $and: [{ BHKType: { $in: arr } }] };
+  } else {
+    BHKTypeMatch;
+  }
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -381,6 +379,9 @@ const getApprover_Property = async (query, userId) => {
         ],
       },
     },
+    // {
+    //   $match: { $and: [{ BHKType: { $in: BHK } }] },
+    // },
     {
       $sort: { created: -1 },
     },
