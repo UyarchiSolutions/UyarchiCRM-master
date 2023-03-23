@@ -457,7 +457,9 @@ const getApprover_Property = async (query, userId) => {
         area: 1,
         city: 1,
         formatedAddress: 1,
-        routeLink:1,
+        routeLink: 1,
+        rentDetails: 1,
+        buildingType: 1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -524,7 +526,7 @@ const getApprover_Property = async (query, userId) => {
         lat: 1,
         long: 1,
         formatedAddress: 1,
-        routeLink:1,
+        routeLink: 1,
         IntrestedStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } }, false],
         },
@@ -535,7 +537,9 @@ const getApprover_Property = async (query, userId) => {
         expectedPrice: 1,
         area: 1,
         city: 1,
-        routLink:1,
+        routLink: 1,
+        rentDetails: 1,
+        buildingType: 1,
       },
     },
     // {
