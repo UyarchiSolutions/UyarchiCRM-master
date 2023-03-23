@@ -350,7 +350,7 @@ const getApprover_Property = async (query, userId) => {
     query.BHKType.split(',').forEach((e) => {
       arr.push(e);
     });
-    BHKTypeMatch = { $and: [{ BHKType: { $in: arr } }] };
+    BHKTypeMatch = { $or: [{ BHKType: { $in: arr } }] };
   } else {
     BHKTypeMatch;
   }
