@@ -292,16 +292,6 @@ const getApprover_Property = async (query, userId) => {
   } else {
     cityMatch;
   }
-
-  if (query.propertType) {
-    if (query.propertType != 'null') {
-      propertMatch = { propertType: { $regex: query.propertType, $options: 'i' } };
-    } else {
-      propertMatch;
-    }
-  } else {
-    propertMatch;
-  }
   if (query.MonthlyRentFrom) {
     if (query.MonthlyRentFrom != 'null') {
       let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
@@ -354,6 +344,18 @@ const getApprover_Property = async (query, userId) => {
   } else {
     BHKTypeMatch;
   }
+  if (query.propertType) {
+    let arr = [];
+    query.propertType.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    propertMatch = { $or: [{ propertType: { $in: arr } }] };
+  } else {
+    propertMatch;
+  }
+
+  // propertMatch
+  //
   let finish;
   if (query.finish == 'false') {
     finish = false;
