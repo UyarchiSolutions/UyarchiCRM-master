@@ -278,7 +278,11 @@ const getApprover_Property = async (query, userId) => {
   let typeMatch = { active: true };
   let formatAdd = { active: true };
   let rentMatch = { active: true };
-  // const { page, range } = query;
+  let furnishingMatch = { active: true };
+  let parkingMatch = { active: true };
+  let bathroomMatch = { active: true };
+  let rentPreferMatch = { active: true };
+  let propAgeMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -365,9 +369,56 @@ const getApprover_Property = async (query, userId) => {
     rentMatch;
   }
 
-  // rentDetails
-  //rentDetails
-  //
+  if (query.furnishing) {
+    arr = [];
+    query.furnishing.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    furnishingMatch = { $or: [{ furnishingStatus: { $in: arr } }] };
+  } else {
+    furnishingMatch;
+  }
+
+  if (query.parking) {
+    arr = [];
+    query.parking.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    parkingMatch = { $or: [{ parkingFacilities: { $in: arr } }] };
+  } else {
+    parkingMatch;
+  }
+
+  if (query.bathroom) {
+    arr = [];
+    query.bathroom.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    bathroomMatch = { $or: [{ bathRoomCount: { $in: arr } }] };
+  } else {
+    bathroomMatch;
+  }
+
+  if (query.rentprefer) {
+    arr = [];
+    query.rentprefer.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    rentPreferMatch = { $or: [{ RentPrefer: { $in: arr } }] };
+  } else {
+    rentPreferMatch;
+  }
+
+  if (query.propAge) {
+    arr = [];
+    query.propAge.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    propAgeMatch = { $or: [{ ageOfBuilding: { $in: arr } }] };
+  } else {
+    propAgeMatch;
+  }
+
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -387,6 +438,11 @@ const getApprover_Property = async (query, userId) => {
           typeMatch,
           formatAdd,
           rentMatch,
+          furnishingMatch,
+          parkingMatch,
+          bathroomMatch,
+          rentPreferMatch,
+          propAgeMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
