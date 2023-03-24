@@ -527,6 +527,7 @@ const delete_DraftBy_user = catchAsync(async (req, res) => {
 
 const get_DraftBy_user = catchAsync(async (req, res) => {
   let userId = req.userId;
+  console.log(userId)
   const data = await buyersellerService.get_DraftBy_user(userId);
   res.send(data);
 });
