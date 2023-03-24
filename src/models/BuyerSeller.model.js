@@ -170,6 +170,9 @@ const sellerPostSchema = new mongoose.Schema({
   security: {
     type: String,
   },
+  BhkCount: {
+    type: Number,
+  },
   escalator: {
     type: String,
   },
