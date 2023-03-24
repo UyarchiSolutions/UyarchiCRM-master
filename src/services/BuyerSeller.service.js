@@ -1867,6 +1867,14 @@ const localities = async (coordinates) => {
   return coordinates;
 };
 
+const delete_DraftBy_user = async (userId) => {
+  let getDraft = await SellerPost.find({ userId: userId, finsh: false });
+  if (getDraft.length > 0) {
+    await SellerPost.deleteMany({ userId: userId, finsh: false });
+  }
+  return { message: 'Draft Deleted SuccessFully' };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1940,4 +1948,5 @@ module.exports = {
   getAddress_By_Lat_long,
   videoUpload,
   localities,
+  delete_DraftBy_user,
 };

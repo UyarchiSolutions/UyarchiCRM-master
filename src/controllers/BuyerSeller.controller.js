@@ -519,6 +519,12 @@ const localities = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const delete_DraftBy_user = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.delete_DraftBy_user(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -590,4 +596,5 @@ module.exports = {
   getDataById,
   getAddress_By_Lat_long,
   localities,
+  delete_DraftBy_user,
 };
