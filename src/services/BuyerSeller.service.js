@@ -277,6 +277,7 @@ const getApprover_Property = async (query, userId) => {
   let HouseOrCommercialTypeMatch = { active: true };
   let typeMatch = { active: true };
   let formatAdd = { active: true };
+  let rentMatch = { active: true };
   // const { page, range } = query;
   let page = parseInt(query.page);
   let range = parseInt(query.range);
@@ -354,7 +355,18 @@ const getApprover_Property = async (query, userId) => {
     propertMatch;
   }
 
-  // propertMatch
+  if (query.rentDetails) {
+    let arr = [];
+    query.rentDetails.split(',').forEach((e) => {
+      arr.push(e);
+    });
+    rentMatch = { $or: [{ rentDetails: { $in: arr } }] };
+  } else {
+    rentMatch;
+  }
+
+  // rentDetails
+  //rentDetails
   //
   let finish;
   if (query.finish == 'false') {
