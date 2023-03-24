@@ -88,6 +88,7 @@ router.route('/de/ActivatedAccount/:id').get(BuyerSellerController.deActivatedAc
 router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
 router.route('/sellerPost/:id').get(BuyerSellerController.getDataById);
 router.route('/delete/DraftBy/user').get(BuyerSellerController.delete_DraftBy_user);
+router.route('/get/DraftBy_user').get(BuyerSellerController.get_DraftBy_user);
 // localities
 router.route('/localities').get(BuyerSellerController.localities);
 

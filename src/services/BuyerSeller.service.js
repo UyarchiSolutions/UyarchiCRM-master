@@ -1875,6 +1875,14 @@ const delete_DraftBy_user = async (userId) => {
   return { message: 'Draft Deleted SuccessFully' };
 };
 
+const get_DraftBy_user = async (userId) => {
+  let getDraft = await SellerPost.findOne({ userId: userId, finsh: false }).sort({ created: -1 });
+  if (!getDraft) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Draft Available');
+  }
+  return getDraft;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -1949,4 +1957,5 @@ module.exports = {
   videoUpload,
   localities,
   delete_DraftBy_user,
+  get_DraftBy_user,
 };
