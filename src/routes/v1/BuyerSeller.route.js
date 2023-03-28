@@ -91,5 +91,5 @@ router.route('/delete/DraftBy/user').get(BuyerAuth, BuyerSellerController.delete
 router.route('/get/DraftBy_user').get(BuyerAuth, BuyerSellerController.get_DraftBy_user);
 // localities
 router.route('/localities').get(BuyerSellerController.localities);
-
+router.route('/prev_Next/:index').get(BuyerSellerController.prev_Next);
 module.exports = router;

@@ -527,8 +527,12 @@ const delete_DraftBy_user = catchAsync(async (req, res) => {
 
 const get_DraftBy_user = catchAsync(async (req, res) => {
   let userId = req.userId;
-  console.log(userId)
   const data = await buyersellerService.get_DraftBy_user(userId);
+  res.send(data);
+});
+
+const prev_Next = catchAsync(async (req, res) => {
+  const data = await buyersellerService.prev_Next(req.params.index);
   res.send(data);
 });
 
@@ -605,4 +609,5 @@ module.exports = {
   localities,
   delete_DraftBy_user,
   get_DraftBy_user,
+  prev_Next,
 };

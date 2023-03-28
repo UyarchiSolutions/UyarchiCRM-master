@@ -1952,6 +1952,19 @@ const get_DraftBy_user = async (userId) => {
   return getDraft;
 };
 
+const prev_Next = async (index) => {
+  let i = parseInt(index)
+  let values = await SellerPost.aggregate([
+    {
+      $skip: i,
+    },
+    {
+      $limit: 1,
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2027,4 +2040,5 @@ module.exports = {
   localities,
   delete_DraftBy_user,
   get_DraftBy_user,
+  prev_Next,
 };
