@@ -1013,6 +1013,8 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
         intrestedCount: { $size: '$intrestedUsers' },
         AcceptCount: { $size: '$Accept' },
         IgnoreCount: { $size: '$Ignore' },
+        rentDetails: 1,
+        buildingType: 1,
       },
     },
     {
