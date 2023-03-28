@@ -41,7 +41,7 @@ router.route('/LoginWithOtp').post(BuyerSellerController.LoginWithOtp);
 router.route('/giveInterest/:id').get(BuyerAuth, BuyerSellerController.giveInterest);
 router.route('/getIntrestedUsersByProperty/:id').get(BuyerSellerController.getIntrestedUsersByProperty);
 router
-  .route('/getPostedProperty/For/IndividualSeller/:page')
+  .route('/getPostedProperty/For/IndividualSeller/:page/:range')
   .get(BuyerAuth, BuyerSellerController.getPostedProperty_For_IndividualSeller);
 router.route('/getOtpWithRegisterNumber').post(BuyerSellerController.getOtpWithRegisterNumber);
 router.route('/OTPVerify').post(BuyerSellerController.OTPVerify);

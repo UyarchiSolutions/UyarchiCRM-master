@@ -262,7 +262,7 @@ const getIntrestedUsersByProperty = catchAsync(async (req, res) => {
 
 const getPostedProperty_For_IndividualSeller = catchAsync(async (req, res) => {
   let userId = req.userId;
-  const data = await buyersellerService.getPostedProperty_For_IndividualSeller(userId, req.params.page);
+  const data = await buyersellerService.getPostedProperty_For_IndividualSeller(userId, req.params.page, req.params.page);
   res.send(data);
 });
 

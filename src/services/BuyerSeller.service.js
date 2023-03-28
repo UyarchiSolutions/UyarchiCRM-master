@@ -940,7 +940,7 @@ const getIntrestedUsersByProperty = async (id) => {
   return users;
 };
 
-const getPostedProperty_For_IndividualSeller = async (id, page) => {
+const getPostedProperty_For_IndividualSeller = async (id, page, range) => {
   let values = await SellerPost.aggregate([
     {
       $match: { userId: id },
@@ -1003,10 +1003,10 @@ const getPostedProperty_For_IndividualSeller = async (id, page) => {
       },
     },
     {
-      $skip: page * 10,
+      $skip: page * range,
     },
     {
-      $limit: 10,
+      $limit: range,
     },
   ]);
   let total = await SellerPost.aggregate([
@@ -1953,7 +1953,7 @@ const get_DraftBy_user = async (userId) => {
 };
 
 const prev_Next = async (index) => {
-  let i = parseInt(index)
+  let i = parseInt(index);
   let values = await SellerPost.aggregate([
     {
       $skip: i,
