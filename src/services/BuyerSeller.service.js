@@ -940,10 +940,20 @@ const getIntrestedUsersByProperty = async (id) => {
   return users;
 };
 
-const getPostedProperty_For_IndividualSeller = async (id, page, range) => {
+const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
+  let page = parseInt(pag);
+  let range = parseInt(rang);
+  console.log(range);
+  console.log(query);
+  let fin;
+  if ((query.finish = 'true')) {
+    fin = true;
+  } else {
+    fin = false;
+  }
   let values = await SellerPost.aggregate([
     {
-      $match: { userId: id },
+      $match: { userId: id, finsh:fin },
     },
     {
       $project: {
