@@ -953,7 +953,10 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
   }
   let values = await SellerPost.aggregate([
     {
-      $match: { userId: id, finsh:fin },
+      $match: { userId: id, finsh: fin },
+    },
+    {
+      $sort: { created: -1 },
     },
     {
       $project: {
