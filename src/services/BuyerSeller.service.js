@@ -1064,40 +1064,40 @@ const AddViewed_Data = async (id, userId) => {
   let planValidate = moment().toDate();
   let users = await Buyer.findById(userId);
   let checkProperty = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
-  if (users.contactView <= 0) {
-    if (!checkProperty) {
-      let userPlan = await userPlane
-        .findOne({
-          userId: userId,
-          planValidate: { $gte: planValidate },
-          PlanRole: 'Buyer',
-          active: true,
-          ContactNumber: { $gt: 0 },
-        })
-        .sort({ created: -1 });
-      if (!userPlan) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
-      }
-      let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
-      if (!property) {
-        let exist = parseInt(userPlan.ContactNumber);
-        let total = exist - 1;
-        let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
-        if (plans.ContactNumber === 0) {
-          await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
-        }
-      }
-    }
-  }
+  // if (users.contactView <= 0) {
+  //   if (!checkProperty) {
+  //     let userPlan = await userPlane
+  //       .findOne({
+  //         userId: userId,
+  //         planValidate: { $gte: planValidate },
+  //         PlanRole: 'Buyer',
+  //         active: true,
+  //         ContactNumber: { $gt: 0 },
+  //       })
+  //       .sort({ created: -1 });
+  //     if (!userPlan) {
+  //       throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Exceeded');
+  //     }
+  // let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
+  //   if (!property) {
+  //     let exist = parseInt(userPlan.ContactNumber);
+  //     let total = exist - 1;
+  //     let plans = await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { ContactNumber: total }, { new: true });
+  //     if (plans.ContactNumber === 0) {
+  //       await userPlane.findByIdAndUpdate({ _id: userPlan._id }, { active: true }, { new: true });
+  //     }
+  //   }
+  // }
+  // }
 
-  if (users.contactView > 0) {
-    let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
-    if (!property) {
-      let existCount = users.contactView;
-      let total = existCount - 1;
-      users = await Buyer.findByIdAndUpdate({ _id: userId }, { contactView: total }, { new: true });
-    }
-  }
+  // if (users.contactView > 0) {
+  //   let property = await SellerPost.findOne({ _id: id, viewedUsers: { $in: [userId] } });
+  //   if (!property) {
+  //     let existCount = users.contactView;
+  //     let total = existCount - 1;
+  //     users = await Buyer.findByIdAndUpdate({ _id: userId }, { contactView: total }, { new: true });
+  //   }
+  // }
   let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Post Not Found');
@@ -1110,12 +1110,12 @@ const AddViewed_Data = async (id, userId) => {
       propertyId: values._id,
       userId: userId,
       history: { viewd: moment().toDate() },
-      status: 'Viewd',
+      status: 'Viewed',
     });
+    console.log('working.....')
     await ViewedDetails.create({ created: moment(), propertyId: values._id, userId: userId });
   }
   let userPropRelation = await PropertyBuyerRelation.findOne({ propertyId: id, userId: userId });
-  console.log(userPropRelation);
   return { values: values, userStatus: userPropRelation };
 };
 

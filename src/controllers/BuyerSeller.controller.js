@@ -308,6 +308,7 @@ const updatePlanes = catchAsync(async (req, res) => {
 
 const AddViewed_Data = catchAsync(async (req, res) => {
   let userId = req.userId;
+  console.log(userId)
   const data = await buyersellerService.AddViewed_Data(req.params.id, userId);
   res.send(data);
 });
