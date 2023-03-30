@@ -833,6 +833,10 @@ const updatePassword = async (id, body) => {
   if (!users) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Not Found');
   }
+  let findByOld = await Buyer.findOne({ _id: id, password: body.oldPassword });
+  if (!findByOld) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Old Password Incorrect');
+  }
   users = await Buyer.findByIdAndUpdate({ _id: id }, { password: body.password }, { new: true });
   return { Message: 'Password Updated SuccessFully' };
 };
@@ -1112,7 +1116,7 @@ const AddViewed_Data = async (id, userId) => {
       history: { viewd: moment().toDate() },
       status: 'Viewed',
     });
-    console.log('working.....')
+    console.log('working.....');
     await ViewedDetails.create({ created: moment(), propertyId: values._id, userId: userId });
   }
   let userPropRelation = await PropertyBuyerRelation.findOne({ propertyId: id, userId: userId });
