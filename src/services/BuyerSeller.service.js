@@ -806,7 +806,7 @@ const getOTP = async (body) => {
 };
 
 const getOtpWithRegisterNumber = async (body) => {
-  let value = await Buyer.findOne({ mobile: body.number });
+  let value = await Buyer.findOne({ mobile: body.number, Type: body.Type });
   if (!value) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Number Not Registered');
   }
