@@ -172,7 +172,7 @@ const ApproveAndReject = catchAsync(async (req, res) => {
 
 const getApprover_Property = catchAsync(async (req, res) => {
   let userId = req.userId;
-  console.log(userId)
+  console.log(userId);
   const data = await buyersellerService.getApprover_Property(req.query, userId);
   res.send(data);
 });
@@ -309,7 +309,7 @@ const updatePlanes = catchAsync(async (req, res) => {
 
 const AddViewed_Data = catchAsync(async (req, res) => {
   let userId = req.userId;
-  console.log(userId)
+  console.log(userId);
   const data = await buyersellerService.AddViewed_Data(req.params.id, userId);
   res.send(data);
 });
@@ -543,6 +543,11 @@ const prev_Next = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const forgotPassword = catchAsync(async (req, res) => {
+  const data = await buyersellerService.forgotPassword(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -617,4 +622,5 @@ module.exports = {
   delete_DraftBy_user,
   get_DraftBy_user,
   prev_Next,
+  forgotPassword,
 };

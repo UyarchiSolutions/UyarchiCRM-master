@@ -781,9 +781,16 @@ const VideoUpload = async (id) => {
 // Otp Send
 const getOTP = async (body) => {
   let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
+  let fiveMinute = moment(otp.created).add(5, 'minutes');
+  let current = moment();
+
+  console.log(fiveMinute.toString(), current.toString());
+  if (current < fiveMinute) {
+    console.log('sadfsdfasdf');
+  }
   if (otp) {
     if (otp.active == true) {
-      if (!body.resend) {
+      if (!body.resend && current < fiveMinute) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
       } else {
         return await OTP.Otp(body);
@@ -1984,6 +1991,15 @@ const prev_Next = async (index) => {
   return values;
 };
 
+const forgotPassword = async (id, body) => {
+  let values = await Buyer.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found');
+  }
+  values = await Buyer.findByIdAndUpdate({ _id: id }, { password: body.password }, { new: true });
+  return { message: 'Password Rest SuccessFully' };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2060,4 +2076,5 @@ module.exports = {
   delete_DraftBy_user,
   get_DraftBy_user,
   prev_Next,
+  forgotPassword,
 };
