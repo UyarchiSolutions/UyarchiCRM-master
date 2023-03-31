@@ -781,14 +781,9 @@ const VideoUpload = async (id) => {
 // Otp Send
 const getOTP = async (body) => {
   let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
-  let fiveMinute = moment(otp.created).add(5, 'minutes');
-  let current = moment();
-
-  console.log(fiveMinute.toString(), current.toString());
-  if (current < fiveMinute) {
-    console.log('sadfsdfasdf');
-  }
   if (otp) {
+    let fiveMinute = moment(otp.created).add(5, 'minutes');
+    let current = moment();
     if (otp.active == true) {
       if (!body.resend && current < fiveMinute) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
