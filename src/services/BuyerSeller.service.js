@@ -1021,6 +1021,8 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
         IgnoreCount: { $size: '$Ignore' },
         rentDetails: 1,
         buildingType: 1,
+        area:1,
+        expectedPrice:1,
       },
     },
     {
