@@ -549,7 +549,8 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const updateuserProfile = catchAsync(async (req, res) => {
-  const data = await buyersellerService.updateuserProfile(req.params.id, req.body);
+  const userId = req.userId
+  const data = await buyersellerService.updateuserProfile(userId, req.body);
   res.send(data);
 });
 
