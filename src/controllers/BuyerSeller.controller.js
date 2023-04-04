@@ -548,6 +548,11 @@ const forgotPassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updateuserProfile = catchAsync(async (req, res) => {
+  const data = await buyersellerService.updateuserProfile(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -623,4 +628,5 @@ module.exports = {
   get_DraftBy_user,
   prev_Next,
   forgotPassword,
+  updateuserProfile,
 };

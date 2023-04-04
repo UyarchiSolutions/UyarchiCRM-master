@@ -1021,8 +1021,8 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
         IgnoreCount: { $size: '$Ignore' },
         rentDetails: 1,
         buildingType: 1,
-        area:1,
-        expectedPrice:1,
+        area: 1,
+        expectedPrice: 1,
       },
     },
     {
@@ -1997,6 +1997,15 @@ const forgotPassword = async (id, body) => {
   return { message: 'Password Rest SuccessFully' };
 };
 
+const updateuserProfile = async (id, body) => {
+  let values = await Buyer.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Available');
+  }
+  values = await Buyer.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2074,4 +2083,5 @@ module.exports = {
   get_DraftBy_user,
   prev_Next,
   forgotPassword,
+  updateuserProfile,
 };
