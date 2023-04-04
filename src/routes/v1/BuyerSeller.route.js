@@ -10,7 +10,7 @@ const sellerDocument = require('../../middlewares/seller.document');
 
 router.route('/Register').post(BuyerSellerController.createBuyer);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
-router.route('/updateuserProfile/:id').put(BuyerSellerController.updateuserProfile);
+router.route('/updateuserProfile/:id').put(SellerBuyerAuth, BuyerSellerController.updateuserProfile);
 router
   .route('/createSellerPost')
   .post(SellerBuyerAuth, sellerBuyrimg.array('image'), BuyerSellerController.createSellerPost);
