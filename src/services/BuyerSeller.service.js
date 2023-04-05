@@ -1214,7 +1214,7 @@ const getIntrestedPropertyByUser = async (id) => {
         date: 1,
         userId: 1,
         visit: 1,
-        area:1,
+        area: 1,
         status: { $gt: ['$visit', dates] },
         dates: dates,
         Accept: 1,
@@ -1278,7 +1278,7 @@ const getIntrestedPropertyByUser = async (id) => {
         status: 1,
         dates: 1,
         Accept: 1,
-        area:1,
+        area: 1,
         // IgnoreStatus: 1,
         AcceptStatus: { $cond: { if: { $in: [true, '$AcceptStatus'] }, then: true, else: false } },
         IgnoreStatus: { $cond: { if: { $in: [true, '$IgnoreStatus'] }, then: true, else: false } },
@@ -1858,12 +1858,19 @@ const getUserPlan = async (userId) => {
   }
 };
 
-const getDataById = async (id) => {
+const getDataById = async (id, userId) => {
+  let intreststatus;
   let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'SellerPost Not Found');
   }
-  return values;
+  let intrest = await SellerPost.findOne({ intrestedUsers: { $elemMatch: { $eq: userId } }, _id: id });
+  if (intrest != null) {
+    intreststatus = true;
+  } else {
+    intreststatus = false;
+  }
+  return { values: values, intrest: intreststatus };
 };
 
 const getAddress_By_Lat_long = async (query) => {

@@ -512,7 +512,8 @@ const verify_locality = catchAsync(async (req, res) => {
 });
 
 const getDataById = catchAsync(async (req, res) => {
-  const data = await buyersellerService.getDataById(req.params.id);
+  let userId = req.userId;
+  const data = await buyersellerService.getDataById(req.params.id, userId);
   res.send(data);
 });
 
