@@ -78,6 +78,7 @@ router.route('/getpropertyRelation/:id').put(BuyerSellerController.getViewdInfor
 router.route('/updateBuyerPost/:id').put(BuyerSellerController.updateBuyerPost);
 router.route('/getUserPlan').get(BuyerAuth, BuyerSellerController.getUserPlan);
 router.route('/forgot/passowrd/:id').put(BuyerSellerController.forgotPassword);
+router.route('/getSellerPostById/:id').get(BuyerSellerController.getSellerPostById);
 // map api
 router.route('/neighbour_api').get(BuyerSellerController.neighbour_api);
 router.route('/Places/AutoComplete').get(BuyerSellerController.Places_AutoComplete);

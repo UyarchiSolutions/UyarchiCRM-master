@@ -2019,6 +2019,14 @@ const updateuserProfile = async (id, body) => {
   return values;
 };
 
+const getSellerPostById = async (id) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Available ');
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2097,4 +2105,5 @@ module.exports = {
   prev_Next,
   forgotPassword,
   updateuserProfile,
+  getSellerPostById,
 };
