@@ -1218,6 +1218,8 @@ const getIntrestedPropertyByUser = async (id) => {
         status: { $gt: ['$visit', dates] },
         dates: dates,
         Accept: 1,
+        depositeAmount: 1,
+        rentDetails: 1,
         AcceptStatus: {
           $ifNull: [{ $map: { input: '$Accept', as: 'value', in: { $eq: ['$$value', id] } } }, []],
         },
@@ -1245,6 +1247,8 @@ const getIntrestedPropertyByUser = async (id) => {
         BHKType: 1,
         landSize: 1,
         BuildedSize: 1,
+        depositeAmount: 1,
+        rentDetails: 1,
         buildingDirection: 1,
         availability: 1,
         RentPrefer: 1,
