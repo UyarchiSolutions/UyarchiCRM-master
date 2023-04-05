@@ -1864,17 +1864,24 @@ const getUserPlan = async (userId) => {
 
 const getDataById = async (id, userId) => {
   let intreststatus;
+  let savedStatus;
   let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'SellerPost Not Found');
   }
   let intrest = await SellerPost.findOne({ intrestedUsers: { $elemMatch: { $eq: userId } }, _id: id });
+  let saved = await SellerPost.findOne({ WhishList: { $elemMatch: { $eq: userId } }, _id: id });
   if (intrest != null) {
     intreststatus = true;
   } else {
     intreststatus = false;
   }
-  return { values: values, intrest: intreststatus };
+  if (saved != null) {
+    savedStatus = true;
+  } else {
+    savedStatus = false;
+  }
+  return { values: values, intrest: intreststatus, savedStatus: savedStatus };
 };
 
 const getAddress_By_Lat_long = async (query) => {
