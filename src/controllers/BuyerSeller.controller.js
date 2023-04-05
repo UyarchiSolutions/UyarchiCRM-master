@@ -549,7 +549,7 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const updateuserProfile = catchAsync(async (req, res) => {
-  const userId = req.userId
+  const userId = req.userId;
   const data = await buyersellerService.updateuserProfile(userId, req.body);
   res.send(data);
 });
