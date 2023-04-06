@@ -685,6 +685,13 @@ const getApprover_Property = async (query, userId) => {
           HouseOrCommercialTypeMatch,
           typeMatch,
           formatAdd,
+          rentMatch,
+          furnishingMatch,
+          parkingMatch,
+          bathroomMatch,
+          rentPreferMatch,
+          propAgeMatch,
+          BuildupSizeMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
