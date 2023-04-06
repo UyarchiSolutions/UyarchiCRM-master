@@ -283,6 +283,7 @@ const getApprover_Property = async (query, userId) => {
   let bathroomMatch = { active: true };
   let rentPreferMatch = { active: true };
   let propAgeMatch = { active: true };
+  let BuildupSizeMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -327,12 +328,10 @@ const getApprover_Property = async (query, userId) => {
   if (query.formatAdd) {
     if (query.formatAdd != '') {
       let formatAddrs = [];
-      console.log(query.formatAdd.split(','));
       query.formatAdd.split(',').forEach((e) => {
         formatAddrs.push({ formatedAddress: { $regex: e, $options: 'i' } });
       });
       formatAdd = { $and: formatAddrs };
-      console.log(formatAdd);
     }
   }
 
@@ -406,12 +405,14 @@ const getApprover_Property = async (query, userId) => {
     parkingMatch;
   }
 
+  // Bath Room Filter
+
   if (query.bathroom) {
     arr = [];
     let num = 0;
     query.bathroom.split(',').forEach((e) => {
       let numb = parseInt(e);
-      console.log(numb)
+      console.log(numb);
       if (numb < 4) {
         arr.push(numb);
       }
@@ -439,6 +440,8 @@ const getApprover_Property = async (query, userId) => {
     rentPreferMatch;
   }
 
+  // property Age
+
   if (query.propAge) {
     arr = [];
     query.propAge.split(',').forEach((e) => {
@@ -447,6 +450,16 @@ const getApprover_Property = async (query, userId) => {
     propAgeMatch = { $or: [{ ageOfBuilding: { $in: arr } }] };
   } else {
     propAgeMatch;
+  }
+
+  // Build Up Area Filter
+
+  if (query.buildupfrom && query.buildupto) {
+    let from = parseInt(query.buildupfrom);
+    let to = parseInt(query.buildupto);
+    BuildupSizeMatch = { $or: [{ BuildedSize: { $gte: from, $lte: to } }] };
+  } else {
+    BuildupSizeMatch;
   }
 
   let finish;
@@ -474,6 +487,7 @@ const getApprover_Property = async (query, userId) => {
           bathroomMatch,
           rentPreferMatch,
           propAgeMatch,
+          BuildupSizeMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
