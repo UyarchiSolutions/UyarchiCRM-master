@@ -340,22 +340,15 @@ const getApprover_Property = async (query, userId) => {
 
   if (query.BHKType) {
     let arr = [];
-    let bhk = 0;
     query.BHKType.split(',').forEach((e) => {
       let num = parseInt(e);
-      if (num < 4) {
-        arr.push(num);
-      }
       if (num == 4) {
-        bhk = num;
+        arr.push({ BhkCount: { $gte: num } });
+      } else {
+        arr.push({ BhkCount: { $eq: num } });
       }
     });
-    BHKTypeMatch = { $or: [{ BhkCount: { $in: arr } }] };
-    if (bhk == 4) {
-      BHKTypeMatch = { $or: [{ BhkCount: { $gte: bhk } }] };
-    }
-  } else {
-    BHKTypeMatch;
+    BHKTypeMatch = { $or: arr };
   }
 
   // propertType Filter
