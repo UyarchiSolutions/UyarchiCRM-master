@@ -382,6 +382,9 @@ const sellerPostSchema = new mongoose.Schema({
   bathRoomCount: {
     type: String,
   },
+  BathCount: {
+    type: Number,
+  },
   balconyCount: {
     type: String,
   },
@@ -407,7 +410,10 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   BuildedSize: {
-    type: String,
+    type: Number,
+  },
+  floorCount: {
+    type: Number,
   },
   squareFT: {
     type: String,
