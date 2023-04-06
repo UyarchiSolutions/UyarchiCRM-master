@@ -411,6 +411,7 @@ const getApprover_Property = async (query, userId) => {
     let num = 0;
     query.bathroom.split(',').forEach((e) => {
       let numb = parseInt(e);
+      console.log(numb)
       if (numb < 4) {
         arr.push(numb);
       }
@@ -418,9 +419,9 @@ const getApprover_Property = async (query, userId) => {
         num = 4;
       }
     });
-    bathroomMatch = { $or: [{ bathRoomCount: { $in: arr } }] };
+    bathroomMatch = { $or: [{ BathCount: { $in: arr } }] };
     if (num == 4) {
-      bathroomMatch = { $or: [{ bathRoomCount: { $gte: num } }] };
+      bathroomMatch = { $or: [{ BathCount: { $gte: num } }] };
     }
   } else {
     bathroomMatch;
