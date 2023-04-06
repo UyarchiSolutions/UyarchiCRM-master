@@ -284,6 +284,7 @@ const getApprover_Property = async (query, userId) => {
   let rentPreferMatch = { active: true };
   let propAgeMatch = { active: true };
   let BuildupSizeMatch = { active: true };
+  let priceMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -462,6 +463,16 @@ const getApprover_Property = async (query, userId) => {
     BuildupSizeMatch;
   }
 
+  // Price Filter
+
+  if (query.priceFrom && query.priceTo) {
+    let from = parseInt(query.priceFrom);
+    let to = parseInt(query.priceTo);
+    priceMatch = { $or: [{ MonthlyRentFrom: { $gte: from, $lte: to } }] };
+  } else {
+    priceMatch;
+  }
+
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -488,6 +499,7 @@ const getApprover_Property = async (query, userId) => {
           rentPreferMatch,
           propAgeMatch,
           BuildupSizeMatch,
+          priceMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
@@ -692,6 +704,7 @@ const getApprover_Property = async (query, userId) => {
           rentPreferMatch,
           propAgeMatch,
           BuildupSizeMatch,
+          priceMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
