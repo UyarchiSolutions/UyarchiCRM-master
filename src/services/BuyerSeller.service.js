@@ -412,7 +412,7 @@ const getApprover_Property = async (query, userId) => {
     query.bathroom.split(',').forEach((e) => {
       let numb = parseInt(e);
       if (numb < 4) {
-        arr.push(enumb);
+        arr.push(numb);
       }
       if (numb == 4) {
         num = 4;
