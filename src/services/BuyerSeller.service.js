@@ -297,17 +297,8 @@ const getApprover_Property = async (query, userId) => {
   } else {
     cityMatch;
   }
-  if (query.MonthlyRentFrom) {
-    if (query.MonthlyRentFrom != 'null') {
-      let MonthlyRentFrom = parseInt(query.MonthlyRentFrom);
-      MonthlyRentFromMatch = { MonthlyRentFrom: { $gte: MonthlyRentFrom } };
-    } else if (query.MonthlyRentTo) {
-      let MonthlyRentTo = parseInt(query.MonthlyRentTo);
-      MonthlyRentToMatch = { MonthlyRentFrom: { $gte: MonthlyRentTo } };
-    } else {
-      MonthlyRentFromMatch;
-    }
-  }
+
+  // HouseOrCommercialType Filter
 
   if (query.HouseOrCommercialType) {
     if (query.HouseOrCommercialType != 'null') {
@@ -318,6 +309,9 @@ const getApprover_Property = async (query, userId) => {
   } else {
     HouseOrCommercialTypeMatch;
   }
+
+  // Type Filters
+
   if (query.type) {
     if (query.type != 'null') {
       typeMatch = { Type: query.type };
@@ -328,6 +322,7 @@ const getApprover_Property = async (query, userId) => {
     typeMatch;
   }
 
+  // formatAdd Filter
   let today = moment().toDate();
   if (query.formatAdd) {
     if (query.formatAdd != '') {
@@ -341,12 +336,13 @@ const getApprover_Property = async (query, userId) => {
     }
   }
 
+  // BHK Filter
+
   if (query.BHKType) {
     let arr = [];
     let bhk = 0;
     query.BHKType.split(',').forEach((e) => {
       let num = parseInt(e);
-      console.log(num);
       if (num < 4) {
         arr.push(num);
       }
@@ -362,6 +358,8 @@ const getApprover_Property = async (query, userId) => {
     BHKTypeMatch;
   }
 
+  // propertType Filter
+
   if (query.propertType) {
     let arr = [];
     query.propertType.split(',').forEach((e) => {
@@ -371,6 +369,8 @@ const getApprover_Property = async (query, userId) => {
   } else {
     propertMatch;
   }
+
+  // rentDetails Filter
 
   if (query.rentDetails) {
     let arr = [];
@@ -382,6 +382,8 @@ const getApprover_Property = async (query, userId) => {
     rentMatch;
   }
 
+  // furnishing Filter
+
   if (query.furnishing) {
     arr = [];
     query.furnishing.split(',').forEach((e) => {
@@ -391,6 +393,8 @@ const getApprover_Property = async (query, userId) => {
   } else {
     furnishingMatch;
   }
+
+  //parking Filter
 
   if (query.parking) {
     arr = [];
@@ -404,13 +408,25 @@ const getApprover_Property = async (query, userId) => {
 
   if (query.bathroom) {
     arr = [];
+    let num = 0;
     query.bathroom.split(',').forEach((e) => {
-      arr.push(e);
+      let numb = parseInt(e);
+      if (numb < 4) {
+        arr.push(enumb);
+      }
+      if (numb == 4) {
+        num = 4;
+      }
     });
     bathroomMatch = { $or: [{ bathRoomCount: { $in: arr } }] };
+    if (num == 4) {
+      bathroomMatch = { $or: [{ bathRoomCount: { $gte: num } }] };
+    }
   } else {
     bathroomMatch;
   }
+
+  // rentprefer Filter
 
   if (query.rentprefer) {
     arr = [];
@@ -438,6 +454,7 @@ const getApprover_Property = async (query, userId) => {
   } else {
     finish = true;
   }
+
   let values = await SellerPost.aggregate([
     {
       $match: {
