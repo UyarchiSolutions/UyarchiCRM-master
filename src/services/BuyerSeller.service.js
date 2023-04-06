@@ -285,6 +285,7 @@ const getApprover_Property = async (query, userId) => {
   let propAgeMatch = { active: true };
   let BuildupSizeMatch = { active: true };
   let priceMatch = { active: true };
+  let floorMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -466,6 +467,20 @@ const getApprover_Property = async (query, userId) => {
     priceMatch;
   }
 
+  // floors Filter
+  // if (query.BHKType) {
+  //   let arr = [];
+  //   query.BHKType.split(',').forEach((e) => {
+  //     let num = parseInt(e);
+  //     if (num == 4) {
+  //       arr.push({ BhkCount: { $gte: num } });
+  //     } else {
+  //       arr.push({ BhkCount: { $eq: num } });
+  //     }
+  //   });
+  //   BHKTypeMatch = { $or: arr };
+  // }
+
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -493,6 +508,7 @@ const getApprover_Property = async (query, userId) => {
           propAgeMatch,
           BuildupSizeMatch,
           priceMatch,
+          floorMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
