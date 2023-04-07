@@ -268,7 +268,7 @@ const ApproveAndReject = async (id, body) => {
   return values;
 };
 
-const getApprover_Property = async (query, userId) => {
+const getApprover_Property = async (query, userId, body) => {
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };

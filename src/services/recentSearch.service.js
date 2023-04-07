@@ -6,34 +6,13 @@ const moment = require('moment');
 
 const createRcentSearch = async (body, userId) => {
   const { BHKType, HouseOrCommercialType, MonthlyRentFrom, MonthlyRentTo, Type, area, propertType } = body;
-  let data = { ...{ created: moment(), userId: userId } };
-  if (!BHKType == '' || !BHKType == null) {
-    data = { ...data, ...{ BHKType: BHKType } };
-  }
-  if (!HouseOrCommercialType == '' || !HouseOrCommercialType == null) {
-    data = { ...data, ...{ HouseOrCommercialType: HouseOrCommercialType } };
-  }
-  if (!MonthlyRentFrom == '' || !MonthlyRentFrom == null) {
-    data = { ...data, ...{ MonthlyRentFrom: MonthlyRentFrom } };
-  }
-  if (!MonthlyRentTo == '' || !MonthlyRentTo == null) {
-    data = { ...data, ...{ MonthlyRentTo: MonthlyRentTo } };
-  }
-  if (!Type == '' || !Type == null) {
-    data = { ...data, ...{ Type: Type } };
-  }
-  if (!area == '' || !area == null) {
-    data = { ...data, ...{ area: area } };
-  }
-  if (!propertType == '' || !propertType == null) {
-    data = { ...data, ...{ propertType: propertType } };
-  }
+  let data = { ...body, ...{ created: moment(), userId: userId } };
   const recentSearch = await RecentSearch.create(data);
   return recentSearch;
 };
 
 const getRecentlysearched = async (userId) => {
-  const data = await RecentSearch.find({ userId: userId }).sort({ created: -1 }).limit(5);
+  const data = await RecentSearch.find({ userId: userId }).sort({ created: -1 }).limit(10);
   return data;
 };
 

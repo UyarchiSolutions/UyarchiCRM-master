@@ -6,25 +6,52 @@ const RecentSearchSchema = new mongoose.Schema({
     type: String,
     default: v4,
   },
+  formatAdd: {
+    type: String,
+  },
   HouseOrCommercialType: {
     type: String,
   },
-  Type: {
+  type: {
     type: String,
   },
   area: {
     type: String,
   },
   propertType: {
-    type: String,
+    type: Array,
   },
   BHKType: {
-    type: String,
+    type: Array,
   },
-  MonthlyRentFrom: {
+  rentDetails: {
+    type: Array,
+  },
+  furnishing: {
+    type: Array,
+  },
+  parking: {
+    type: Array,
+  },
+  rentprefer: {
+    type: Array,
+  },
+  propAge: {
+    type: Array,
+  },
+  bathroom: {
+    type: Array,
+  },
+  buildupfrom: {
     type: Number,
   },
-  MonthlyRentTo: {
+  buildupto: {
+    type: Number,
+  },
+  priceFrom: {
+    type: Number,
+  },
+  priceTo: {
     type: Number,
   },
   active: {
