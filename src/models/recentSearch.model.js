@@ -61,6 +61,9 @@ const RecentSearchSchema = new mongoose.Schema({
   created: {
     type: Date,
   },
+  selected: {
+    type: Array,
+  },
   userId: {
     type: String,
   },
