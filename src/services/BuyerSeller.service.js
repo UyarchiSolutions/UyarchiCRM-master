@@ -289,7 +289,6 @@ const getApprover_Property = async (query, userId, body) => {
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
-
   // area filter
   if (area) {
     if ((area != 'null') | (area != '')) {
@@ -350,6 +349,24 @@ const getApprover_Property = async (query, userId, body) => {
       }
     });
     BHKTypeMatch = { $or: arr };
+  }
+
+  // Floor Filters
+  const { arr } = body;
+  if (arr && arr.length > 0) {
+    let arrays = [];
+    arr.forEach((e) => {
+      if (e.from == 0) {
+        arrays.push({ floorCount: { $eq: e.from } });
+      }
+      if (e.from == 13) {
+        arrays.push({ floorCount: { $gte: e.from } });
+      }
+      if (e.from > 0 && e.to < 13) {
+        arrays.push({ floorCount: { $gte: e.from, $lte: e.to } });
+      }
+    });
+    floorMatch = { $or: arrays };
   }
 
   // propertType Filter
@@ -602,6 +619,7 @@ const getApprover_Property = async (query, userId, body) => {
         routeLink: 1,
         rentDetails: 1,
         buildingType: 1,
+        floorCount: 1,
         status: {
           $cond: {
             if: { $gt: [today, '$propertyExpiredDate'] },
@@ -669,6 +687,7 @@ const getApprover_Property = async (query, userId, body) => {
         long: 1,
         formatedAddress: 1,
         routeLink: 1,
+        floorCount: 1,
         IntrestedStatus: {
           $ifNull: [{ $cond: { if: { $in: [true, '$IntrestedStatus'] }, then: true, else: false } }, false],
         },
@@ -714,6 +733,7 @@ const getApprover_Property = async (query, userId, body) => {
           propAgeMatch,
           BuildupSizeMatch,
           priceMatch,
+          floorMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
