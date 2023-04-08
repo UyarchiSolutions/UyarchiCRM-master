@@ -2108,6 +2108,14 @@ const getSellerPostById = async (id) => {
   return values;
 };
 
+const UsersDetails = async (id) => {
+  let values = await Buyer.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Available');
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2187,4 +2195,5 @@ module.exports = {
   forgotPassword,
   updateuserProfile,
   getSellerPostById,
+  UsersDetails,
 };

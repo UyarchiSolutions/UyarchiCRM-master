@@ -559,6 +559,12 @@ const getSellerPostById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const UsersDetails = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.UsersDetails(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -636,4 +642,5 @@ module.exports = {
   forgotPassword,
   updateuserProfile,
   getSellerPostById,
+  UsersDetails,
 };
