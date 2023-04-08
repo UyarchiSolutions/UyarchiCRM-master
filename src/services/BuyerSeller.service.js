@@ -855,23 +855,7 @@ const VideoUpload = async (id) => {
 // Otp Send
 const getOTP = async (body) => {
   let otp = await StoreOtp.findOne({ number: body.number }).sort({ created: -1 });
-  if (otp) {
-    let fiveMinute = moment(otp.created).add(5, 'minutes');
-    let current = moment();
-    if (otp.active == true) {
-      if (!body.resend && current < fiveMinute) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Already Send, Click Resend Otp');
-      } else {
-        return await OTP.Otp(body);
-      }
-    } else {
-      return await OTP.Otp(body);
-    }
-  } else {
-    return await OTP.Otp(body);
-  }
-
-  // return { message: 'Under Working.....' };
+  return await OTP.Otp(body);
 };
 
 const getOtpWithRegisterNumber = async (body) => {
@@ -897,8 +881,17 @@ const OTPVerify = async (body) => {
 const VerifyOtpRealEstate = async (body) => {
   const { type } = body;
   let verify = await StoreOtp.findOne({ otp: body.otp });
-  console.log(verify);
-  await StoreOtp.findByIdAndUpdate({ _id: verify._id }, { active: false }, { new: true });
+  if (!verify) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Otp');
+  }
+  let dates = moment().toDate();
+  let currentDate = moment(dates);
+  let otpDate = moment(verify.created);
+
+  let diff = currentDate.diff(otpDate, 'minute');
+  if (diff >= 2) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Expired');
+  }
   let values = await Buyer.findOne({ mobile: verify.number, Type: type });
   values = await Buyer.findByIdAndUpdate({ _id: values._id }, { active: true }, { new: true });
   return values;
