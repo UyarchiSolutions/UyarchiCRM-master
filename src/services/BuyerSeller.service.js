@@ -1392,6 +1392,8 @@ const WhishList = async (propId, id) => {
   if (!datas) {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $push: { WhishList: id } }, { new: true });
     await whishListDetails.create({ created: moment(), propertyId: data._id, userId: id });
+  }else{
+    data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $pull: { WhishList: id } }, { new: true });
   }
   return data;
 };
