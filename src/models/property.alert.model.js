@@ -11,7 +11,7 @@ const propertyAlert = new mongoose.Schema(
       type: String,
     },
     area: {
-      type: String,
+      type: Array,
     },
     address: {
       type: String,
