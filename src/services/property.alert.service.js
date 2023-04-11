@@ -13,6 +13,16 @@ const createpropertyalert = async (body, userId) => {
   return values;
 };
 
+const UpdateById = async (id, body) => {
+  let data = await Propalert.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Property Alert Not Available');
+  }
+  data = await Propalert.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return data;
+};
+
 module.exports = {
   createpropertyalert,
+  UpdateById,
 };

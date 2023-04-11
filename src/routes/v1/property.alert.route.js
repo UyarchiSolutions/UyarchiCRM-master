@@ -4,4 +4,5 @@ const router = express.Router();
 const SellerBuyerAuth = require('../../controllers/buyerSellerAuth');
 
 router.route('/').post(SellerBuyerAuth, propertyAlertController.createpropertyalert);
+router.route('/Update/:id').put(SellerBuyerAuth, propertyAlertController.UpdateById);
 module.exports = router;
