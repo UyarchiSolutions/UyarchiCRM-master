@@ -396,7 +396,7 @@ const getApprover_Property = async (query, userId, body) => {
   // furnishing Filter
 
   if (query.furnishing) {
-    arr = [];
+   let  arr = [];
     query.furnishing.split(',').forEach((e) => {
       arr.push(e);
     });
@@ -1392,7 +1392,7 @@ const WhishList = async (propId, id) => {
   if (!datas) {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $push: { WhishList: id } }, { new: true });
     await whishListDetails.create({ created: moment(), propertyId: data._id, userId: id });
-  }else{
+  } else {
     data = await SellerPost.findByIdAndUpdate({ _id: data._id }, { $pull: { WhishList: id } }, { new: true });
   }
   return data;
