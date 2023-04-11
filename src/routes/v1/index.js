@@ -27,12 +27,17 @@ const savedSearch = require('./saved.search.route');
 const AmentiesRoute = require('./amenties.route');
 const RecentSearch = require('./recentSearch.route');
 const properBuyerrelation = require('./propertyBuyerrelation.route');
+const propertyAlert = require('./property.alert.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/propertyAlert',
+    route: propertyAlert,
   },
   {
     path: '/BuyerSeller',
