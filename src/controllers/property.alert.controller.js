@@ -15,7 +15,14 @@ const UpdateById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getAlerts = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await propertyAlertService.getAlerts(userId);
+  res.send(data);
+});
+
 module.exports = {
   createpropertyalert,
   UpdateById,
+  getAlerts,
 };
