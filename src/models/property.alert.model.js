@@ -12,15 +12,18 @@ const propertyAlert = new mongoose.Schema(
     },
     area: {
       type: Array,
+      default: [],
     },
     address: {
       type: String,
     },
     propertyType: {
       type: Array,
+      default: [],
     },
     BhkType: {
       type: Array,
+      default: [],
     },
     amountFrom: {
       type: Number,
@@ -30,15 +33,19 @@ const propertyAlert = new mongoose.Schema(
     },
     availability: {
       type: Array,
+      default: [],
     },
     parking: {
       type: Array,
+      default: [],
     },
     propertyStatus: {
       type: Array,
+      default: [],
     },
     shftingDate: {
       type: Array,
+      default: [],
     },
     foodType: {
       type: String,
