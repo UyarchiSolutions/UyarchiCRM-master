@@ -408,7 +408,7 @@ const getApprover_Property = async (query, userId, body) => {
   //parking Filter
 
   if (query.parking) {
-    arr = [];
+   let  arr = [];
     query.parking.split(',').forEach((e) => {
       arr.push(e);
     });
