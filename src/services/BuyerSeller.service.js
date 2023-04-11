@@ -455,7 +455,7 @@ const getApprover_Property = async (query, userId, body) => {
   // property Age
 
   if (query.propAge) {
-    arr = [];
+   let arr = [];
     query.propAge.split(',').forEach((e) => {
       arr.push(e);
     });
