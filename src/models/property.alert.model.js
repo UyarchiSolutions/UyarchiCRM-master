@@ -40,10 +40,13 @@ const propertyAlert = new mongoose.Schema(
       default: [],
     },
     propertyStatus: {
+      type: String,
+    },
+    shftingDate: {
       type: Array,
       default: [],
     },
-    shftingDate: {
+    furnish: {
       type: Array,
       default: [],
     },
