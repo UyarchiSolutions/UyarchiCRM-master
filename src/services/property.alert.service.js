@@ -29,11 +29,28 @@ const getAlerts = async (userId) => {
   if (!data) {
     values = { message: 'This User Not set Alert' };
   } else {
-    const { area, propertyType, BhkType, availability, parking, shftingDate, furnish, foodType, createdAt } = data;
+    const {
+      area,
+      propertyType,
+      BhkType,
+      availability,
+      parking,
+      shftingDate,
+      furnish,
+      foodType,
+      createdAt,
+      amountFrom,
+      amountTo,
+    } = data;
     values = await SellerPost.aggregate([
       {
         $match: {
-          $and: [{ area: { $in: area } }, { propertType: { $in: propertyType } }, { BHKType: { $in: BhkType } }],
+          $and: [
+            { area: { $in: area } },
+            { propertType: { $in: propertyType } },
+            { BHKType: { $in: BhkType } },
+            { MonthlyRentFrom: { $gte: amountFrom, $lte: amountTo } },
+          ],
         },
       },
     ]);
