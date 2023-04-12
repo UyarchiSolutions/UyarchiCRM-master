@@ -24,14 +24,22 @@ const UpdateById = async (id, body) => {
 };
 
 const getAlerts = async (userId) => {
-  let values = await Propalert.findOne({ userId: userId }).sort({ createdAt: -1 });
-  if (!values) {
-    values = { message: '' };
+  let data = await Propalert.findOne({ userId: userId }).sort({ createdAt: -1 });
+  let values;
+  if (!data) {
+    values = { message: 'This User Not set Alert' };
   } else {
-    const { area, propertyType, BhkType, availability, parking, shftingDate, furnish, foodType, createdAt } = values;
+    const { area, propertyType, BhkType, availability, parking, shftingDate, furnish, foodType, createdAt } = data;
+    values = await SellerPost.aggregate([
+      {
+        $match: {
+          $and: [{ area: { $in: area } }, { propertType: { $in: propertyType } }, { BHKType: { $in: BhkType } }],
+        },
+      },
+    ]);
   }
-  // let data = await SellerPost.aggregate([{}]);
-  return values;
+
+  return { values: values, data: data };
 };
 
 module.exports = {
