@@ -443,7 +443,7 @@ const getApprover_Property = async (query, userId, body) => {
   // rentprefer Filter
 
   if (query.rentprefer) {
-    arr = [];
+   let arr = [];
     query.rentprefer.split(',').forEach((e) => {
       arr.push(e);
     });
