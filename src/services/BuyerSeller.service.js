@@ -396,7 +396,7 @@ const getApprover_Property = async (query, userId, body) => {
   // furnishing Filter
 
   if (query.furnishing) {
-   let  arr = [];
+    let arr = [];
     query.furnishing.split(',').forEach((e) => {
       arr.push(e);
     });
@@ -408,7 +408,7 @@ const getApprover_Property = async (query, userId, body) => {
   //parking Filter
 
   if (query.parking) {
-   let  arr = [];
+    let arr = [];
     query.parking.split(',').forEach((e) => {
       arr.push(e);
     });
@@ -443,7 +443,7 @@ const getApprover_Property = async (query, userId, body) => {
   // rentprefer Filter
 
   if (query.rentprefer) {
-   let arr = [];
+    let arr = [];
     query.rentprefer.split(',').forEach((e) => {
       arr.push(e);
     });
@@ -455,7 +455,7 @@ const getApprover_Property = async (query, userId, body) => {
   // property Age
 
   if (query.propAge) {
-   let arr = [];
+    let arr = [];
     query.propAge.split(',').forEach((e) => {
       arr.push(e);
     });
