@@ -2205,12 +2205,20 @@ const PropertyDeatails_after_intrested = async (id) => {
 };
 
 const Delete_Property_image = async (id, body) => {
-  console.log(body.url);
-  let values = SellerPost.findById(id);
+  let values = await SellerPost.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Property Not Available');
   }
   await SellerPost.updateOne({ _id: id }, { $pull: { image: body.url } }, { new: true });
+  return values;
+};
+
+const Delete_property_video = async (id) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Property Not Available');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, { videos: [] }, { new: true });
   return values;
 };
 
@@ -2297,4 +2305,5 @@ module.exports = {
   UsersDetails,
   PropertyDeatails_after_intrested,
   Delete_Property_image,
+  Delete_property_video,
 };

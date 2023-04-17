@@ -100,4 +100,5 @@ router.route('/prev_Next/:index').get(BuyerSellerController.prev_Next);
 router.route('/PropertyDeatails/after/intrested/:id').get(BuyerAuth, BuyerSellerController.PropertyDeatails_after_intrested);
 router.route('/updateBuyerRelation/:id').put(BuyerAuth, BuyerSellerController.updateBuyerRelation);
 router.route('/Delete/Property/image/:id').put(BuyerSellerController.Delete_Property_image);
+router.route('/Delete/property/video/:id').delete(BuyerSellerController.Delete_property_video);
 module.exports = router;
