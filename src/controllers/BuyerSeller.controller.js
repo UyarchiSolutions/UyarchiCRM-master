@@ -570,6 +570,11 @@ const PropertyDeatails_after_intrested = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updateBuyerRelation = catchAsync(async (req, res) => {
+  const data = await buyersellerService.updateBuyerRelation(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -649,4 +654,5 @@ module.exports = {
   getSellerPostById,
   UsersDetails,
   PropertyDeatails_after_intrested,
+  updateBuyerRelation,
 };

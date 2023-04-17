@@ -1433,22 +1433,44 @@ const AcceptIgnore = async (propId, body, userId) => {
       );
     }
   }
+  // if (body.type === 'Shcedule') {
+  //   let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId:  });
+  //   users = await PropertyBuyerRelation.findByIdAndUpdate(
+  //     { _id: propId },
+  //     { scheduleDate: body.schedule, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
+  //     { new: true }
+  //   );
+  //   values = users;
+  // }
+  // if (body.type === 'Rejected') {
+  //   let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
+  //   users = await PropertyBuyerRelation.findByIdAndUpdate(
+  //     { _id: users._id },
+  //     { status: 'Rejected', rejectedDate: moment().toDate(), history: { $push: { rejected: moment().toDate() } } }
+  //   );
+  //   values = users;
+  // }
+  return values;
+};
+
+const updateBuyerRelation = async (id, body) => {
+  let values = await PropertyBuyerRelation.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Property not Found');
+  }
+  if (body.type === 'Rejected') {
+    values = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: id },
+      { status: 'Rejected', history: { $push: { rejected: moment().toDate(), rejectedDate: moment().toDate() } } },
+      { new: true }
+    );
+  }
   if (body.type === 'Shcedule') {
-    let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
-    users = await PropertyBuyerRelation.findByIdAndUpdate(
-      { _id: users._id },
+    values = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: id },
       { scheduleDate: body.schedule, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
       { new: true }
     );
-    values = users;
-  }
-  if (body.type === 'Rejected') {
-    let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
-    users = await PropertyBuyerRelation.findByIdAndUpdate(
-      { _id: users._id },
-      { status: 'Rejected', rejectedDate: moment().toDate(), history: { $push: { rejected: moment().toDate() } } }
-    );
-    values = users;
   }
   return values;
 };
@@ -2176,6 +2198,7 @@ const PropertyDeatails_after_intrested = async (id) => {
 module.exports = {
   createBuyerSeller,
   verifyOtp,
+  updateBuyerRelation,
   createSellerPost,
   LoginWithmail,
   createBuyerRentiee,

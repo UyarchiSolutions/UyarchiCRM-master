@@ -7,6 +7,7 @@ const sellerBuyrimg = require('../../middlewares/buyrSeller');
 const Video = require('../../middlewares/videoUpload');
 const Vid = require('../../middlewares/vide');
 const sellerDocument = require('../../middlewares/seller.document');
+const { BuyerSeller } = require('../../models/BuyerSeller.model');
 
 router.route('/Register').post(BuyerSellerController.createBuyer);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
@@ -97,4 +98,5 @@ router.route('/get/DraftBy_user').get(BuyerAuth, BuyerSellerController.get_Draft
 router.route('/localities').get(BuyerSellerController.localities);
 router.route('/prev_Next/:index').get(BuyerSellerController.prev_Next);
 router.route('/PropertyDeatails/after/intrested/:id').get(BuyerAuth, BuyerSellerController.PropertyDeatails_after_intrested);
+router.route('/updateBuyerRelation/:id').put(BuyerSellerController.updateBuyerRelation);
 module.exports = router;
