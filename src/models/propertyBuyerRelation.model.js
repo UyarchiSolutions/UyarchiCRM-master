@@ -27,6 +27,12 @@ const PropertyBuyerRelataionSchema = new mongoose.Schema({
   scheduleDate: {
     type: Date,
   },
+  schedule: {
+    type: Date,
+  },
+  rejectedDate: {
+    type: Date,
+  },
   active: {
     type: Boolean,
     default: true,

@@ -1410,7 +1410,6 @@ const AcceptIgnore = async (propId, body, userId) => {
   }
   if (body.type === 'Accept') {
     values = await SellerPost.findOne({ _id: propId, Accept: { $in: [userId] } });
-    console.log(values);
     if (!values) {
       values = await SellerPost.findByIdAndUpdate({ _id: propId }, { $push: { Accept: userId } }, { new: true });
       let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
@@ -1433,6 +1432,23 @@ const AcceptIgnore = async (propId, body, userId) => {
         { new: true }
       );
     }
+  }
+  if (body.type === 'Shcedule') {
+    let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
+    users = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: users._id },
+      { scheduleDate: body.schedule, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
+      { new: true }
+    );
+    values = users;
+  }
+  if (body.type === 'Rejected') {
+    let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
+    users = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: users._id },
+      { status: 'Rejected', rejectedDate: moment().toDate(), history: { $push: { rejected: moment().toDate() } } }
+    );
+    values = users;
   }
   return values;
 };
