@@ -484,20 +484,6 @@ const getApprover_Property = async (query, userId, body) => {
     priceMatch;
   }
 
-  // floors Filter
-  // if (query.BHKType) {
-  //   let arr = [];
-  //   query.BHKType.split(',').forEach((e) => {
-  //     let num = parseInt(e);
-  //     if (num == 4) {
-  //       arr.push({ BhkCount: { $gte: num } });
-  //     } else {
-  //       arr.push({ BhkCount: { $eq: num } });
-  //     }
-  //   });
-  //   BHKTypeMatch = { $or: arr };
-  // }
-
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -807,7 +793,7 @@ const getApprover_Property = async (query, userId, body) => {
     //   $match: { status: { $eq: 'Pending' } },
     // },
   ]);
-  return { values: values, total: total.length };
+  return { values: values, total: total.length, single: values[0] };
 };
 
 const BuyerLike_Property = async (id, userId) => {
@@ -1007,9 +993,9 @@ const getIntrestedUsersByProperty = async (id) => {
   }
   for (let i = 0; i < values.intrestedUsers.length; i++) {
     let ff = await Buyer.findById(values.intrestedUsers[i]);
-    if (!ff) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Intrsted User May Deleted Or There Is No Intrested');
-    }
+    // if (!ff) {
+    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Intrsted User May Deleted Or There Is No Intrested');
+    // }
     let accept = await SellerPost.findOne({ Accept: { $elemMatch: { $eq: ff._id } } });
     let acceptStatus = true;
     if (!accept) {
@@ -2131,6 +2117,46 @@ const UsersDetails = async (id) => {
   return values;
 };
 
+const PropertyDeatails_after_intrested = async (id) => {
+  let values = await PropertyBuyerRelation.aggregate([
+    {
+      $match: {
+        propertyId: id,
+        status: { $in: ['Intrested', 'Rejected', 'Schedule', 'Ignored', 'Accepted', 'Visited', 'Fixed', 'Re-schedule'] },
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        userId: 1,
+        propertyId: 1,
+        status: 1,
+        history: 1,
+        intrestedDate: 1,
+        email: '$users.email',
+        userName: '$users.userName',
+        mobile: '$users.mobile',
+        created: '$intrestedDate',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2211,4 +2237,5 @@ module.exports = {
   updateuserProfile,
   getSellerPostById,
   UsersDetails,
+  PropertyDeatails_after_intrested,
 };

@@ -565,6 +565,11 @@ const UsersDetails = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const PropertyDeatails_after_intrested = catchAsync(async (req, res) => {
+  const data = await buyersellerService.PropertyDeatails_after_intrested(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -643,4 +648,5 @@ module.exports = {
   updateuserProfile,
   getSellerPostById,
   UsersDetails,
+  PropertyDeatails_after_intrested,
 };
