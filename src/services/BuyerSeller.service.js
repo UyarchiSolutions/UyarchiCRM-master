@@ -1453,7 +1453,7 @@ const AcceptIgnore = async (propId, body, userId) => {
   return values;
 };
 
-const updateBuyerRelation = async (id, body) => {
+const updateBuyerRelation = async (id, body, userId) => {
   let values = await PropertyBuyerRelation.findById(id);
   if (!values) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Property not Found');
@@ -1461,14 +1461,18 @@ const updateBuyerRelation = async (id, body) => {
   if (body.type === 'Rejected') {
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
-      { status: 'Rejected', history: { $push: { rejected: moment().toDate(), rejectedDate: moment().toDate() } } },
+      {
+        status: 'Rejected',
+        history: { $push: { rejected: moment().toDate(), rejectedDate: moment().toDate() } },
+        userId: userId,
+      },
       { new: true }
     );
   }
   if (body.type === 'Shcedule') {
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
-      { scheduleDate: body.schedule, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
+      { scheduleDate: body.schedule, userIduserId, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
       { new: true }
     );
   }

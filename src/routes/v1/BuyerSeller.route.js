@@ -98,5 +98,5 @@ router.route('/get/DraftBy_user').get(BuyerAuth, BuyerSellerController.get_Draft
 router.route('/localities').get(BuyerSellerController.localities);
 router.route('/prev_Next/:index').get(BuyerSellerController.prev_Next);
 router.route('/PropertyDeatails/after/intrested/:id').get(BuyerAuth, BuyerSellerController.PropertyDeatails_after_intrested);
-router.route('/updateBuyerRelation/:id').put(BuyerSellerController.updateBuyerRelation);
+router.route('/updateBuyerRelation/:id').put(BuyerAuth, BuyerSellerController.updateBuyerRelation);
 module.exports = router;

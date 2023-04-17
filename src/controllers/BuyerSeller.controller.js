@@ -571,7 +571,8 @@ const PropertyDeatails_after_intrested = catchAsync(async (req, res) => {
 });
 
 const updateBuyerRelation = catchAsync(async (req, res) => {
-  const data = await buyersellerService.updateBuyerRelation(req.params.id, req.body);
+  let userId = req.userId;
+  const data = await buyersellerService.updateBuyerRelation(req.params.id, req.body, userId);
   res.send(data);
 });
 
