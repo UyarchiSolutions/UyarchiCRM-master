@@ -1459,12 +1459,18 @@ const updateBuyerRelation = async (id, body, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Property not Found');
   }
   if (body.type === 'Rejected') {
+    await PropertyBuyerRelation.updateOne(
+      { _id: id },
+      { $push: { history: { rejected: moment().toDate() } } },
+      { new: true }
+    );
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
       {
         status: 'Rejected',
-        history: { $push: { rejected: moment().toDate(), rejectedDate: moment().toDate() } },
         userId: userId,
+        rejected: moment().toDate(),
+        rejectedDate: moment().toDate(),
       },
       { new: true }
     );
@@ -1472,7 +1478,7 @@ const updateBuyerRelation = async (id, body, userId) => {
   if (body.type === 'Shcedule') {
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
-      { scheduleDate: body.schedule, userIduserId, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
+      { scheduleDate: body.schedule, userIduserId, status: 'Shcedule' },
       { new: true }
     );
   }
