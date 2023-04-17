@@ -1468,7 +1468,6 @@ const updateBuyerRelation = async (id, body, userId) => {
       { _id: id },
       {
         status: 'Rejected',
-        userId: userId,
         rejected: moment().toDate(),
         rejectedDate: moment().toDate(),
       },
@@ -1478,7 +1477,7 @@ const updateBuyerRelation = async (id, body, userId) => {
   if (body.type === 'Shcedule') {
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
-      { scheduleDate: body.schedule, userIduserId, status: 'Shcedule' },
+      { scheduleDate: body.schedule, status: 'Shcedule' },
       { new: true }
     );
   }
