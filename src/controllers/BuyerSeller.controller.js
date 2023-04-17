@@ -576,6 +576,11 @@ const updateBuyerRelation = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const Delete_Property_image = catchAsync(async (req, res) => {
+  const data = await buyersellerService.Delete_Property_image(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -656,4 +661,5 @@ module.exports = {
   UsersDetails,
   PropertyDeatails_after_intrested,
   updateBuyerRelation,
+  Delete_Property_image,
 };

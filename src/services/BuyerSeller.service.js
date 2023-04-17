@@ -2204,6 +2204,16 @@ const PropertyDeatails_after_intrested = async (id) => {
   return values;
 };
 
+const Delete_Property_image = async (id, body) => {
+  console.log(body.url);
+  let values = SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Property Not Available');
+  }
+  await SellerPost.updateOne({ _id: id }, { $pull: { image: body.url } }, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2286,4 +2296,5 @@ module.exports = {
   getSellerPostById,
   UsersDetails,
   PropertyDeatails_after_intrested,
+  Delete_Property_image,
 };
