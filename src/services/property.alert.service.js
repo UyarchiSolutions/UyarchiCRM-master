@@ -30,7 +30,8 @@ const getAlerts = async (userId) => {
     values = { message: 'This User Not set Alert' };
   } else {
     let current = moment().toDate();
-    let posted = moment().add(5, 'minutes').toDate();
+    let posted = moment(data.createdAt).add(5, 'minutes').toDate();
+    console.log(posted)
     const {
       area,
       propertyType,
@@ -44,15 +45,23 @@ const getAlerts = async (userId) => {
       amountFrom,
       amountTo,
     } = data;
+    let BHKTypeMatch = { active: true };
+    if (BhkType.length > 0) {
+      let arr = [];
+      BhkType.forEach((e) => {
+        arr.push({ BHKType: e });
+      });
+      BHKTypeMatch = { $or: arr };
+    }
     values = await SellerPost.aggregate([
       {
         $match: {
           $and: [
             { area: { $in: area } },
             { propertType: { $in: propertyType } },
-            { BHKType: { $in: BhkType } },
             { MonthlyRentFrom: { $gte: amountFrom, $lte: amountTo } },
             { created: { $gte: posted } },
+            BHKTypeMatch,
           ],
         },
       },
