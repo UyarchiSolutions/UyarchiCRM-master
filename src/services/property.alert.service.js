@@ -29,9 +29,7 @@ const getAlerts = async (userId) => {
   if (!data) {
     values = { message: 'This User Not set Alert' };
   } else {
-    let current = moment().toDate();
     let posted = moment(data.createdAt).add(5, 'minutes').toDate();
-    console.log(posted)
     const {
       area,
       propertyType,
