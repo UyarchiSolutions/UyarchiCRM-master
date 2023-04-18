@@ -29,6 +29,8 @@ const getAlerts = async (userId) => {
   if (!data) {
     values = { message: 'This User Not set Alert' };
   } else {
+    let current = moment().toDate();
+    let posted = moment().add(5, 'minutes').toDate();
     const {
       area,
       propertyType,
@@ -50,6 +52,7 @@ const getAlerts = async (userId) => {
             { propertType: { $in: propertyType } },
             { BHKType: { $in: BhkType } },
             { MonthlyRentFrom: { $gte: amountFrom, $lte: amountTo } },
+            { created: { $gte: posted } },
           ],
         },
       },
