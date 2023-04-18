@@ -70,6 +70,12 @@ const propertyAlert = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    buildFrom: {
+      type: String,
+    },
+    buildTo: {
+      type: String,
+    },
     active: {
       type: Boolean,
       default: true,
