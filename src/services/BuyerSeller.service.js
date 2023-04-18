@@ -1292,8 +1292,8 @@ const getIntrestedPropertyByUser = async (id) => {
         status: { $gt: ['$visit', dates] },
         dates: dates,
         Accept: 1,
-        rentDetails:1,
-        buildingType:1,
+        rentDetails: 1,
+        buildingType: 1,
         depositeAmount: 1,
         rentDetails: 1,
         AcceptStatus: {
@@ -1336,7 +1336,7 @@ const getIntrestedPropertyByUser = async (id) => {
         city: 1,
         locality: 1,
         pineCode: 1,
-        buildingType:1,
+        buildingType: 1,
         lat: 1,
         long: 1,
         parkingFacilities: 1,
@@ -1361,7 +1361,7 @@ const getIntrestedPropertyByUser = async (id) => {
         Accept: 1,
         area: 1,
         expectedPrice: 1,
-        rentDetails:1,
+        rentDetails: 1,
         // IgnoreStatus: 1,
         AcceptStatus: { $cond: { if: { $in: [true, '$AcceptStatus'] }, then: true, else: false } },
         IgnoreStatus: { $cond: { if: { $in: [true, '$IgnoreStatus'] }, then: true, else: false } },
@@ -1439,23 +1439,6 @@ const AcceptIgnore = async (propId, body, userId) => {
       );
     }
   }
-  // if (body.type === 'Shcedule') {
-  //   let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId:  });
-  //   users = await PropertyBuyerRelation.findByIdAndUpdate(
-  //     { _id: propId },
-  //     { scheduleDate: body.schedule, status: 'Shcedule', history: { $push: { shedule: moment().toDate() } } },
-  //     { new: true }
-  //   );
-  //   values = users;
-  // }
-  // if (body.type === 'Rejected') {
-  //   let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
-  //   users = await PropertyBuyerRelation.findByIdAndUpdate(
-  //     { _id: users._id },
-  //     { status: 'Rejected', rejectedDate: moment().toDate(), history: { $push: { rejected: moment().toDate() } } }
-  //   );
-  //   values = users;
-  // }
   return values;
 };
 

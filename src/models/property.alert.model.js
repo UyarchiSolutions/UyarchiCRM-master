@@ -53,6 +53,23 @@ const propertyAlert = new mongoose.Schema(
     foodType: {
       type: String,
     },
+    planToBuy: {
+      type: Array,
+    },
+    ResOrCom: {
+      type: String,
+    },
+    type: {
+      type: String,
+    },
+    buildtype: {
+      type: Array,
+      default: [],
+    },
+    amenities: {
+      type: Array,
+      default: [],
+    },
     active: {
       type: Boolean,
       default: true,
