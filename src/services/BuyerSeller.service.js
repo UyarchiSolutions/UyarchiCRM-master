@@ -1739,20 +1739,25 @@ const DocumentUpload = async (id, body) => {
 
 // get Buyer And Owners BY Type
 
-const getBuyers_And_Owners = async (type, page, range) => {
+const getBuyers_And_Owners = async (type, page, range, query) => {
   range = parseInt(range);
+  let roleMatch = { active: true };
   console.log(typeof type);
   let typeMatch = { active: true };
   if (type != 'null') {
     typeMatch = { Type: { $eq: type } };
-
-  }else{
-    typeMatch
+  } else {
+    typeMatch;
+  }
+  if (query.role) {
+    roleMatch = { Role: query.role };
+  } else {
+    roleMatch;
   }
   const endUsers = await Buyer.aggregate([
     {
       $match: {
-        $and: [typeMatch],
+        $and: [typeMatch, roleMatch],
       },
     },
     {
