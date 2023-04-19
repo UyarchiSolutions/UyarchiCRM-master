@@ -1770,7 +1770,7 @@ const getBuyers_And_Owners = async (type, page, range, query) => {
   const total = await Buyer.aggregate([
     {
       $match: {
-        $and: [typeMatch],
+        $and: [typeMatch, roleMatch],
       },
     },
   ]);
