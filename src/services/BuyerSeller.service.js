@@ -231,30 +231,49 @@ const AdminLogin = async (body) => {
   return values;
 };
 
-const getSellerRenter_POST_ForAdmin = async (type, propType, page) => {
-  console.log(type);
-  let typeMatch = { active: true };
-  let proptypeMatch = { active: true };
-  if (type != 'null') {
-    typeMatch = { HouseOrCommercialType: type };
+const getSellerRenter_POST_ForAdmin = async (query) => {
+  const { activeStatus, page, range, propType, Type } = query;
+
+  let activeStatusMatch = { _id: { $ne: null } };
+  let protypeMatch = { _id: { $ne: null } };
+  let typeMatch = { _id: { $ne: null } };
+  if (activeStatus) {
+    let status;
+    if (activeStatus == 'true') {
+      status = true;
+    } else {
+      status = false;
+    }
+    activeStatusMatch = { active: status };
+  } else {
+    activeStatusMatch;
   }
-  if (propType != 'null') {
-    proptypeMatch = { Type: propType };
+  if (propType) {
+    protypeMatch = { HouseOrCommercialType: { $regex: propType, $options: 'i' } };
+  } else {
+    protypeMatch;
+  }
+  // Type
+  // typeMatch
+  if (Type) {
+    typeMatch = { Type: { $regex: Type, $options: 'i' } };
+  } else {
+    typeMatch;
   }
   const data = await SellerPost.aggregate([
     {
-      $match: { $and: [typeMatch, proptypeMatch] },
+      $match: { $and: [activeStatusMatch, protypeMatch, typeMatch] },
     },
     {
-      $skip: 10 * page,
+      $skip: parseInt(range) * parseInt(page),
     },
     {
-      $limit: 10,
+      $limit: parseInt(range),
     },
   ]);
   const total = await SellerPost.aggregate([
     {
-      $match: { $and: [typeMatch, proptypeMatch] },
+      $match: { $and: [activeStatusMatch] },
     },
   ]);
   return { values: data, total: total.length };
