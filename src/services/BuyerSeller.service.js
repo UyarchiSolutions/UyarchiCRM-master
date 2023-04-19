@@ -1741,9 +1741,9 @@ const DocumentUpload = async (id, body) => {
 
 const getBuyers_And_Owners = async (type, page, range, query) => {
   range = parseInt(range);
-  let roleMatch = { active: true };
+  let roleMatch = { active: { $ne: null } };
   console.log(typeof type);
-  let typeMatch = { active: true };
+  let typeMatch = { active: { $ne: null } };
   if (type != 'null') {
     typeMatch = { Type: { $eq: type } };
   } else {
