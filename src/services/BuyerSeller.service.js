@@ -232,7 +232,7 @@ const AdminLogin = async (body) => {
 };
 
 const getSellerRenter_POST_ForAdmin = async (query) => {
-  const { activeStatus, page, range, propType, Type } = query;
+  const { activeStatus, page, range, propType, Type, area } = query;
 
   let activeStatusMatch = { finsh: { $eq: true } };
   let protypeMatch = { finsh: { $eq: true } };
