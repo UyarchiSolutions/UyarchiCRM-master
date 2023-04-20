@@ -24,9 +24,7 @@ router.route('/createBuyer').post(BuyerSellerController.createBuyer);
 router.route('/verifyOtpBuyer').post(BuyerSellerController.verifyOtpBuyer);
 router.route('/createAdmin').post(BuyerSellerController.createAdmin);
 router.route('/AdminLogin').post(BuyerSellerController.AdminLogin);
-router
-  .route('/getSellerRenter/POST/ForAdmin')
-  .get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
+router.route('/getSellerRenter/POST/ForAdmin').get(BuyerSellerController.getSellerRenter_POST_ForAdmin);
 router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject);
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
 router.route('/getApprover/Property').post(BuyerAuth, BuyerSellerController.getApprover_Property);
@@ -94,6 +92,7 @@ router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
 router.route('/sellerPost/:id').get(BuyerAuth, BuyerSellerController.getDataById);
 router.route('/delete/DraftBy/user').get(BuyerAuth, BuyerSellerController.delete_DraftBy_user);
 router.route('/get/DraftBy_user').get(BuyerAuth, BuyerSellerController.get_DraftBy_user);
+router.route('/post/active/inactive/:id').put(BuyerAuth, BuyerSellerController.post_active_inactive);
 // localities
 router.route('/localities').get(BuyerSellerController.localities);
 router.route('/prev_Next/:index').get(BuyerSellerController.prev_Next);

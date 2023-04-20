@@ -234,9 +234,10 @@ const AdminLogin = async (body) => {
 const getSellerRenter_POST_ForAdmin = async (query) => {
   const { activeStatus, page, range, propType, Type } = query;
 
-  let activeStatusMatch = { _id: { $ne: null } };
-  let protypeMatch = { _id: { $ne: null } };
-  let typeMatch = { _id: { $ne: null } };
+  let activeStatusMatch = { finsh: { $eq: true } };
+  let protypeMatch = { finsh: { $eq: true } };
+  let typeMatch = { finsh: { $eq: true } };
+  let areaMatch = { finsh: { $eq: true } };
   if (activeStatus) {
     let status;
     if (activeStatus == 'true') {
@@ -260,9 +261,17 @@ const getSellerRenter_POST_ForAdmin = async (query) => {
   } else {
     typeMatch;
   }
+
+  //areaMatch
+  if (area) {
+    areaMatch = { area: { $regex: area, $options: 'i' } };
+  } else {
+    areaMatch;
+  }
+
   const data = await SellerPost.aggregate([
     {
-      $match: { $and: [activeStatusMatch, protypeMatch, typeMatch] },
+      $match: { $and: [activeStatusMatch, protypeMatch, typeMatch, areaMatch, { finsh: true }] },
     },
     {
       $skip: parseInt(range) * parseInt(page),
@@ -2244,6 +2253,19 @@ const Delete_property_video = async (id) => {
   return values;
 };
 
+const post_active_inactive = async (id, body) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Property Not Available');
+  }
+  if (body.status == 'active') {
+    values = await SellerPost.findByIdAndUpdate({ _id: id }, { active: true }, { new: true });
+  } else {
+    values = await SellerPost.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  }
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2328,4 +2350,5 @@ module.exports = {
   PropertyDeatails_after_intrested,
   Delete_Property_image,
   Delete_property_video,
+  post_active_inactive,
 };
