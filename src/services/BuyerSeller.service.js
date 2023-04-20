@@ -2266,6 +2266,15 @@ const post_active_inactive = async (id, body) => {
   return values;
 };
 
+const Remove_Post = async (id) => {
+  let values = await SellerPost.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Property Not Available');
+  }
+  values = await SellerPost.findByIdAndUpdate({ _id: id }, { finsh: false }, { new: true });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2351,4 +2360,5 @@ module.exports = {
   Delete_Property_image,
   Delete_property_video,
   post_active_inactive,
+  Remove_Post,
 };
