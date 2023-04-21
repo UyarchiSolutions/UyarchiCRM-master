@@ -314,6 +314,8 @@ const getApprover_Property = async (query, userId, body) => {
   let BuildupSizeMatch = { active: true };
   let priceMatch = { active: true };
   let floorMatch = { active: true };
+  let buildingTypeMatch = { active: true };
+  let amaenitiesMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -512,6 +514,26 @@ const getApprover_Property = async (query, userId, body) => {
     priceMatch;
   }
 
+  if (query.buildingType) {
+    // buildingTypeMatch
+    buildingTypeMatch = { buildingType: { $regex: query.buildingType, $options: 'i' } };
+  } else {
+    buildingTypeMatch;
+  }
+
+  // amaenitiesMatch
+  if (query.amenities) {
+    if (query.amenities === 'lift') {
+      console.log(query.amenities);
+      amaenitiesMatch = { Lift: { $ne: 'No' }, HouseOrCommercialType: { $eq: 'Commercial' } };
+    }
+    if (query.amenities == 'power backup') {
+      amaenitiesMatch = { powerBackup: { $ne: 'Need to Arrange' }, HouseOrCommercialType: { $eq: 'Commercial' } };
+    }
+  } else {
+    amaenitiesMatch;
+  }
+
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -540,6 +562,8 @@ const getApprover_Property = async (query, userId, body) => {
           BuildupSizeMatch,
           priceMatch,
           floorMatch,
+          buildingTypeMatch,
+          amaenitiesMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
@@ -748,6 +772,7 @@ const getApprover_Property = async (query, userId, body) => {
           BuildupSizeMatch,
           priceMatch,
           floorMatch,
+          buildingTypeMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
