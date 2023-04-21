@@ -282,7 +282,7 @@ const getSellerRenter_POST_ForAdmin = async (query) => {
   ]);
   const total = await SellerPost.aggregate([
     {
-      $match: { $and: [activeStatusMatch] },
+      $match: { $and: [activeStatusMatch, protypeMatch, typeMatch, areaMatch, { finsh: true }] },
     },
   ]);
   return { values: data, total: total.length };
