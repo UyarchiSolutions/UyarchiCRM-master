@@ -523,15 +523,17 @@ const getApprover_Property = async (query, userId, body) => {
 
   // amaenitiesMatch
   if (query.amenities) {
-    if (query.amenities === 'lift') {
-      console.log(query.amenities);
-      amaenitiesMatch = { Lift: { $ne: 'No' }, HouseOrCommercialType: { $eq: 'Commercial' } };
-    }
-    if (query.amenities == 'power backup') {
-      amaenitiesMatch = { powerBackup: { $ne: 'Need to Arrange' }, HouseOrCommercialType: { $eq: 'Commercial' } };
-    }
-  } else {
-    amaenitiesMatch;
+    let arr = [];
+    let data = query.amenities.split(',');
+    data.forEach((e) => {
+      if (e === 'lift') {
+        arr.push({ Lift: { $ne: 'No' }, HouseOrCommercialType: { $eq: 'Commercial' } });
+      }
+      if (e == 'power backup') {
+        arr.push({ powerBackup: { $ne: 'Need to Arrange' }, HouseOrCommercialType: { $eq: 'Commercial' } });
+      }
+    });
+    amaenitiesMatch = { $or: arr };
   }
 
   let finish;
