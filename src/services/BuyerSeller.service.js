@@ -1287,11 +1287,33 @@ const updatePasswordByUsers = async (id, body) => {
 
 const getIntrestedPropertyByUser = async (id) => {
   let dates = moment().toDate();
+  let users = await Buyer.findById(id);
   let values = await SellerPost.aggregate([
     {
       $match: {
         intrestedUsers: { $in: [id] },
         active: true,
+      },
+    },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [
+          {
+            $match: { userId: id },
+          },
+          { $sort: { created: -1 } },
+          { $limit: 1 },
+        ],
+        as: 'userStatus',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$userStatus',
       },
     },
     {
@@ -1358,6 +1380,7 @@ const getIntrestedPropertyByUser = async (id) => {
         IgnoreStatus: {
           $ifNull: [{ $map: { input: '$Ignore', as: 'value', in: { $eq: ['$$value', id] } } }, []],
         },
+        userStatus: '$userStatus.status',
       },
     },
     {
@@ -1421,6 +1444,7 @@ const getIntrestedPropertyByUser = async (id) => {
         // IgnoreStatus: 1,
         AcceptStatus: { $cond: { if: { $in: [true, '$AcceptStatus'] }, then: true, else: false } },
         IgnoreStatus: { $cond: { if: { $in: [true, '$IgnoreStatus'] }, then: true, else: false } },
+        userStatus: '$userStatus',
       },
     },
   ]);
