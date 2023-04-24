@@ -522,7 +522,7 @@ const getApprover_Property = async (query, userId, body) => {
   }
 
   // amaenitiesMatch
-  if (query.amenities) { 
+  if (query.amenities) {
     let arr = [];
     let data = query.amenities.split(',');
     data.forEach((e) => {
@@ -1291,6 +1291,7 @@ const getIntrestedPropertyByUser = async (id) => {
     {
       $match: {
         intrestedUsers: { $in: [id] },
+        active: true,
       },
     },
     {
