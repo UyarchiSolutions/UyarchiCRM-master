@@ -2076,6 +2076,7 @@ const getDataById = async (id, userId) => {
   }
   let intrest = await SellerPost.findOne({ intrestedUsers: { $elemMatch: { $eq: userId } }, _id: id });
   let saved = await SellerPost.findOne({ WhishList: { $elemMatch: { $eq: userId } }, _id: id });
+  let relation = await PropertyBuyerRelation.findOne({ propertyId: id, userId: userId });
   if (intrest != null) {
     intreststatus = true;
   } else {
@@ -2086,7 +2087,7 @@ const getDataById = async (id, userId) => {
   } else {
     savedStatus = false;
   }
-  return { values: values, intrest: intreststatus, savedStatus: savedStatus };
+  return { values: values, intrest: intreststatus, savedStatus: savedStatus, relation: relation };
 };
 
 const getAddress_By_Lat_long = async (query) => {
