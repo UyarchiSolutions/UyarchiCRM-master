@@ -1522,7 +1522,7 @@ const updateBuyerRelation = async (id, body, userId) => {
   if (body.type === 'Shcedule') {
     values = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: id },
-      { scheduleDate: body.schedule, status: 'Shcedule' },
+      { scheduleDate: body.schedule, scheduletime: body.scheduletime, status: 'Shcedule' },
       { new: true }
     );
   }

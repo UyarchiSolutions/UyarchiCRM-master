@@ -25,7 +25,10 @@ const PropertyBuyerRelataionSchema = new mongoose.Schema({
     type: Date,
   },
   scheduleDate: {
-    type: Date,
+    type: String,
+  },
+  scheduletime: {
+    type: String,
   },
   schedule: {
     type: Date,

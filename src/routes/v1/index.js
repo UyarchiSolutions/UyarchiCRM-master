@@ -28,12 +28,17 @@ const AmentiesRoute = require('./amenties.route');
 const RecentSearch = require('./recentSearch.route');
 const properBuyerrelation = require('./propertyBuyerrelation.route');
 const propertyAlert = require('./property.alert.route');
+const RequestStreamRoute = require('./request.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/requestStream',
+    route: RequestStreamRoute,
   },
   {
     path: '/propertyAlert',
