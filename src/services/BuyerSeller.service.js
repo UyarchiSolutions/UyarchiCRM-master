@@ -1380,7 +1380,7 @@ const getIntrestedPropertyByUser = async (id) => {
         IgnoreStatus: {
           $ifNull: [{ $map: { input: '$Ignore', as: 'value', in: { $eq: ['$$value', id] } } }, []],
         },
-        userStatus: '$userStatus.status',
+        userStatus: '$userStatus',
       },
     },
     {
