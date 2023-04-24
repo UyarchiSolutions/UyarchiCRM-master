@@ -39,6 +39,95 @@ const requestStreamSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    post: {
+      type: Array,
+    },
+    communicationMode: {
+      type: Array,
+    },
+    adminApprove: {
+      type: String,
+    },
+    activelive: {
+      type: String,
+    },
+    tokenGeneration: {
+      type: String,
+    },
+    goLive: {
+      type: Boolean,
+      default: true,
+    },
+    audio: {
+      type: Boolean,
+      default: true,
+    },
+    video: {
+      type: Boolean,
+      default: true,
+    },
+    allot: {
+      type: Boolean,
+      default: true,
+    },
+    videoconvertStatus: {
+      type: String,
+      default: 'Pending',
+    },
+    streamingDate_time: {
+      type: String,
+    },
+    chat_need: {
+      type: String,
+    },
+    allot_chat: {
+      type: String,
+    },
+    allot_host_1: {
+      type: String,
+    },
+    sellerId: {
+      type: String,
+    },
+    postCount: {
+      type: Number,
+    },
+    startTime: {
+      type: Number,
+    },
+    DateIso: {
+      type: Number,
+    },
+    Duration: {
+      type: Number,
+    },
+    chat: {
+      type: String,
+    },
+    endTime: {
+      type: Number,
+    },
+    max_post_per_stream: {
+      type: Number,
+    },
+    noOfParticipants: {
+      type: Number,
+    },
+    streamEnd_Time: {
+      type: Number,
+    },
+    image: {
+      type: String,
+    },
+    teaser: {
+      type: String,
+    },
+    end_Status: {
+      type: String,
+    },
+    status: {
+      type: String,
+    },
   },
   {
     timestamps: true,
