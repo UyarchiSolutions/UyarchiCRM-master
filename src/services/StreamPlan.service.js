@@ -53,7 +53,7 @@ const fetch_Stream_Planes = async (page, range) => {
     },
   ]);
   let total = await StreamPlan.find().count();
-  return { values: values, total: totak };
+  return { values: values, total: total };
 };
 
 module.exports = {
