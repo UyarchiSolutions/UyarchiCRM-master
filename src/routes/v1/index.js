@@ -29,6 +29,7 @@ const RecentSearch = require('./recentSearch.route');
 const properBuyerrelation = require('./propertyBuyerrelation.route');
 const propertyAlert = require('./property.alert.route');
 const RequestStreamRoute = require('./request.route');
+const StreamPlanRoute = require('./StreamPlan.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -43,6 +44,10 @@ const defaultRoutes = [
   {
     path: '/propertyAlert',
     route: propertyAlert,
+  },
+  {
+    path: '/StreamPlan',
+    route: StreamPlanRoute,
   },
   {
     path: '/BuyerSeller',
