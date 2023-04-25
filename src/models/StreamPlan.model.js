@@ -80,6 +80,91 @@ const StreamPlanSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const StreamPlane = mongoose.model('StreamPlane', StreamPlanSchema);
+const StreamPlan = mongoose.model('StreamPlane', StreamPlanSchema);
 
-module.exports = StreamPlane;
+const PurchasedPlan = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: v4,
+    },
+    userId: {
+      type: String,
+    },
+    userType: {
+      type: String,
+    },
+    planType: {
+      type: String,
+    },
+    planMode: {
+      type: String,
+    },
+    no_of_Stream: {
+      type: String,
+    },
+    no_of_host_per_Stream: {
+      type: String,
+    },
+    Duration_per_stream: {
+      type: String,
+    },
+    Duration_per_streamIso: {
+      type: Date,
+    },
+    Entry_Permit_to_participants: {
+      type: String,
+    },
+    No_buyer_contact_Reveals: {
+      type: String,
+    },
+    No_of_participants_Limit: {
+      type: String,
+    },
+    validity_of_plan: {
+      type: String,
+    },
+    availableStream: {
+      type: Number,
+    },
+    validity_of_plan_Iso: {
+      type: Date,
+    },
+    Stream_validity: {
+      type: String,
+    },
+    Stream_validity_Iso: {
+      type: Date,
+    },
+    Regular_Price: {
+      type: Number,
+    },
+    Offer_Price: {
+      type: Number,
+    },
+    Chat_Needed: {
+      type: String,
+    },
+    post_Stream: {
+      type: String,
+    },
+    service_Charges: {
+      type: String,
+    },
+    Description: {
+      type: String,
+    },
+    expireDate: {
+      type: Date,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const PurchasePlan = mongoose.model('purchasedplane', PurchasedPlan);
+
+module.exports = { StreamPlan, PurchasePlan };

@@ -36,6 +36,18 @@ const getActive_Planes = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const Purchase_plan = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await StreamPlanService.Purchase_plan(req.body, userId);
+  res.send(data);
+});
+
+const getPurchased_Planes = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await StreamPlanService.getPurchased_Planes(userId);
+  res.send(data);
+});
+
 module.exports = {
   Creact_Stream_Plan,
   get_Stream_Plan_ById,
@@ -43,4 +55,6 @@ module.exports = {
   update_StreamPlan,
   fetch_Stream_Planes,
   getActive_Planes,
+  Purchase_plan,
+  getPurchased_Planes,
 };
