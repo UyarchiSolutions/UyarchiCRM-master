@@ -31,10 +31,16 @@ const fetch_Stream_Planes = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getActive_Planes = catchAsync(async (req, res) => {
+  const data = await StreamPlanService.getActive_Planes();
+  res.send(data);
+});
+
 module.exports = {
   Creact_Stream_Plan,
   get_Stream_Plan_ById,
   Active_Inactive,
   update_StreamPlan,
   fetch_Stream_Planes,
+  getActive_Planes,
 };

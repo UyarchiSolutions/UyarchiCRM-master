@@ -56,10 +56,16 @@ const fetch_Stream_Planes = async (page, range) => {
   return { values: values, total: total };
 };
 
+const getActive_Planes = async () => {
+  let values = await StreamPlan.find({ active: true, userType: 'Seller' });
+  return values;
+};
+
 module.exports = {
   Creact_Stream_Plan,
   get_Stream_Plan_ById,
   Active_Inactive,
   update_StreamPlan,
   fetch_Stream_Planes,
+  getActive_Planes,
 };
