@@ -41,9 +41,25 @@ const update_StreamPlan = async (id, body) => {
   return values;
 };
 
+const fetch_Stream_Planes = async (page, range) => {
+  range = parseInt(range);
+  page = parseInt(page);
+  let values = await StreamPlan.aggregate([
+    {
+      $skip: range * page,
+    },
+    {
+      $limit: range,
+    },
+  ]);
+  let total = await StreamPlan.find().count();
+  return { values: values, total: totak };
+};
+
 module.exports = {
   Creact_Stream_Plan,
   get_Stream_Plan_ById,
   Active_Inactive,
   update_StreamPlan,
+  fetch_Stream_Planes,
 };
