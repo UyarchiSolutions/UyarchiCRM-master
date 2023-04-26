@@ -7,9 +7,11 @@ const { StreamPlan, PurchasePlan } = require('../models/StreamPlan.model');
 // create Request Stream
 
 const createRequestStream = async (body, userId) => {
-  const { planId, hour, minute, timeMode, streamingDate } = body;
+  let { planId, hour, minute, timeMode, streamingDate } = body;
+
   if (timeMode == 'PM') {
-    hour + 12;
+    let time = parseInt(hour) + 12;
+    hour = time.toString();
   }
   let time = `${hour}:${minute}:00`;
   console.log(time);
