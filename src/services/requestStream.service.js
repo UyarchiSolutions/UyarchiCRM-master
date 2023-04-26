@@ -41,7 +41,6 @@ const createRequestStream = async (body, userId) => {
       Duration: parseInt(planes.Duration_per_stream),
     },
   };
-  console.log(parseInt(planes.availableStream), 'Before');
   let stream = parseInt(planes.availableStream) - 1;
   if (stream == 0) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Given Stream Completed Please Purchase New Stream OR Extend this Stream');
