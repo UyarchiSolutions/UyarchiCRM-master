@@ -30,7 +30,7 @@ const createRequestStream = async (body, userId) => {
       chat_need: planes.Chat_Needed,
       noOfParticipants: parseInt(planes.No_of_participants_Limit),
       max_post_per_stream: parseInt(planes.no_of_host_per_Stream),
-      Duration: planes.parseInt(planesDuration_per_stream),
+      Duration: planes.parseInt(planes.Duration_per_stream),
     },
   };
   let stream = parseInt(planes.no_of_Stream) - 1;
