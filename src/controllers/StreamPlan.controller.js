@@ -7,7 +7,8 @@ const StreamPlanService = require('../services/StreamPlan.service');
 // create stream Plan
 
 const Creact_Stream_Plan = catchAsync(async (req, res) => {
-  let data = await StreamPlanService.Creact_Stream_Plan(req.body);
+  let userId = req.userId;
+  let data = await StreamPlanService.Creact_Stream_Plan(req.body, userId);
   res.send(data).Status(201);
 });
 

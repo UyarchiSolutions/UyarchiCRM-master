@@ -7,7 +7,8 @@ const RequestStreamService = require('../services/requestStream.service');
 // create Request Stream
 
 const createRequestStream = catchAsync(async (req, res) => {
-  let data = await RequestStreamService.createRequestStream(req.body);
+  let userId = req.userId;
+  let data = await RequestStreamService.createRequestStream(req.body, userId);
   res.send(data);
 });
 
