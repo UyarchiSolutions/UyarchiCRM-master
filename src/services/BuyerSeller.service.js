@@ -2329,7 +2329,7 @@ const Remove_Post = async (id) => {
 };
 
 const getSellerPostBySeller = async (id) => {
-  let values = await SellerPost.find({ userId: id });
+  let values = await SellerPost.find({ userId: id, finsh: true });
   return values;
 };
 
