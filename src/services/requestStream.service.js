@@ -2,8 +2,8 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const moment = require('moment');
 const RequestStream = require('../models/requestStream.model');
-const { StreamPlan } = require('../models/StreamPlan.model');
-const { Stream } = require('winston/lib/winston/transports');
+const { StreamPlan,PurchasePlan } = require('../models/StreamPlan.model');
+
 // create Request Stream
 
 const createRequestStream = async (body, userId) => {
@@ -13,7 +13,7 @@ const createRequestStream = async (body, userId) => {
   }
   let time = `${hour}:${minute}`;
   let startTime = new Date(new Date(streamingDate + ' ' + time)).getTime();
-  let planes = await StreamPlan.findById(planId);
+  let planes = await PurchasePlan.findById(planId);
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
@@ -34,7 +34,7 @@ const createRequestStream = async (body, userId) => {
     },
   };
   let stream = parseInt(planes.no_of_Stream) - 1;
-  planes = await StreamPlan.findById({ _id: id }, { no_of_Stream: stream }, { new: true });
+  planes = await PurchasePlan.findById({ _id: id }, { no_of_Stream: stream }, { new: true });
   let data = await RequestStream.create(datas);
   return data;
 };
