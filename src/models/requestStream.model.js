@@ -13,10 +13,10 @@ const requestStreamSchema = new mongoose.Schema(
     streamName: {
       type: String,
     },
-    streamDate: {
+    streamingDate: {
       type: String,
     },
-    streamTime: {
+    streamingTime: {
       type: String,
     },
     postId: {
