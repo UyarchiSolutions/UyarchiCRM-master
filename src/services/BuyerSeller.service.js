@@ -2328,6 +2328,11 @@ const Remove_Post = async (id) => {
   return values;
 };
 
+const getSellerPostBySeller = async (id) => {
+  let values = await SellerPost.find({ userId: id });
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2414,4 +2419,5 @@ module.exports = {
   Delete_property_video,
   post_active_inactive,
   Remove_Post,
+  getSellerPostBySeller,
 };

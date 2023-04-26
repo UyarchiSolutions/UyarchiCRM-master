@@ -596,6 +596,12 @@ const Remove_Post = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSellerPostBySeller = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getSellerPostBySeller(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -680,4 +686,5 @@ module.exports = {
   Delete_property_video,
   post_active_inactive,
   Remove_Post,
+  getSellerPostBySeller,
 };
