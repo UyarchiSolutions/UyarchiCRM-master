@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const moment = require('moment');
 const RequestStream = require('../models/requestStream.model');
-const { StreamPlan,PurchasePlan } = require('../models/StreamPlan.model');
+const { StreamPlan, PurchasePlan } = require('../models/StreamPlan.model');
 
 // create Request Stream
 
@@ -11,21 +11,25 @@ const createRequestStream = async (body, userId) => {
   if (timeMode == 'PM') {
     hour + 12;
   }
-  let time = `${hour}:${minute}`;
-  let startTime = new Date(new Date(streamingDate + ' ' + time)).getTime();
+  let time = `${hour}:${minute}:00`;
+  console.log(time);
+  const dateTime = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime());
+  const isoDateTime = moment(dateTime).format('YYYY-MM-DDTHH:mm:ss.sssZ');
+  let startTime = dateTime;
+  console.log(startTime);
   let planes = await PurchasePlan.findById(planId);
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
   let endTimes = planes.Duration_per_stream;
-  let datess = new Date().setTime(new Date(startTime).getTime() + endTimes * 60 * 1000);
+  let datess = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime() + endTimes * 60 * 1000);
   let datas = {
     ...body,
     ...{
       streamingTime: startTime,
       startTime: startTime,
       endTime: datess,
-      streamingDate_time: `${streamingDate} ${hour}:${minute}`,
+      streamingDate_time: isoDateTime,
       sellerId: userId,
       chat_need: planes.Chat_Needed,
       noOfParticipants: parseInt(planes.No_of_participants_Limit),
@@ -35,8 +39,8 @@ const createRequestStream = async (body, userId) => {
   };
   let stream = parseInt(planes.no_of_Stream) - 1;
   planes = await PurchasePlan.findById({ _id: planes._id }, { no_of_Stream: stream }, { new: true });
-  let data = await RequestStream.create(datas);
-  return data;
+  // let data = await RequestStream.create(datas);
+  return datas;
 };
 
 // Fetch request Stream By Id
