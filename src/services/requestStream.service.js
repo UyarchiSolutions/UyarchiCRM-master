@@ -15,6 +15,8 @@ const createRequestStream = async (body, userId) => {
   console.log(time);
   const dateTime = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime());
   const isoDateTime = moment(dateTime).format('YYYY-MM-DDTHH:mm:ss.sssZ');
+  const isoTime = moment(dateTime).format('HH:mm a');
+
   let startTime = dateTime;
   console.log(startTime);
   let planes = await PurchasePlan.findById(planId);
@@ -26,7 +28,7 @@ const createRequestStream = async (body, userId) => {
   let datas = {
     ...body,
     ...{
-      streamingTime: startTime,
+      streamingTime: isoTime,
       startTime: startTime,
       endTime: datess,
       streamingDate_time: isoDateTime,
