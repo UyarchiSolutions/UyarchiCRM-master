@@ -93,7 +93,7 @@ const requestStreamSchema = new mongoose.Schema(
       type: Number,
     },
     startTime: {
-      type: String,
+      type: Number,
     },
     DateIso: {
       type: Number,
@@ -105,7 +105,7 @@ const requestStreamSchema = new mongoose.Schema(
       type: String,
     },
     endTime: {
-      type: String,
+      type: Number,
     },
     max_post_per_stream: {
       type: Number,
