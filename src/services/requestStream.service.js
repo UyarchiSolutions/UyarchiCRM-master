@@ -41,8 +41,13 @@ const createRequestStream = async (body, userId) => {
       Duration: parseInt(planes.Duration_per_stream),
     },
   };
-  let stream = parseInt(planes.no_of_Stream) - 1;
-  planes = await PurchasePlan.findById({ _id: planes._id }, { no_of_Stream: stream }, { new: true });
+  console.log(parseInt(planes.availableStream), 'Before');
+  let stream = parseInt(planes.availableStream) - 1;
+  if (stream == 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Given Stream Completed Please Purchase New Stream OR Extend this Stream');
+  }
+  await PurchasePlan.findByIdAndUpdate({ _id: planId }, { availableStream: stream.toString() }, { new: true });
+  console.log(stream, 'After');
   let data = await RequestStream.create(datas);
   return data;
 };
