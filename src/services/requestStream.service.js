@@ -8,7 +8,6 @@ const { StreamPlan, PurchasePlan } = require('../models/StreamPlan.model');
 
 const createRequestStream = async (body, userId) => {
   let { planId, hour, minute, timeMode, streamingDate } = body;
-
   if (timeMode == 'PM') {
     let time = parseInt(hour) + 12;
     hour = time.toString();
@@ -17,10 +16,8 @@ const createRequestStream = async (body, userId) => {
   console.log(time);
   const dateTime = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime());
   const isoDateTime = moment(dateTime).format('YYYY-MM-DDTHH:mm:ss.sssZ');
-  const isoTime = moment(dateTime).format('HH:mm a');
-
+  const isoTime = moment(dateTime).format('HH:mm');
   let startTime = dateTime;
-  console.log(startTime);
   let planes = await PurchasePlan.findById(planId);
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
@@ -47,7 +44,6 @@ const createRequestStream = async (body, userId) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Given Stream Completed Please Purchase New Stream OR Extend this Stream');
   }
   await PurchasePlan.findByIdAndUpdate({ _id: planId }, { availableStream: stream.toString() }, { new: true });
-  console.log(stream, 'After');
   let data = await RequestStream.create(datas);
   return data;
 };
