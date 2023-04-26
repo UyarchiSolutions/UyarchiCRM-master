@@ -127,6 +127,7 @@ const requestStreamSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      default: 'Pending',
     },
   },
   {

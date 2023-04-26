@@ -24,12 +24,15 @@ const createRequestStream = async (body, userId) => {
   }
   let endTimes = planes.Duration_per_stream;
   let datess = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime() + endTimes * 60 * 1000);
+  const isoendTime = moment(dateTime).add(endTimes, 'days').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
   let datas = {
     ...body,
     ...{
       streamingTime: isoTime,
       startTime: startTime,
       endTime: datess,
+      streamEnd_Time: isoendTime,
       streamingDate_time: isoDateTime,
       sellerId: userId,
       chat_need: planes.Chat_Needed,
