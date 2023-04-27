@@ -24,7 +24,7 @@ const get_created_Subhost_By_Seller = async (id) => {
 
 const Active_Inactive_SubHost = async (id, body) => {
   const { type } = body;
-  const host = await SubHost.findById(id);
+  let host = await SubHost.findById(id);
   if (!host) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Sub Host Not Available');
   }
