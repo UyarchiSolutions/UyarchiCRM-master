@@ -13,6 +13,7 @@ const SubHostSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      uniqe: true,
     },
     createdBy: {
       type: String,
