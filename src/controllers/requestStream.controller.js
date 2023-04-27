@@ -26,8 +26,15 @@ const UpdateRequestStream = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getStreams = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await RequestStreamService.getStreams(userId);
+  res.send(data);
+});
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
   UpdateRequestStream,
+  getStreams,
 };

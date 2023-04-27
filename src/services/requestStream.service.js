@@ -70,8 +70,34 @@ const UpdateRequestStream = async (id, body) => {
   return data;
 };
 
+const getStreams = async (userId) => {
+  const values = await RequestStream.aggregate([
+    {
+      $match: {
+        sellerId: userId,
+      },
+    },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'posts',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$posts',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
   UpdateRequestStream,
+  getStreams,
 };
