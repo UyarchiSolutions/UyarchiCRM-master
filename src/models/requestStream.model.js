@@ -47,6 +47,7 @@ const requestStreamSchema = new mongoose.Schema(
     },
     adminApprove: {
       type: String,
+      default: 'Pending',
     },
     activelive: {
       type: String,
