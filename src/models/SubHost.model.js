@@ -2,11 +2,12 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
-
+const { v4 } = require('uuid');
 const SubHostSchema = new mongoose.Schema(
   {
     _id: {
       type: String,
+      default: v4,
     },
     Name: {
       type: String,
