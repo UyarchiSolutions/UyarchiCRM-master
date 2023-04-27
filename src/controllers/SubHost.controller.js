@@ -18,7 +18,19 @@ const get_created_Subhost_By_Seller = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const Active_Inactive_SubHost = catchAsync(async (req, res) => {
+  const data = await SubHostService.Active_Inactive_SubHost(req.params.id, req.body);
+  res.send(data);
+});
+
+const updateSubHost = catchAsync(async (req, res) => {
+  const data = await SubHostService.updateSubHost(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
+  Active_Inactive_SubHost,
+  updateSubHost,
 };
