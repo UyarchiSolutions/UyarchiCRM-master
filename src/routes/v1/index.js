@@ -30,6 +30,7 @@ const properBuyerrelation = require('./propertyBuyerrelation.route');
 const propertyAlert = require('./property.alert.route');
 const RequestStreamRoute = require('./request.route');
 const StreamPlanRoute = require('./StreamPlan.route');
+const SubHostRoute = require('./SubHost.route');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -40,6 +41,10 @@ const defaultRoutes = [
   {
     path: '/requestStream',
     route: RequestStreamRoute,
+  },
+  {
+    path: '/subHost',
+    route: SubHostRoute,
   },
   {
     path: '/propertyAlert',
