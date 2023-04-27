@@ -95,9 +95,44 @@ const getStreams = async (userId) => {
   return values;
 };
 
+const getStreams_Admin_Side = async () => {
+  let values = await RequestStream.aggregate([
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'posts',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$posts',
+      },
+    },
+  ]);
+  return values;
+};
+
+const AdminStream_Approved_Cancel = async (id, body) => {
+  let values = await RequestStream.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Stream Not Available');
+  }
+  if (body.type == 'approve') {
+    values = await RequestStream.findByIdAndUpdate({ _id: id }, { adminApprove: 'Approved' }, { new: true });
+  } else {
+    values = await RequestStream.findByIdAndUpdate({ _id: id }, { adminApprove: 'Approved' }, { new: true });
+  }
+  return values;
+};
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
   UpdateRequestStream,
   getStreams,
+  getStreams_Admin_Side,
+  AdminStream_Approved_Cancel,
 };
