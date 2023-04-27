@@ -28,7 +28,7 @@ const updateSubHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
-const getSubHostById = cathcAsync(async (req, res) => {
+const getSubHostById = catchAsync(async (req, res) => {
   const data = await SubHostService.getSubHostById(req.params.id);
   res.send(data);
 });
