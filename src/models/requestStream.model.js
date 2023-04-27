@@ -114,7 +114,7 @@ const requestStreamSchema = new mongoose.Schema(
       type: Number,
     },
     streamEnd_Time: {
-      type: Number,
+      type: String,
     },
     image: {
       type: String,
