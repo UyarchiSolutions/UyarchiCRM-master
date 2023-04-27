@@ -12,6 +12,13 @@ const create_SubHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const get_created_Subhost_By_Seller = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SubHostService.get_created_Subhost_By_Seller(userId);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
+  get_created_Subhost_By_Seller,
 };

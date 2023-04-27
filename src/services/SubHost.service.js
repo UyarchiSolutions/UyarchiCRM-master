@@ -11,6 +11,18 @@ const create_SubHost = async (body, userId) => {
   return values;
 };
 
+const get_created_Subhost_By_Seller = async (id) => {
+  let values = await SubHost.aggregate([
+    {
+      $match: {
+        createdBy: id,
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   create_SubHost,
+  get_created_Subhost_By_Seller,
 };
