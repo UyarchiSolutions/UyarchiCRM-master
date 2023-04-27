@@ -123,7 +123,7 @@ const AdminStream_Approved_Cancel = async (id, body) => {
   if (body.type == 'approve') {
     values = await RequestStream.findByIdAndUpdate({ _id: id }, { adminApprove: 'Approved' }, { new: true });
   } else {
-    values = await RequestStream.findByIdAndUpdate({ _id: id }, { adminApprove: 'Approved' }, { new: true });
+    values = await RequestStream.findByIdAndUpdate({ _id: id }, { adminApprove: 'Cancelled' }, { new: true });
   }
   return values;
 };
