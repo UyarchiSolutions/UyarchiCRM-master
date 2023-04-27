@@ -45,9 +45,18 @@ const updateSubHost = async (id, body) => {
   return host;
 };
 
+const getSubHostById = async (id) => {
+  const data = await SubHost.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Sub Host Not Available');
+  }
+  return data;
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
   Active_Inactive_SubHost,
   updateSubHost,
+  getSubHostById,
 };

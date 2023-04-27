@@ -28,9 +28,15 @@ const updateSubHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSubHostById = cathcAsync(async (req, res) => {
+  const data = await SubHostService.getSubHostById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
   Active_Inactive_SubHost,
   updateSubHost,
+  getSubHostById,
 };
