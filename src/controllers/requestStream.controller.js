@@ -42,6 +42,11 @@ const AdminStream_Approved_Cancel = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getStreamById = catchAsync(async (req, res) => {
+  const data = await RequestStreamService.getStreamById(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
@@ -49,4 +54,5 @@ module.exports = {
   getStreams,
   getStreams_Admin_Side,
   AdminStream_Approved_Cancel,
+  getStreamById,
 };

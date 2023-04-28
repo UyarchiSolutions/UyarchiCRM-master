@@ -128,6 +128,45 @@ const AdminStream_Approved_Cancel = async (id, body) => {
   return values;
 };
 
+const getStreamById = async (id) => {
+  let values = await RequestStream.aggregate([
+    {
+      $match: {
+        _id: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'posts',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$posts',
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'sellerId',
+        foreignField: '_id',
+        as: 'user',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$user',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
@@ -135,4 +174,5 @@ module.exports = {
   getStreams,
   getStreams_Admin_Side,
   AdminStream_Approved_Cancel,
+  getStreamById,
 };
