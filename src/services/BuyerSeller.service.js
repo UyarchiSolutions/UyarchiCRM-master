@@ -941,14 +941,14 @@ const OTPVerify = async (body) => {
 
 const VerifyOtpRealEstate = async (body) => {
   const { type } = body;
-  let verify = await StoreOtp.findOne({ otp: body.otp });
+  let verify = await StoreOtp.findOne({ otp: body.otp, active: true });
   if (!verify) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Otp');
   }
+  verify = await StoreOtp.findOneAndUpdate({ otp: body.otp }, { active: false }, { new: true });
   let dates = moment().toDate();
   let currentDate = moment(dates);
   let otpDate = moment(verify.created);
-
   let diff = currentDate.diff(otpDate, 'minute');
   if (diff >= 2) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'OTP Expired');
