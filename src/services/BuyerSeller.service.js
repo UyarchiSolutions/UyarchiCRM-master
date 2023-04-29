@@ -12,6 +12,7 @@ const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
 const AWS = require('aws-sdk');
 const geolib = require('geolib');
+const { array } = require('joi');
 
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;
@@ -382,20 +383,11 @@ const getApprover_Property = async (query, userId, body) => {
   }
 
   // Floor Filters
-  const { arr } = body;
-  if (arr && arr.length > 0) {
+  if (query.floorFrom && query.floorTo) {
+    query.floorFrom = parseInt(query.floorFrom);
+    query.floorTo = parseInt(query.floorTo);
     let arrays = [];
-    arr.forEach((e) => {
-      if (e.from == 0) {
-        arrays.push({ floorCount: { $eq: e.from } });
-      }
-      if (e.from == 13) {
-        arrays.push({ floorCount: { $gte: e.from } });
-      }
-      if (e.from > 0 && e.to < 13) {
-        arrays.push({ floorCount: { $gte: e.from, $lte: e.to } });
-      }
-    });
+    arrays.push({ floorCount: { $gte: query.floorFrom, $lte: query.floorTo } });
     floorMatch = { $or: arrays };
   }
 
@@ -450,7 +442,7 @@ const getApprover_Property = async (query, userId, body) => {
   // Bath Room Filter
 
   if (query.bathroom) {
-   let arr = [];
+    let arr = [];
     let num = 0;
     query.bathroom.split(',').forEach((e) => {
       let numb = parseInt(e);
