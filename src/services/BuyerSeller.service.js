@@ -450,7 +450,7 @@ const getApprover_Property = async (query, userId, body) => {
   // Bath Room Filter
 
   if (query.bathroom) {
-    arr = [];
+   let arr = [];
     let num = 0;
     query.bathroom.split(',').forEach((e) => {
       let numb = parseInt(e);
