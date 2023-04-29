@@ -317,6 +317,7 @@ const getApprover_Property = async (query, userId, body) => {
   let floorMatch = { active: true };
   let buildingTypeMatch = { active: true };
   let amaenitiesMatch = { active: true };
+  let buildingAgeMatch = { active: true };
   let page = parseInt(query.page);
   let range = parseInt(query.range);
   let area = query.area;
@@ -528,6 +529,15 @@ const getApprover_Property = async (query, userId, body) => {
     amaenitiesMatch = { $or: arr };
   }
 
+  //buildingAgeMatch
+  if (query.ageOfBuilding) {
+    if (query.ageOfBuilding == 'Under Construction') {
+      buildingAgeMatch = { ageOfBuilding: { $eq: query.ageOfBuilding } };
+    } else {
+      buildingAgeMatch = { ageOfBuilding: { $ne: 'Under Construction' } };
+    }
+  }
+
   let finish;
   if (query.finish == 'false') {
     finish = false;
@@ -558,6 +568,7 @@ const getApprover_Property = async (query, userId, body) => {
           floorMatch,
           buildingTypeMatch,
           amaenitiesMatch,
+          buildingAgeMatch,
           // { propStatus: 'Approved' },
           {
             finsh: finish,
