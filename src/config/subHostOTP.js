@@ -21,7 +21,7 @@ const Otp = async (bodydata) => {
   var options = 'https://api.textlocal.in/' + data;
   await saveSubHostOTP(contact, OTPCODE);
   https.request(options, callback).end();
-  return 'OTP Send Successfully';
+  return {message:'OTP Send Successfully'};
 };
 callback = function (response) {
   var str = '';
