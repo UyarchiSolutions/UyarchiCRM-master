@@ -4,6 +4,7 @@ const moment = require('moment');
 const ApiError = require('../utils/ApiError');
 const Admin = require('../models/RealEstate.Admin.model');
 const OTP = require('../config/textLocal');
+const subHostOTP = require('../config/subHostOTP');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
@@ -11,8 +12,6 @@ const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerP
 const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
 const AWS = require('aws-sdk');
-const geolib = require('geolib');
-const { array } = require('joi');
 
 const createBuyerSeller = async (body, otp) => {
   const { email, mobile } = body;

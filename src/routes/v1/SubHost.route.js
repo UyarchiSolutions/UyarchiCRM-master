@@ -8,4 +8,8 @@ router.route('/created/subHost').get(Authorization, SubHostController.get_create
 router.route('/Active/Inactive/SubHost/:id').put(SubHostController.Active_Inactive_SubHost);
 router.route('/updateSubHos/:id').put(SubHostController.updateSubHost);
 router.route('/getSubHostById/:id').get(SubHostController.getSubHostById);
+router.route('/sendOtpTOSubHost').post(SubHostController.sendOtpTOSubHost);
+router.route('/verifyOtpforSubhost').post(SubHostController.verifyOtpforSubhost);
+router.route('/setPassword/:id').put(SubHostController.setPassword);
+router.route('/Login').post(SubHostController.Login);
 module.exports = router;

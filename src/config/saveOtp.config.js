@@ -1,4 +1,5 @@
 const { CreateSupplierOtp } = require('../models/supplier.OTP.model');
+const { SubHostOTP } = require('../models/subHost.Otp.model');
 
 const saveOtp = async (number, otp, supplier) => {
   return await CreateSupplierOtp.create({
@@ -8,4 +9,11 @@ const saveOtp = async (number, otp, supplier) => {
   });
 };
 
-module.exports = { saveOtp };
+const saveSubHostOTP = async (number, otp) => {
+  return await SubHostOTP.create({
+    OTP: otp,
+    phoneNumber: number,
+  });
+};
+
+module.exports = { saveOtp, saveSubHostOTP };

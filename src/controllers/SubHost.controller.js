@@ -33,10 +33,34 @@ const getSubHostById = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const sendOtpTOSubHost = catchAsync(async (req, res) => {
+  const data = await SubHostService.sendOtpTOSubHost(req.body);
+  res.send(data);
+});
+
+const verifyOtpforSubhost = catchAsync(async (req, res) => {
+  const data = await SubHostService.verifyOtpforSubhost(req.body);
+  res.send(data);
+});
+
+const setPassword = catchAsync(async (req, res) => {
+  const data = await SubHostService.setPassword(req.params.id, req.body);
+  res.send(data);
+});
+
+const Login = catchAsync(async (req, res) => {
+  const data = await SubHostService.Login(req.body);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
   Active_Inactive_SubHost,
   updateSubHost,
   getSubHostById,
+  sendOtpTOSubHost,
+  verifyOtpforSubhost,
+  setPassword,
+  Login,
 };

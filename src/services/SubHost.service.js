@@ -1,8 +1,10 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const SubHost = require('../models/SubHost.model');
+const { SubHostOTP } = require('../models/subHost.Otp.model');
+const { Otp } = require('../config/subHostOTP');
 const moment = require('moment');
-
+const bcrypt = require('bcryptjs');
 // create SubHost
 
 const create_SubHost = async (body, userId) => {
@@ -53,10 +55,49 @@ const getSubHostById = async (id) => {
   return data;
 };
 
+const sendOtpTOSubHost = async (body) => {
+  let subhost = await SubHost.findOne({ phoneNumber: body.mobileNumber }).sort({ createdAt: -1 });
+  if (!subhost) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'subHost Not Available');
+  }
+  return Otp(body);
+};
+
+const verifyOtpforSubhost = async (body) => {
+  const { otp } = body;
+  let values = await SubHostOTP.findOne({ OTP: otp, active: true });
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Otp Not Found OR Used');
+  }
+  await SubHostOTP.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
+  let user = await SubHost.findOne({ phoneNumber: values.phoneNumber });
+  return { message: 'Verfication Scceeded', user: user };
+};
+
+const setPassword = async (id, body) => {
+  let { password } = body;
+  password = await bcrypt.hash(password, 8);
+  let setPassword = await SubHost.findByIdAndUpdate({ _id: id }, { password: password }, { new: true });
+  return setPassword;
+};
+
+const Login = async (body) => {
+  const { email, password } = body;
+  const user = await SubHost.findOne({ email: email, active: true });
+  if (!user || !(await user.isPasswordMatch(password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+  }
+  return user;
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
   Active_Inactive_SubHost,
   updateSubHost,
   getSubHostById,
+  sendOtpTOSubHost,
+  verifyOtpforSubhost,
+  setPassword,
+  Login,
 };
