@@ -126,6 +126,12 @@ const requestStreamSchema = new mongoose.Schema(
     end_Status: {
       type: String,
     },
+    allot_host_2: {
+      type: String,
+    },
+    allot_host_3: {
+      type: String,
+    },
     status: {
       type: String,
       default: 'Pending',
