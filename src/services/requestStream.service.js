@@ -66,7 +66,7 @@ const UpdateRequestStream = async (id, body) => {
   if (!data) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Request Stream Not Found');
   }
-  data = await RequestStream.findByIdAndUpdate({ _id: id }, { body }, { new: true });
+  data = await RequestStream.findByIdAndUpdate({ _id: id }, body, { new: true });
   return data;
 };
 
