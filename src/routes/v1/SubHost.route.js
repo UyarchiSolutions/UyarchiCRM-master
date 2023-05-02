@@ -12,4 +12,5 @@ router.route('/sendOtpTOSubHost').post(SubHostController.sendOtpTOSubHost);
 router.route('/verifyOtpforSubhost').post(SubHostController.verifyOtpforSubhost);
 router.route('/setPassword/:id').put(SubHostController.setPassword);
 router.route('/Login').post(SubHostController.Login);
+router.route('/getSubHost/ForChat').get(Authorization, SubHostController.getSubHostForChat);
 module.exports = router;
