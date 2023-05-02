@@ -132,6 +132,24 @@ const requestStreamSchema = new mongoose.Schema(
     allot_host_3: {
       type: String,
     },
+    day: {
+      type: String,
+    },
+    month: {
+      type: String,
+    },
+    year: {
+      type: String,
+    },
+    hour: {
+      type: String,
+    },
+    minute: {
+      type: String,
+    },
+    zone: {
+      type: String,
+    },
     status: {
       type: String,
       default: 'Pending',
