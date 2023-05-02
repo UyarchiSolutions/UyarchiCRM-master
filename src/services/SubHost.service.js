@@ -107,7 +107,7 @@ const getSubHostForStream = async (userId) => {
     {
       $match: {
         createdBy: userId,
-        role: { $in: ['Stream'] },
+        role: { $in: ['Stream', 'Chat/Stream'] },
       },
     },
   ]);
