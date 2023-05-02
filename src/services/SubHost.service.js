@@ -95,7 +95,19 @@ const getSubHostForChat = async (userId) => {
     {
       $match: {
         createdBy: userId,
-        role: ['Chat/Stream', 'Chat'],
+        role: { $in: ['Chat/Stream', 'Chat'] },
+      },
+    },
+  ]);
+  return values;
+};
+
+const getSubHostForStream = async (userId) => {
+  let values = await SubHost.aggregate([
+    {
+      $match: {
+        createdBy: userId,
+        role: { $in: ['Stream'] },
       },
     },
   ]);
@@ -113,4 +125,5 @@ module.exports = {
   setPassword,
   Login,
   getSubHostForChat,
+  getSubHostForStream,
 };

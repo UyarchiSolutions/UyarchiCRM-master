@@ -59,6 +59,12 @@ const getSubHostForChat = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getSubHostForStream = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SubHostService.getSubHostForStream(userId);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -70,4 +76,5 @@ module.exports = {
   setPassword,
   Login,
   getSubHostForChat,
+  getSubHostForStream,
 };
