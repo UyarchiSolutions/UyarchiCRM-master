@@ -79,6 +79,12 @@ const getStream_By_SubHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SubHostService.changePassword(req.body, userId);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -93,4 +99,5 @@ module.exports = {
   getSubHostForStream,
   getSubHostBy_Login,
   getStream_By_SubHost,
+  changePassword,
 };

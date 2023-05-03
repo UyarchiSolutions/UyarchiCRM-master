@@ -159,6 +159,13 @@ const getStream_By_SubHost = async (id) => {
   return data;
 };
 
+const changePassword = async (body, id) => {
+  let { password } = body;
+  password = await bcrypt.hash(password, 8);
+  await SubHost.findByIdAndUpdate({ _id: id }, { password: password }, { new: true });
+  return { message: 'Password Updated......' };
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -173,4 +180,5 @@ module.exports = {
   getSubHostForStream,
   getSubHostBy_Login,
   getStream_By_SubHost,
+  changePassword,
 };
