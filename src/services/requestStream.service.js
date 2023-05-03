@@ -18,7 +18,7 @@ const createRequestStream = async (body, userId) => {
   const isoDateTime = moment(dateTime).format('YYYY-MM-DDTHH:mm:ss.sssZ');
   const isoTime = moment(dateTime).format('HH:mm');
   let startTime = dateTime;
-  let planes = await PurchasePlan.findById(planId);
+  let planes = await PurchasePlan.findOne({ planId: planId });
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
