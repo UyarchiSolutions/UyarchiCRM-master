@@ -17,5 +17,5 @@ router.route('/getSubHost/ForChat').get(Authorization, SubHostController.getSubH
 router.route('/getSubHost/ForStream').get(Authorization, SubHostController.getSubHostForStream);
 router.route('/getSubHostBy/Login/users').get(SubHostAuth, SubHostController.getSubHostBy_Login);
 router.route('/getStream/By/SubHost').get(SubHostAuth, SubHostController.getStream_By_SubHost);
-router.route('/changePassword').post(SubHostAuth, SubHostController.changePassword);
+router.route('/changePassword').post(SubHostController.changePassword);
 module.exports = router;

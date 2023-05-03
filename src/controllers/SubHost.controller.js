@@ -80,8 +80,7 @@ const getStream_By_SubHost = catchAsync(async (req, res) => {
 });
 
 const changePassword = catchAsync(async (req, res) => {
-  let userId = req.userId;
-  const data = await SubHostService.changePassword(req.body, userId);
+  const data = await SubHostService.changePassword(req.body);
   res.send(data);
 });
 
