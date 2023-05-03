@@ -144,6 +144,12 @@ const requestStreamSchema = new mongoose.Schema(
     hour: {
       type: String,
     },
+    hostRole2: {
+      type: String,
+    },
+    hostRole3: {
+      type: String,
+    },
     minute: {
       type: String,
     },
