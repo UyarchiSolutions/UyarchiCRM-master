@@ -94,6 +94,9 @@ const PurchasedPlan = new mongoose.Schema(
     userType: {
       type: String,
     },
+    planId:{
+      type:String,
+    },
     planType: {
       type: String,
     },
