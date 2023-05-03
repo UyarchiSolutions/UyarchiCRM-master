@@ -159,10 +159,10 @@ const getStream_By_SubHost = async (id) => {
   return data;
 };
 
-const changePassword = async (body, id) => {
-  let { password } = body;
+const changePassword = async (body) => {
+  let { password, mobileNumber } = body;
   password = await bcrypt.hash(password, 8);
-  await SubHost.findByIdAndUpdate({ _id: id }, { password: password }, { new: true });
+  await SubHost.findOneAndUpdate({ phoneNumber: mobileNumber }, { password: password }, { new: true });
   return { message: 'Password Updated......' };
 };
 
