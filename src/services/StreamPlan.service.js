@@ -14,7 +14,7 @@ const Creact_Stream_Plan = async (body) => {
 const get_Stream_Plan_ById = async (id) => {
   let values = await StreamPlan.findById(id);
   if (!values) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Stream Not Available');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'StreamPlan Not Available');
   }
   return values;
 };
@@ -118,6 +118,7 @@ const getPurchased_Planes = async (userId) => {
         userType: 1,
         planType: 1,
         planName: 1,
+        planId: 1,
         planMode: 1,
         no_of_Stream: 1,
         no_of_host_per_Stream: 1,

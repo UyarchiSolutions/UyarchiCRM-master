@@ -5,6 +5,8 @@ const { SubHostOTP } = require('../models/subHost.Otp.model');
 const { Otp } = require('../config/subHostOTP');
 const moment = require('moment');
 const bcrypt = require('bcryptjs');
+const RequestStream = require('../models/requestStream.model');
+
 // create SubHost
 
 const create_SubHost = async (body, userId) => {
@@ -122,6 +124,27 @@ const getSubHostBy_Login = async (id) => {
   return data;
 };
 
+const getStream_By_SubHost = async (id) => {
+  const data = await RequestStream.aggregate([
+    {
+      $match: {
+        $or: [
+          {
+            allot_host_1: id,
+          },
+          {
+            allot_host_2: id,
+          },
+          {
+            allot_host_3: id,
+          },
+        ],
+      },
+    },
+  ]);
+  return data;
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -135,4 +158,5 @@ module.exports = {
   getSubHostForChat,
   getSubHostForStream,
   getSubHostBy_Login,
+  getStream_By_SubHost,
 };
