@@ -141,6 +141,20 @@ const getStream_By_SubHost = async (id) => {
         ],
       },
     },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'sellerpost',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$sellerpost',
+      },
+    },
   ]);
   return data;
 };
