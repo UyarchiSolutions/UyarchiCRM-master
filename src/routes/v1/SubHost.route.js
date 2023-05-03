@@ -2,6 +2,7 @@ const express = require('express');
 const SubHostController = require('../../controllers/SubHost.controller');
 const router = express.Router();
 const Authorization = require('../../controllers/BuyerAuth');
+const SubHostAuth = require('../../controllers/SubHostAuthentication.controller');
 
 router.route('/').post(Authorization, SubHostController.create_SubHost);
 router.route('/created/subHost').get(Authorization, SubHostController.get_created_Subhost_By_Seller);
@@ -14,4 +15,5 @@ router.route('/setPassword/:id').put(SubHostController.setPassword);
 router.route('/Login').post(SubHostController.Login);
 router.route('/getSubHost/ForChat').get(Authorization, SubHostController.getSubHostForChat);
 router.route('/getSubHost/ForStream').get(Authorization, SubHostController.getSubHostForStream);
+router.route('/getSubHostBy/Login').get(SubHostAuth, SubHostController.getSubHostBy_Login);
 module.exports = router;

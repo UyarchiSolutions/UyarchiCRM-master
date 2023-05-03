@@ -3,6 +3,7 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const SubHostService = require('../services/SubHost.service');
+const { authService, userService, tokenService, emailService } = require('../services');
 
 // create Sub host
 
@@ -50,7 +51,8 @@ const setPassword = catchAsync(async (req, res) => {
 
 const Login = catchAsync(async (req, res) => {
   const data = await SubHostService.Login(req.body);
-  res.send(data);
+  let token = await tokenService.generateAuthTokens(data);
+  res.send({ data, token });
 });
 
 const getSubHostForChat = catchAsync(async (req, res) => {
@@ -62,6 +64,12 @@ const getSubHostForChat = catchAsync(async (req, res) => {
 const getSubHostForStream = catchAsync(async (req, res) => {
   let userId = req.userId;
   const data = await SubHostService.getSubHostForStream(userId);
+  res.send(data);
+});
+
+const getSubHostBy_Login = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SubHostService.getSubHostBy_Login(userId);
   res.send(data);
 });
 
@@ -77,4 +85,5 @@ module.exports = {
   Login,
   getSubHostForChat,
   getSubHostForStream,
+  getSubHostBy_Login,
 };

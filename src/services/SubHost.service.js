@@ -114,6 +114,14 @@ const getSubHostForStream = async (userId) => {
   return values;
 };
 
+const getSubHostBy_Login = async (id) => {
+  const data = await SubHost.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'SubHost Not Available');
+  }
+  return data;
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -126,4 +134,5 @@ module.exports = {
   Login,
   getSubHostForChat,
   getSubHostForStream,
+  getSubHostBy_Login,
 };
