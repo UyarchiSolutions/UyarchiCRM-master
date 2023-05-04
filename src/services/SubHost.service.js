@@ -92,6 +92,20 @@ const Login = async (body) => {
   return user;
 };
 
+const changePassword_SubHost = async (body, id) => {
+  const user = await SubHost.findById(id);
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Available');
+  }
+  let pwdMatch = await user.isPasswordMatch(body.oldPassword);
+  if (!pwdMatch) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Old Password Is Wrong');
+  }
+  let pwd = await bcrypt.hash(body.password, 8);
+  await SubHost.findByIdAndUpdate({ _id: id }, { password: pwd }, { new: true });
+  return { message: 'Password Changed' };
+};
+
 const getSubHostForChat = async (userId) => {
   let values = await SubHost.aggregate([
     {
@@ -181,4 +195,5 @@ module.exports = {
   getSubHostBy_Login,
   getStream_By_SubHost,
   changePassword,
+  changePassword_SubHost,
 };

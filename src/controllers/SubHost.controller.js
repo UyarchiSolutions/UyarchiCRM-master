@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const SubHostService = require('../services/SubHost.service');
 const { authService, userService, tokenService, emailService } = require('../services');
+const SubHost = require('../models/SubHost.model');
 
 // create Sub host
 
@@ -84,6 +85,12 @@ const changePassword = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const changePassword_SubHost = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await SubHostService.changePassword_SubHost(req.body, userId);
+  res.send(data);
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -99,4 +106,5 @@ module.exports = {
   getSubHostBy_Login,
   getStream_By_SubHost,
   changePassword,
+  changePassword_SubHost,
 };
