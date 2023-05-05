@@ -1044,6 +1044,7 @@ const giveInterest = async (id, userId) => {
     postId: post._id,
     buyerId: userId,
     sellerId: post.userId,
+    type:'Intrest'
   });
 
   return post;

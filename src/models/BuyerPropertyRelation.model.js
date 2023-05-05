@@ -82,6 +82,9 @@ const SellerNotificationSchema = new mongoose.Schema(
     postId: {
       type: String,
     },
+    type: {
+      type: String,
+    },
     active: {
       type: Boolean,
       default: true,
