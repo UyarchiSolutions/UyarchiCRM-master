@@ -1,3 +1,4 @@
+const { boolean } = require('joi');
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
 
@@ -66,8 +67,34 @@ const BuyershortListRelationSchema = new mongoose.Schema({
 });
 const shortList = mongoose.model('shortList', BuyershortListRelationSchema);
 
+const SellerNotificationSchema = new mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: v4,
+    },
+    sellerId: {
+      type: String,
+    },
+    buyerId: {
+      type: String,
+    },
+    postId: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const SellerNotification = mongoose.model('SellerNotification', SellerNotificationSchema);
+
 module.exports = {
   ViewedDetails,
   whishListDetails,
   shortList,
+  SellerNotification,
 };

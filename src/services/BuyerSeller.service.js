@@ -8,7 +8,7 @@ const subHostOTP = require('../config/subHostOTP');
 const StoreOtp = require('../models/RealEstate.Otp.model');
 const userPlane = require('../models/usersPlane.model');
 const AdminPlan = require('../models/AdminPlan.model');
-const { ViewedDetails, whishListDetails, shortList } = require('../models/BuyerPropertyRelation.model');
+const { ViewedDetails, whishListDetails, shortList, SellerNotification } = require('../models/BuyerPropertyRelation.model');
 const PropertyBuyerRelation = require('../models/propertyBuyerRelation.model');
 const Axios = require('axios');
 const AWS = require('aws-sdk');
@@ -1038,6 +1038,13 @@ const giveInterest = async (id, userId) => {
     await shortList.create({ created: moment(), propertyId: post._id, userId: userId });
     await post.save();
   }
+
+  // sent Notification to seller
+  await SellerNotification.create({
+    postId: post._id,
+    buyerId: userId,
+    sellerId: post.userId,
+  });
 
   return post;
 };
