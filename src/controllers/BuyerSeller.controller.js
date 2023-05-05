@@ -602,6 +602,12 @@ const getSellerPostBySeller = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getNotificationDetails = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getNotificationDetails(userId);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -687,4 +693,5 @@ module.exports = {
   post_active_inactive,
   Remove_Post,
   getSellerPostBySeller,
+  getNotificationDetails,
 };

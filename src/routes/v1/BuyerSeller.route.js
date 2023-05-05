@@ -102,4 +102,7 @@ router.route('/PropertyDeatails/after/intrested/:id').get(BuyerAuth, BuyerSeller
 router.route('/updateBuyerRelation/:id').put(BuyerAuth, BuyerSellerController.updateBuyerRelation);
 router.route('/Delete/Property/image/:id').put(BuyerSellerController.Delete_Property_image);
 router.route('/Delete/property/video/:id').delete(BuyerSellerController.Delete_property_video);
+
+// notificatio Flow
+router.route('/getNotification/Details/intrested').get(BuyerAuth, BuyerSellerController.getNotificationDetails);
 module.exports = router;
