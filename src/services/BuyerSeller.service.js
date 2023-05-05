@@ -1037,15 +1037,14 @@ const giveInterest = async (id, userId) => {
     );
     await shortList.create({ created: moment(), propertyId: post._id, userId: userId });
     await post.save();
+    // sent Notification to seller
+    await SellerNotification.create({
+      postId: post._id,
+      buyerId: userId,
+      sellerId: post.userId,
+      type: 'Intrest',
+    });
   }
-
-  // sent Notification to seller
-  await SellerNotification.create({
-    postId: post._id,
-    buyerId: userId,
-    sellerId: post.userId,
-    type:'Intrest'
-  });
 
   return post;
 };
