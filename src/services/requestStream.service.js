@@ -167,6 +167,18 @@ const getStreamById = async (id) => {
   return values;
 };
 
+const getApprovedStream_For_Buyers = async () => {
+  let values = await RequestStream.aggregate([
+    {
+      $match: {
+        adminApprove: 'Approved',
+        active: true,
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
@@ -175,4 +187,5 @@ module.exports = {
   getStreams_Admin_Side,
   AdminStream_Approved_Cancel,
   getStreamById,
+  getApprovedStream_For_Buyers,
 };
