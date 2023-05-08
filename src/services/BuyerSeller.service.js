@@ -559,7 +559,7 @@ const getApprover_Property = async (query, userId, body) => {
         console.log(from,to)
       }
     });
-    floorMatch = { $and: arr };
+    floorMatch = { $or: arr };
   }
 
   console.log();
