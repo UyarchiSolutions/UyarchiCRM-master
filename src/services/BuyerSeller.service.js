@@ -383,13 +383,13 @@ const getApprover_Property = async (query, userId, body) => {
   }
 
   // Floor Filters
-  if (query.floorFrom && query.floorTo) {
-    query.floorFrom = parseInt(query.floorFrom);
-    query.floorTo = parseInt(query.floorTo);
-    let arrays = [];
-    arrays.push({ floorCount: { $gte: query.floorFrom, $lte: query.floorTo } });
-    floorMatch = { $or: arrays };
-  }
+  // if (query.floorFrom && query.floorTo) {
+  //   query.floorFrom = parseInt(query.floorFrom);
+  //   query.floorTo = parseInt(query.floorTo);
+  //   let arrays = [];
+  //   arrays.push({ floorCount: { $gte: query.floorFrom, $lte: query.floorTo } });
+  //   floorMatch = { $or: arrays };
+  // }
 
   // propertType Filter
 
@@ -544,6 +544,25 @@ const getApprover_Property = async (query, userId, body) => {
     finish = true;
   }
 
+  if (query.floor) {
+    let arr = [];
+    let value = query.floor.split(',');
+    value.forEach((e) => {
+      let apli = e.split('-');
+      if (apli.length == 1) {
+        let oneValue = parseInt(apli[0]);
+        arr.push({ floorCount: { $eq: oneValue } });
+      } else {
+        let from = parseInt(apli[0]);
+        let to = parseInt(apli[1]);
+        arr.push({ floorCount: { $gte: from, $lte: to } });
+        console.log(from,to)
+      }
+    });
+    floorMatch = { $and: arr };
+  }
+
+  console.log();
   let values = await SellerPost.aggregate([
     {
       $match: {
@@ -2361,7 +2380,7 @@ const getNotificationDetails = async (userId) => {
     {
       $unwind: {
         preserveNullAndEmptyArrays: true,
-        path:'$users'
+        path: '$users',
       },
     },
     {
@@ -2375,7 +2394,7 @@ const getNotificationDetails = async (userId) => {
     {
       $unwind: {
         preserveNullAndEmptyArrays: true,
-        path:'$posts'
+        path: '$posts',
       },
     },
   ]);
