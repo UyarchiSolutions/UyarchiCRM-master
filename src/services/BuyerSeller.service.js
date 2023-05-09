@@ -126,7 +126,6 @@ const createSellerPost = async (body, userId) => {
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
       propertyExpiredDate: postValidate,
-      location: { type: 'Point', coordinates: [parseFloat(lat), parseFloat(long)] },
     },
   };
   const sellerPost = await SellerPost.create(values);
@@ -1595,6 +1594,10 @@ const UpdateSellerPost_As_Raw_Data = async (id, body, userId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'POst Not Found');
   }
   values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
+  if (body.lat != null && body.long != null) {
+    values.location = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
+    values.save();
+  }
   return values;
 };
 
