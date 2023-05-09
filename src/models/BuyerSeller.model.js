@@ -173,7 +173,7 @@ const sellerPostSchema = new mongoose.Schema({
   BhkCount: {
     type: Number,
   },
-  location: {
+  locationCoordinates: {
     type: Object,
   },
   escalator: {

@@ -1595,7 +1595,7 @@ const UpdateSellerPost_As_Raw_Data = async (id, body, userId) => {
   }
   values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
   if (body.lat != null && body.long != null) {
-    values.location = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
+    values.locationCoordinates = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
     values.save();
   }
   return values;
