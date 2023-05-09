@@ -118,6 +118,7 @@ const createSellerPost = async (body, userId) => {
   //     planedata = { videoUpload: Sellers.videos, imageUpload: Sellers.Image };
   //   }
   // }
+  const { lat, long } = body;
   let values = {
     ...body,
     ...{
@@ -125,6 +126,7 @@ const createSellerPost = async (body, userId) => {
       date: moment().format('YYYY-MM-DD'),
       userId: userId,
       propertyExpiredDate: postValidate,
+      location: { type: 'Point', coordinates: [parseFloat(lat), parseFloat(long)] },
     },
   };
   const sellerPost = await SellerPost.create(values);
@@ -382,17 +384,6 @@ const getApprover_Property = async (query, userId, body) => {
     BHKTypeMatch = { $or: arr };
   }
 
-  // Floor Filters
-  // if (query.floorFrom && query.floorTo) {
-  //   query.floorFrom = parseInt(query.floorFrom);
-  //   query.floorTo = parseInt(query.floorTo);
-  //   let arrays = [];
-  //   arrays.push({ floorCount: { $gte: query.floorFrom, $lte: query.floorTo } });
-  //   floorMatch = { $or: arrays };
-  // }
-
-  // propertType Filter
-
   if (query.propertType) {
     let arr = [];
     query.propertType.split(',').forEach((e) => {
@@ -556,7 +547,7 @@ const getApprover_Property = async (query, userId, body) => {
         let from = parseInt(apli[0]);
         let to = parseInt(apli[1]);
         arr.push({ floorCount: { $gte: from, $lte: to } });
-        console.log(from,to)
+        console.log(from, to);
       }
     });
     floorMatch = { $or: arr };

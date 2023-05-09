@@ -173,6 +173,9 @@ const sellerPostSchema = new mongoose.Schema({
   BhkCount: {
     type: Number,
   },
+  location: {
+    type: Object,
+  },
   escalator: {
     type: String,
   },
@@ -677,6 +680,7 @@ const AdminSchema = new mongoose.Schema({
 });
 
 const Admin = mongoose.model('AdminSchema', AdminSchema);
+sellerPostSchema.index({ location: '2dsphere' });
 
 module.exports = {
   BuyerSeller,
