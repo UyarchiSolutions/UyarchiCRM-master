@@ -174,7 +174,8 @@ const sellerPostSchema = new mongoose.Schema({
     type: Number,
   },
   locationCoordinates: {
-    type: Object,
+    type: { type: String },
+    coordinates: [Number],
   },
   escalator: {
     type: String,
@@ -534,8 +535,13 @@ const sellerPostSchema = new mongoose.Schema({
   area: {
     type: String,
   },
+  loc: {
+    type: { type: String },
+    coordinates: [Number],
+  },
 });
-
+sellerPostSchema.index({ locationCoordinates: '2dsphere' });
+sellerPostSchema.index({ loc: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
 const BuyerRentieSchema = mongoose.Schema({
@@ -680,7 +686,6 @@ const AdminSchema = new mongoose.Schema({
 });
 
 const Admin = mongoose.model('AdminSchema', AdminSchema);
-sellerPostSchema.index({ location: '2dsphere' });
 
 module.exports = {
   BuyerSeller,

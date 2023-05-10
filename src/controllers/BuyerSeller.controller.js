@@ -109,7 +109,7 @@ const createBuyerRentiee = catchAsync(async (req, res) => {
 const SearchHouseFlatByBuyer_Or_Rentiee = catchAsync(async (req, res) => {
   let userId = req.userId;
   let type = req.type;
-  const data = await buyersellerService.SearchHouseFlatByBuyer_Or_Rentiee(userId);
+  const data = await buyersellerService.SearchHouseFlatByBuyer_Or_Rentiee();
   res.send(data);
 });
 

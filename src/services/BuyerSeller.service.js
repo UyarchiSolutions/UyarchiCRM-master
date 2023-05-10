@@ -156,8 +156,14 @@ const createBuyerRentiee = async (body, userId) => {
 const SearchHouseFlatByBuyer_Or_Rentiee = async (id) => {
   let area = { active: true };
 
-  let values = await SellerPost.aggregate([{}]);
-  return id;
+  // let values = await SellerPost.find();
+  // values.forEach((e) => {
+  //   if (e.lat != null && e.long != null) {
+  //     e.locationCoordinates = { type: 'Point', coordinates: [e.lat, e.long] };
+  //     e.save()
+  //   }
+  // });
+  return { message: 'sdfasdf' };
 };
 
 const DisplayAvailable_HouseOr_Flat = async (query) => {
@@ -297,7 +303,19 @@ const ApproveAndReject = async (id, body) => {
   return values;
 };
 
+const getLocationByAddress = async (text) => {
+  let values = await Axios.get(
+    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${text}&inputtype=textquery&fields=geometry&key=AIzaSyDoYhbYhtl9HpilAZSy8F_JHmzvwVDoeHI`
+  );
+  if (values.data) {
+    let location = values.data.candidates[0].geometry.location;
+    return location;
+  }
+};
+
 const getApprover_Property = async (query, userId, body) => {
+  let locationss = await getLocationByAddress('Anna Nagar, Chennai, Tamil Nadu, India');
+  console.log(locationss);
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -362,7 +380,7 @@ const getApprover_Property = async (query, userId, body) => {
     if (query.formatAdd != '') {
       let formatAddrs = [];
       query.formatAdd.split(',').forEach((e) => {
-        formatAddrs.push({ formatedAddress: { $regex: e, $options: 'i' } });
+        formatAddrs.push({ formatedAddress: { $not: { $regex: e, $options: 'i' } } });
       });
       formatAdd = { $and: formatAddrs };
     }
@@ -552,7 +570,6 @@ const getApprover_Property = async (query, userId, body) => {
     floorMatch = { $or: arr };
   }
 
-  console.log();
   let values = await SellerPost.aggregate([
     {
       $match: {
@@ -764,6 +781,27 @@ const getApprover_Property = async (query, userId, body) => {
       $limit: range,
     },
   ]);
+  console.log(locationss);
+  let nearby = await SellerPost.aggregate([
+    {
+      $geoNear: {
+        // includeLocs: 'location',
+        key: 'locationCoordinates',
+        near: {
+          type: 'Point',
+          coordinates: [locationss.lng, locationss.lat],
+        },
+        distanceField: 'distance',
+        spherical: true,
+        // maxDistance:5000
+      },
+    },
+    {
+      $sort: {
+        distance: 1,
+      },
+    },
+  ]);
   let total = await SellerPost.aggregate([
     {
       $match: {
@@ -859,7 +897,12 @@ const getApprover_Property = async (query, userId, body) => {
     //   $match: { status: { $eq: 'Pending' } },
     // },
   ]);
-  return { values: values, total: total.length, single: values[0] };
+  return {
+    // values: values,
+    // total: total.length,
+    // single: values[0],
+    nearby,
+  };
 };
 
 const BuyerLike_Property = async (id, userId) => {
