@@ -380,7 +380,7 @@ const getApprover_Property = async (query, userId, body) => {
     if (query.formatAdd != '') {
       let formatAddrs = [];
       query.formatAdd.split(',').forEach((e) => {
-        formatAddrs.push({ formatedAddress: { $not: { $regex: e, $options: 'i' } } });
+        formatAddrs.push({ formatedAddress: { $regex: e, $options: 'i' } });
       });
       formatAdd = { $and: formatAddrs };
     }
@@ -781,27 +781,25 @@ const getApprover_Property = async (query, userId, body) => {
       $limit: range,
     },
   ]);
-  console.log(locationss);
-  let nearby = await SellerPost.aggregate([
-    {
-      $geoNear: {
-        // includeLocs: 'location',
-        key: 'locationCoordinates',
-        near: {
-          type: 'Point',
-          coordinates: [locationss.lng, locationss.lat],
-        },
-        distanceField: 'distance',
-        spherical: true,
-        // maxDistance:5000
-      },
-    },
-    {
-      $sort: {
-        distance: 1,
-      },
-    },
-  ]);
+  // let nearby = await SellerPost.aggregate([
+  //   {
+  //     $geoNear: {
+  //       // includeLocs: 'location',
+  //       // key: 'locationCoordinates',
+  //       near: {
+  //         type: 'Point',
+  //         coordinates: [80.1845234, 13.0964535],
+  //       },
+  //       distanceField: 'distance',
+  //       spherical: true,
+  //     },
+  //   },
+  //   {
+  //     $sort: {
+  //       distance: 1,
+  //     },
+  //   },
+  // ]);
   let total = await SellerPost.aggregate([
     {
       $match: {
@@ -898,10 +896,10 @@ const getApprover_Property = async (query, userId, body) => {
     // },
   ]);
   return {
-    // values: values,
-    // total: total.length,
-    // single: values[0],
-    nearby,
+    values: values,
+    total: total.length,
+    single: values[0],
+    // nearby,
   };
 };
 

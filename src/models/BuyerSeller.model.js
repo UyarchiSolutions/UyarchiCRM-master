@@ -541,7 +541,6 @@ const sellerPostSchema = new mongoose.Schema({
   },
 });
 sellerPostSchema.index({ locationCoordinates: '2dsphere' });
-sellerPostSchema.index({ loc: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
 const BuyerRentieSchema = mongoose.Schema({
