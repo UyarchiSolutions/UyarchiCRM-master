@@ -118,7 +118,6 @@ const createSellerPost = async (body, userId) => {
   //     planedata = { videoUpload: Sellers.videos, imageUpload: Sellers.Image };
   //   }
   // }
-  const { lat, long } = body;
   let values = {
     ...body,
     ...{

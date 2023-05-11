@@ -535,10 +535,10 @@ const sellerPostSchema = new mongoose.Schema({
   area: {
     type: String,
   },
-  loc: {
-    type: { type: String },
-    coordinates: [Number],
-  },
+  // loc: {
+  //   type: { type: String },
+  //   coordinates: [Number],
+  // },
 });
 sellerPostSchema.index({ locationCoordinates: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
