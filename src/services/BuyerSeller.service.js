@@ -1608,7 +1608,14 @@ const updateBuyerRelation = async (id, body, userId) => {
       { scheduleDate: body.schedule, scheduletime: body.scheduletime, status: 'Shcedule' },
       { new: true }
     );
-    await SellerNotification.create({ postId: body.postId, buyerId: body.buyerId, sellerId: userId, type: 'Schedule' });
+    await SellerNotification.create({
+      postId: body.postId,
+      buyerId: body.buyerId,
+      sellerId: userId,
+      scheduleDate: body.schedule,
+      scheduleTime: body.scheduleTime,
+      type: 'Schedule',
+    });
   }
   return values;
 };
