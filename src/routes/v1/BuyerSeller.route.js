@@ -105,4 +105,5 @@ router.route('/Delete/property/video/:id').delete(BuyerSellerController.Delete_p
 
 // notificatio Flow
 router.route('/getNotification/Details/intrested').get(BuyerAuth, BuyerSellerController.getNotificationDetails);
+router.route('/getNotificationFor/Buyers').get(BuyerAuth, BuyerSellerController.getNotificationFor_Buyers);
 module.exports = router;

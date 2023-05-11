@@ -2437,6 +2437,46 @@ const getNotificationDetails = async (userId) => {
   return values;
 };
 
+const getNotificationFor_Buyers = async (userId) => {
+  let values = await SellerNotification.aggregate([
+    {
+      $match: {
+        buyerId: userId,
+        type: 'Schedule',
+      },
+    },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'buyerId',
+        foreignField: '_id',
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'posts',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$posts',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -2525,4 +2565,5 @@ module.exports = {
   Remove_Post,
   getSellerPostBySeller,
   getNotificationDetails,
+  getNotificationFor_Buyers,
 };
