@@ -1610,6 +1610,7 @@ const updateBuyerRelation = async (id, body, userId) => {
       { scheduleDate: body.schedule, scheduletime: body.scheduletime, status: 'Shcedule' },
       { new: true }
     );
+    await SellerNotification.create({ postId: body.postId, buyerId: body.buyerId, sellerId: userId, type: 'Schedule' });
   }
   return values;
 };
