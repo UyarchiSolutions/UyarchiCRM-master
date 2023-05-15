@@ -22,6 +22,19 @@ const createBuyerSeller = async (body, otp) => {
   return buyerSeller;
 };
 
+const BuyerReshedule = async (body, id) => {
+  const { postId } = body;
+  let postFind = await SellerPost.findById(postId);
+  if (!postFind) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
+  }
+  let sellerId = postFind.userId;
+  let status = 'Re-Schedule';
+  let data = { postId: postId, buyerId: id, sellerId: sellerId, type: status };
+  let creation = await SellerNotification.create(data);
+  return creation;
+};
+
 const createBuyer = async (body, otp) => {
   const { email, mobile } = body;
   let values = {
@@ -1609,7 +1622,7 @@ const updateBuyerRelation = async (id, body, userId) => {
     );
     await SellerNotification.create({
       postId: body.postId,
-      buyerId: body.buyerId,  
+      buyerId: body.buyerId,
       sellerId: userId,
       scheduleDate: body.schedule,
       scheduleTime: body.scheduletime,
@@ -2572,4 +2585,5 @@ module.exports = {
   getSellerPostBySeller,
   getNotificationDetails,
   getNotificationFor_Buyers,
+  BuyerReshedule,
 };
