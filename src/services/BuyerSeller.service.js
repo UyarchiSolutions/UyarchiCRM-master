@@ -2170,7 +2170,25 @@ const getDataById = async (id, userId) => {
   } else {
     savedStatus = false;
   }
-  return { values: values, intrest: intreststatus, savedStatus: savedStatus, relation: relation };
+
+  const status_check = await SellerNotification.find({
+    buyerId: userId,
+    postId: id,
+    type: { $in: ['Reschedule', 'Accept', 'Reject'] },
+  });
+
+  let counts = status_check.length;
+  let show = false;
+  if (counts > 0) {
+    show = true;
+  }
+  return {
+    values: values,
+    intrest: intreststatus,
+    savedStatus: savedStatus,
+    relation: relation,
+    show: show,
+  };
 };
 
 const getAddress_By_Lat_long = async (query) => {
