@@ -23,13 +23,13 @@ const createBuyerSeller = async (body, otp) => {
 };
 
 const BuyerReshedule = async (body, id) => {
-  const { postId } = body;
+  const { postId, status } = body;
   let postFind = await SellerPost.findById(postId);
   if (!postFind) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
   }
   let sellerId = postFind.userId;
-  let status = 'Re-Schedule';
+  // let status = 'Re-Schedule';
   let data = { postId: postId, buyerId: id, sellerId: sellerId, type: status };
   let creation = await SellerNotification.create(data);
   return creation;
