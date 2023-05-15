@@ -31,8 +31,10 @@ const BuyerReshedule = async (body, id) => {
   let sellerId = postFind.userId;
   // let status = 'Re-Schedule';
   let data = { postId: postId, buyerId: id, sellerId: sellerId, type: status };
-  let creation = await SellerNotification.create(data);
-  return creation;
+  // let creation = await SellerNotification.create(data);
+
+  const sheduledRelation = await PropertyBuyerRelation.findOne({ userId: id, propertyId: postId, status: 'Shcedule' });
+  return sheduledRelation;
 };
 
 const createBuyer = async (body, otp) => {
@@ -1615,11 +1617,13 @@ const updateBuyerRelation = async (id, body, userId) => {
     );
   }
   if (body.type === 'Shcedule') {
-    values = await PropertyBuyerRelation.findByIdAndUpdate(
-      { _id: id },
-      { scheduleDate: body.schedule, scheduletime: body.scheduletime, status: 'Shcedule' },
-      { new: true }
-    );
+    values = await PropertyBuyerRelation.create({
+      scheduleDate: body.schedule,
+      scheduletime: body.scheduletime,
+      propertyId: postId,
+      userId: body.buyerId,
+      status: 'Shcedule',
+    });
     await SellerNotification.create({
       postId: body.postId,
       buyerId: body.buyerId,
