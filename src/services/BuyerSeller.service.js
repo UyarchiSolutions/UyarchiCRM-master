@@ -2194,7 +2194,6 @@ const getDataById = async (id, userId) => {
     propertyId: id,
     status: { $in: ['Reschedule', 'Shcedule'] },
   });
-  console.log(status_check);
 
   let counts = status_check.length;
   let show = false;
@@ -2374,7 +2373,7 @@ const PropertyDeatails_after_intrested = async (id) => {
     {
       $match: {
         propertyId: id,
-        status: { $in: ['Intrested', 'Rejected', 'Shcedule', 'Ignored', 'Accepted', 'Visited', 'Fixed', 'Re-schedule'] },
+        status: { $in: ['Intrested', 'Rejected', 'Shcedule', 'Ignored', 'Accept', 'Visited', 'Fixed', 'Re-schedule'] },
       },
     },
     {
