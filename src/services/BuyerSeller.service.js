@@ -1626,15 +1626,15 @@ const updateBuyerRelation = async (id, body, userId) => {
       status: { $in: ['Intrested', 'request_Reschedule'] },
       propertyId: body.postId,
     });
-
-    findIntrest = await PropertyBuyerRelation.findByIdAndUpdate(
+    console.log(findIntrest._id);
+    await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: findIntrest._id },
       {
         scheduleDate: body.schedule,
         scheduletime: body.scheduletime,
         propertyId: body.postId,
         userId: body.buyerId,
-        status: 'Shcedule',
+        status: body.type,
       },
       { new: true }
     );
