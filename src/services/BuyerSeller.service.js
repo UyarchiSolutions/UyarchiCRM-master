@@ -2471,7 +2471,7 @@ const getNotificationDetails = async (userId) => {
       $match: {
         active: true,
         sellerId: userId,
-        type: { $ne: 'Schedule' },
+        type: { $nin: ['Schedule', 'request_Reschedule'] },
       },
     },
     {
