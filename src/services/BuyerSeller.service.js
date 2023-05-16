@@ -2373,7 +2373,7 @@ const PropertyDeatails_after_intrested = async (id) => {
     {
       $match: {
         propertyId: id,
-        status: { $in: ['Intrested', 'Rejected', 'Shcedule', 'Ignored', 'Accept', 'Visited', 'Fixed', 'Reschedule'] },
+        status: { $in: ['Intrested', 'Reject', 'Shcedule', 'Ignored', 'Accept', 'Visited', 'Fixed', 'Reschedule'] },
       },
     },
     {
