@@ -2191,9 +2191,10 @@ const getDataById = async (id, userId) => {
 
   const status_check = await PropertyBuyerRelation.find({
     userId: userId,
-    postId: id,
+    propertyId: id,
     status: { $in: ['Reschedule', 'Shcedule'] },
   });
+  console.log(status_check);
 
   let counts = status_check.length;
   let show = false;
