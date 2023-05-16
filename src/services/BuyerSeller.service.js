@@ -2189,10 +2189,10 @@ const getDataById = async (id, userId) => {
     savedStatus = false;
   }
 
-  const status_check = await SellerNotification.find({
-    buyerId: userId,
+  const status_check = await PropertyBuyerRelation.find({
+    userId: userId,
     postId: id,
-    type: { $in: ['Reschedule', 'Accept', 'Reject'] },
+    type: { $in: ['Reschedule', 'Shcedule'] },
   });
 
   let counts = status_check.length;
