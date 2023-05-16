@@ -1617,13 +1617,23 @@ const updateBuyerRelation = async (id, body, userId) => {
     );
   }
   if (body.type === 'Shcedule') {
-    values = await PropertyBuyerRelation.create({
-      scheduleDate: body.schedule,
-      scheduletime: body.scheduletime,
-      propertyId: body.postId,
+    let findIntrest = await PropertyBuyerRelation.findOne({
       userId: body.buyerId,
-      status: 'Shcedule',
+      status: 'Intrested',
+      propertyId: body.postId,
     });
+
+    findIntrest = await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: findIntrest._id },
+      {
+        scheduleDate: body.schedule,
+        scheduletime: body.scheduletime,
+        propertyId: body.postId,
+        userId: body.buyerId,
+        status: 'Shcedule',
+      },
+      { new: true }
+    );
     await SellerNotification.create({
       postId: body.postId,
       buyerId: body.buyerId,
