@@ -2196,11 +2196,12 @@ const getDataById = async (id, userId) => {
 };
 
 const getAddress_By_Lat_long = async (query) => {
-  const { lat, long } = query;
+  let { lat, long } = query;
+  lat = parseFloat(lat);
+  long = parseFloat(long);
+  console.log(lat);
   let apikey = 'AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE';
-  let values = await Axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}8&sensor=true&key=${apikey}`
-  );
+  let values = await Axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apikey}`);
   return values.data.results;
 };
 
