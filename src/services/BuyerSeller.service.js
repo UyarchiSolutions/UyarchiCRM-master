@@ -31,10 +31,9 @@ const BuyerReshedule = async (body, id) => {
   let sellerId = postFind.userId;
   // let status = 'Re-Schedule';
   let data = { postId: postId, buyerId: id, sellerId: sellerId, type: status };
-  // let creation = await SellerNotification.create(data);
-
+  let creation = await SellerNotification.create(data);
   const sheduledRelation = await PropertyBuyerRelation.findOne({ userId: id, propertyId: postId, status: 'Shcedule' });
-  return sheduledRelation;
+  return creation;
 };
 
 const createBuyer = async (body, otp) => {
