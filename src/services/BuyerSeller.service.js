@@ -1620,7 +1620,7 @@ const updateBuyerRelation = async (id, body, userId) => {
     values = await PropertyBuyerRelation.create({
       scheduleDate: body.schedule,
       scheduletime: body.scheduletime,
-      propertyId: postId,
+      propertyId: body.postId,
       userId: body.buyerId,
       status: 'Shcedule',
     });
