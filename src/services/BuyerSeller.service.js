@@ -1623,7 +1623,7 @@ const updateBuyerRelation = async (id, body, userId) => {
   if (body.type === 'Shcedule') {
     let findIntrest = await PropertyBuyerRelation.findOne({
       userId: body.buyerId,
-      status: 'Intrested',
+      status: { $in: ['Intrested', 'request_Reschedule'] },
       propertyId: body.postId,
     });
 
@@ -2373,7 +2373,19 @@ const PropertyDeatails_after_intrested = async (id) => {
     {
       $match: {
         propertyId: id,
-        status: { $in: ['Intrested', 'Reject', 'Shcedule', 'Ignored', 'Accept', 'Visited', 'Fixed', 'Reschedule','request_Reschedule'] },
+        status: {
+          $in: [
+            'Intrested',
+            'Reject',
+            'Shcedule',
+            'Ignored',
+            'Accept',
+            'Visited',
+            'Fixed',
+            'Reschedule',
+            'request_Reschedule',
+          ],
+        },
       },
     },
     {
