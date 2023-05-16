@@ -327,8 +327,8 @@ const getLocationByAddress = async (text) => {
 };
 
 const getApprover_Property = async (query, userId, body) => {
-  let locationss = await getLocationByAddress('Anna Nagar, Chennai, Tamil Nadu, India');
-  console.log(locationss);
+  // let locationss = await getLocationByAddress('Anna Nagar, Chennai, Tamil Nadu, India');
+  // console.log(locationss);
   let cityMatch = { active: true };
   let propertMatch = { active: true };
   let BHKTypeMatch = { active: true };
@@ -625,7 +625,7 @@ const getApprover_Property = async (query, userId, body) => {
         from: 'properbuyerrelations',
         localField: '_id',
         foreignField: 'propertyId',
-        pipeline: [{ $match: { userId: userId } }],
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
         as: 'users',
       },
     },
