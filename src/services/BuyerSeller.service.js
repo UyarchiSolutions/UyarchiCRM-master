@@ -2459,6 +2459,7 @@ const getNotificationDetails = async (userId) => {
       $match: {
         active: true,
         sellerId: userId,
+        status: { $ne: 'Schedule' },
       },
     },
     {
