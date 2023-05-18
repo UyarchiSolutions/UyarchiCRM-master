@@ -916,7 +916,7 @@ const getApprover_Property = async (query, userId, body) => {
   return {
     values: values,
     total: total.length,
-    single: values[0],
+    // single: values[0],
     // nearby,
   };
 };
