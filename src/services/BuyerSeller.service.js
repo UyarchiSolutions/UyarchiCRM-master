@@ -656,7 +656,7 @@ const getApprover_Property = async (query, userId, body) => {
 
         orMatchedData: [{
           $match: {
-            $and: [formatAdd]
+            $and: [formatAdd, HouseOrCommercialTypeMatch]
           }
         }]
       },
