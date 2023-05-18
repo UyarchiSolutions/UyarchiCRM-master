@@ -590,40 +590,90 @@ const getApprover_Property = async (query, userId, body) => {
 
   let values = await SellerPost.aggregate([
     {
-      $match: {
-        $and: [
-          cityMatch,
-          propertMatch,
-          BHKTypeMatch,
-          MonthlyRentFromMatch,
-          MonthlyRentToMatch,
-          HouseOrCommercialTypeMatch,
-          typeMatch,
-          formatAdd,
-          rentMatch,
-          furnishingMatch,
-          parkingMatch,
-          bathroomMatch,
-          rentPreferMatch,
-          propAgeMatch,
-          BuildupSizeMatch,
-          priceMatch,
-          floorMatch,
-          buildingTypeMatch,
-          amaenitiesMatch,
-          buildingAgeMatch,
-          // { propStatus: 'Approved' },
-          {
-            finsh: finish,
-          },
-        ],
+      // $match: {
+      //   $and: [
+      //     cityMatch,
+      //     propertMatch,
+      //     BHKTypeMatch,
+      //     MonthlyRentFromMatch,
+      //     MonthlyRentToMatch,
+      //     HouseOrCommercialTypeMatch,
+      //     typeMatch,
+      //     formatAdd,
+      //     rentMatch,
+      //     furnishingMatch,
+      //     parkingMatch,
+      //     bathroomMatch,
+      //     rentPreferMatch,
+      //     propAgeMatch,
+      //     BuildupSizeMatch,
+      //     priceMatch,
+      //     floorMatch,
+      //     buildingTypeMatch,
+      //     amaenitiesMatch,
+      //     buildingAgeMatch,
+      //     // { propStatus: 'Approved' },
+      //     {
+      //       finsh: finish,
+      //     },
+      //   ]
+      // },
+
+      // TRy
+
+      $facet: {
+        andMatchedData: [{
+          $match: {
+            $and: [
+              cityMatch,
+              propertMatch,
+              BHKTypeMatch,
+              MonthlyRentFromMatch,
+              MonthlyRentToMatch,
+              HouseOrCommercialTypeMatch,
+              typeMatch,
+              formatAdd,
+              rentMatch,
+              furnishingMatch,
+              parkingMatch,
+              bathroomMatch,
+              rentPreferMatch,
+              propAgeMatch,
+              BuildupSizeMatch,
+              priceMatch,
+              floorMatch,
+              buildingTypeMatch,
+              amaenitiesMatch,
+              buildingAgeMatch,
+              // { propStatus: 'Approved' },
+              {
+                finsh: finish,
+              },
+            ]
+
+          }
+        }],
+
+        orMatchedData: [{
+          $match: {
+            $and: [formatAdd]
+          }
+        }]
       },
     },
-    // {
-    //   $match: { $and: [{ BHKType: { $in: BHK } }] },
-    // },
+    {
+      $project: {
+        result: { $concatArrays: ["$andMatchedData", "$orMatchedData"] }
+      }
+    },
+    {
+      $unwind: "$result"
+    },
     {
       $sort: { created: -1 },
+    },
+    {
+      $replaceRoot: { newRoot: "$result" }
     },
     {
       $lookup: {
@@ -789,9 +839,6 @@ const getApprover_Property = async (query, userId, body) => {
         buildingType: 1,
       },
     },
-    // {
-    //   $match: { status: { $eq: 'Pending' } },
-    // },
     {
       $skip: range * page,
     },
