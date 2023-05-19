@@ -1708,6 +1708,27 @@ const getWhishListed_Property_By_Buyer = async (id) => {
     {
       $match: { active: true, WhishList: { $in: [id] } },
     },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [
+          {
+            $match: { userId: id },
+          },
+          { $sort: { created: -1 } },
+          { $limit: 1 },
+        ],
+        as: 'userStatus',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$userStatus',
+      },
+    },
   ]);
   return data;
 };
