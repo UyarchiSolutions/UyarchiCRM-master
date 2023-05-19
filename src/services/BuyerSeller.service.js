@@ -656,7 +656,7 @@ const getApprover_Property = async (query, userId, body) => {
 
         orMatchedData: [{
           $match: {
-            $and: [formatAdd, HouseOrCommercialTypeMatch, typeMatch,]
+            $and: [formatAdd, HouseOrCommercialTypeMatch, typeMatch]
           }
         }, {
           $sort: { MonthlyRentFrom: 1 }
@@ -958,13 +958,19 @@ const getApprover_Property = async (query, userId, body) => {
         IntrestedStatus: { $cond: { if: { $eq: [true, ['$IntrestedStatus']] }, then: true, else: false } },
       },
     },
-    // {
-    //   $match: { status: { $eq: 'Pending' } },
-    // },
   ]);
-  const uniqueArray = values.filter((obj, index, self) =>
-    index === self.findIndex((o) => o._id === obj._id)
-  );
+  // const uniqueArray = values.filter((obj, index, self) =>
+  //   index === self.findIndex((o) => o._id === obj._id)
+  // );
+  const uniqueIds = new Map();
+  const uniqueArray = [];
+
+  values.forEach(obj => {
+    if (!uniqueIds.has(obj._id)) {
+      uniqueIds.set(obj._id, true);
+      uniqueArray.push(obj);
+    }
+  });
   return {
     values: uniqueArray,
     total: total.length,
