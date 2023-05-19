@@ -564,10 +564,10 @@ const getApprover_Property = async (query, userId, body) => {
   }
 
   let finish;
-  if (query.finish == 'false') {
-    finish = false;
-  } else {
+  if (query.finish == 'true' || query.finish == true) {
     finish = true;
+  } else {
+    finish = false;
   }
 
   if (query.floor) {
@@ -656,7 +656,7 @@ const getApprover_Property = async (query, userId, body) => {
 
         orMatchedData: [{
           $match: {
-            $or: [formatAdd, HouseOrCommercialTypeMatch, typeMatch, propertMatch]
+            $and: [formatAdd, HouseOrCommercialTypeMatch, typeMatch,]
           }
         }, {
           $sort: { MonthlyRentFrom: 1 }
