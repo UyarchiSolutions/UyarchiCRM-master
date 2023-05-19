@@ -658,6 +658,8 @@ const getApprover_Property = async (query, userId, body) => {
           $match: {
             $and: [formatAdd, HouseOrCommercialTypeMatch, typeMatch]
           }
+        }, {
+          $sort: { MonthlyRentFrom: 1 }
         }]
       },
     },
@@ -960,8 +962,11 @@ const getApprover_Property = async (query, userId, body) => {
     //   $match: { status: { $eq: 'Pending' } },
     // },
   ]);
+  const uniqueArray = values.filter((obj, index, self) =>
+    index === self.findIndex((o) => o._id === obj._id)
+  );
   return {
-    values: values,
+    values: uniqueArray,
     total: total.length,
     // single: values[0],
     // nearby,
