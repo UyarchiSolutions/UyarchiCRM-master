@@ -1706,7 +1706,7 @@ const getWhishListed_Property_By_Buyer = async (id) => {
   }
   const data = await SellerPost.aggregate([
     {
-      $match: { active: true, WhishList: { $in: [id] } },
+      $match: { active: true, WhishList: { $in: [id] }, finsh: true },
     },
     {
       $lookup: {
