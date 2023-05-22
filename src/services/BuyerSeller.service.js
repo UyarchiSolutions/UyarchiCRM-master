@@ -616,66 +616,72 @@ const getApprover_Property = async (query, userId, body) => {
       //     {
       //       finsh: finish,
       //     },
-      //   ]
+      //   ],
       // },
 
-      // TRy
+      // Try
 
       $facet: {
-        andMatchedData: [{
-          $match: {
-            $and: [
-              cityMatch,
-              propertMatch,
-              BHKTypeMatch,
-              MonthlyRentFromMatch,
-              MonthlyRentToMatch,
-              HouseOrCommercialTypeMatch,
-              typeMatch,
-              formatAdd,
-              rentMatch,
-              furnishingMatch,
-              parkingMatch,
-              bathroomMatch,
-              rentPreferMatch,
-              propAgeMatch,
-              BuildupSizeMatch,
-              priceMatch,
-              floorMatch,
-              buildingTypeMatch,
-              amaenitiesMatch,
-              buildingAgeMatch,
-              // { propStatus: 'Approved' },
-              {
-                finsh: finish,
-              },
-            ]
+        andMatchedData: [
+          {
+            $match: {
+              $and: [
+                cityMatch,
+                propertMatch,
+                BHKTypeMatch,
+                MonthlyRentFromMatch,
+                MonthlyRentToMatch,
+                HouseOrCommercialTypeMatch,
+                typeMatch,
+                formatAdd,
+                rentMatch,
+                furnishingMatch,
+                parkingMatch,
+                bathroomMatch,
+                rentPreferMatch,
+                propAgeMatch,
+                BuildupSizeMatch,
+                priceMatch,
+                floorMatch,
+                buildingTypeMatch,
+                amaenitiesMatch,
+                buildingAgeMatch,
+                // { propStatus: 'Approved' },
+                {
+                  finsh: finish,
+                },
+              ],
+            },
+          },
+        ],
 
-          }
-        }],
-
-        orMatchedData: [{
-          $match: {
-            $and: [formatAdd, HouseOrCommercialTypeMatch, typeMatch]
-          }
-        }, {
-          $sort: { MonthlyRentFrom: 1 }
-        }]
+        orMatchedData: [
+          {
+            $match: {
+              $and: [formatAdd, typeMatch, HouseOrCommercialTypeMatch],
+            },
+          },
+          {
+            $sort: {
+              MonthlyRentFrom: 1,
+            },
+          },
+        ],
       },
     },
     {
       $project: {
-        result: { $concatArrays: ["$andMatchedData", "$orMatchedData"] }
-      }
+        result: { $concatArrays: ['$andMatchedData', '$orMatchedData'] },
+      },
     },
     {
-      $unwind: "$result"
+      $unwind: '$result',
     },
     {
       $sort: { created: -1 },
     },
     {
-      $replaceRoot: { newRoot: "$result" }
+      $replaceRoot: { newRoot: '$result' },
     },
     {
       $lookup: {
@@ -965,7 +971,7 @@ const getApprover_Property = async (query, userId, body) => {
   const uniqueIds = new Map();
   const uniqueArray = [];
 
-  values.forEach(obj => {
+  values.forEach((obj) => {
     if (!uniqueIds.has(obj._id)) {
       uniqueIds.set(obj._id, true);
       uniqueArray.push(obj);
