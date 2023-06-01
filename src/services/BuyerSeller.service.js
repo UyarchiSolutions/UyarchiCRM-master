@@ -1091,13 +1091,13 @@ const getApprover_Property_new = async (query, userId, body) => {
     BHKType.forEach((e) => {
       // eq.push({ $eq: ['$BHKType', e] });
       if (parseInt(e) != 4) {
-        eq.push({ $eq: ['$BhkCount', e] });
+        eq.push({ $eq: ['$BhkCount', parseInt(e)] });
       } else {
         eq.push({ $lte: ['$BhkCount', 4] });
       }
 
-      neq.push({ $lte: ['$BHKType', 0] });
     });
+    neq.push({ $lte: ['$BHKType', 0] });
     match_A.push({ $or: eq });
     match_B.push({ $or: neq });
     match_C.push({ $or: eq });
