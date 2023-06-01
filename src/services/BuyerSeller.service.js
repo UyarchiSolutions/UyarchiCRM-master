@@ -1551,7 +1551,7 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                 then: 'N',
                                                                 else: {
                                                                   $cond: {
-                                                                    if: { $and: match_N },
+                                                                    if: { $and: match_O },
                                                                     then: 'O',
                                                                     else: false,
                                                                   },
