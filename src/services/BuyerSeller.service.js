@@ -1085,11 +1085,18 @@ const getApprover_Property_new = async (query, userId, body) => {
   // condition -2 B
   if (BHKType != null && BHKType !== '') {
     BHKType = BHKType.split(',');
+    console.log(BHKType)
     let eq = [];
     let neq = [];
     BHKType.forEach((e) => {
-      eq.push({ $eq: ['$BHKType', e] });
-      neq.push({ $ne: ['$BHKType', e] });
+      // eq.push({ $eq: ['$BHKType', e] });
+      if (parseInt(e) != 4) {
+        eq.push({ $eq: ['$BhkCount', e] });
+      } else {
+        eq.push({ $lte: ['$BhkCount', 4] });
+      }
+
+      neq.push({ $lte: ['$BHKType', 0] });
     });
     match_A.push({ $or: eq });
     match_B.push({ $or: neq });
