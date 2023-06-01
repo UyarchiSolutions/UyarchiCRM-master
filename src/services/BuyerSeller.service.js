@@ -1173,6 +1173,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_L.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
     match_M.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
     match_N.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_O.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
   }
   // condition -5
   if (type != null && type !== '') {
@@ -1190,6 +1191,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_L.push({ $eq: ['$Type', type] });
     match_M.push({ $eq: ['$Type', type] });
     match_N.push({ $eq: ['$Type', type] });
+    match_O.push({ $eq: ['$Type', type] });
   }
   // condition -6 D
   if (propertType != null && propertType !== '' && propertType != null && propertType !== '') {
