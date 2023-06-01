@@ -1340,8 +1340,8 @@ const getApprover_Property_new = async (query, userId, body) => {
     let eq = [];
     let neq = [];
     bathroom.forEach((e) => {
-      eq.push({ $eq: ['$bathRoomCount', e] });
-      neq.push({ $ne: ['$bathRoomCount', e] });
+      eq.push({ $eq: ['$bathRoomCount', parseInt(e)] });
+      neq.push({ $ne: ['$bathRoomCount', parseInt(e)] });
     });
     match_A.push({ $or: eq });
     match_B.push({ $or: eq });
