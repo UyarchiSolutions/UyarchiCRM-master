@@ -1097,7 +1097,7 @@ const getApprover_Property_new = async (query, userId, body) => {
       }
 
     });
-    neq.push({ $lte: ['$BHKType', 0] });
+    neq.push({ $gte: ['$BHKType', 0] });
     match_A.push({ $or: eq });
     match_B.push({ $or: neq });
     match_C.push({ $or: eq });
