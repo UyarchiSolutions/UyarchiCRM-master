@@ -1093,7 +1093,7 @@ const getApprover_Property_new = async (query, userId, body) => {
       if (parseInt(e) != 4) {
         eq.push({ $eq: ['$BhkCount', parseInt(e)] });
       } else {
-        eq.push({ $lte: ['$BhkCount', 4] });
+        eq.push({ $gte: ['$BhkCount', 4] });
       }
 
     });
