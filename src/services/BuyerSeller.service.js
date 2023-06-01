@@ -1008,6 +1008,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     buildupfrom,
     propStatus,
     amenities,
+    formatAdd,
   } = query;
   let match_A = []; //Perfect Match
   let match_B = []; //
@@ -1027,14 +1028,21 @@ const getApprover_Property_new = async (query, userId, body) => {
     range = 10;
   }
   range = parseInt(range);
+
+  // { $regexMatch: { input: "$description", regex: "line", options: "i" } }
+
   // condition -1 A
-  if (pincode != null && pincode !== '') {
-    pincode = pincode.split(',');
+  console.log(query);
+  if (formatAdd != null && formatAdd !== '') {
     let eq = [];
     let neq = [];
-    pincode.forEach((e) => {
-      eq.push({ $eq: ['$pineCode', parseInt(e)] });
-    });
+    if (Array.isArray(formatAdd)) {
+      formatAdd.forEach((e) => {
+        eq.push({ $regexMatch: { input: '$formatedAddress', regex: e, options: 'i' } });
+      });
+    } else {
+      eq.push({ $regexMatch: { input: '$formatedAddress', regex: formatAdd, options: 'i' } });
+    }
     match_A.push({ $or: eq });
     match_B.push({ $or: eq });
     match_C.push({ $or: eq });
@@ -1050,6 +1058,30 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_M.push({ $or: eq });
     match_N.push({ $or: eq });
   }
+
+  // condition -1 A
+  // if (pincode != null && pincode !== '') {
+  //   pincode = pincode.split(',');
+  //   let eq = [];
+  //   let neq = [];
+  //   pincode.forEach((e) => {
+  //     eq.push({ $eq: ['$pineCode', parseInt(e)] });
+  //   });
+  //   match_A.push({ $or: eq });
+  //   match_B.push({ $or: eq });
+  //   match_C.push({ $or: eq });
+  //   match_D.push({ $or: eq });
+  //   match_E.push({ $or: eq });
+  //   match_F.push({ $or: eq });
+  //   match_G.push({ $or: eq });
+  //   match_H.push({ $or: eq });
+  //   match_I.push({ $or: eq });
+  //   match_J.push({ $or: eq });
+  //   match_K.push({ $or: eq });
+  //   match_L.push({ $or: eq });
+  //   match_M.push({ $or: eq });
+  //   match_N.push({ $or: eq });
+  // }
   // condition -2 B
   if (BHKType != null && BHKType !== '') {
     BHKType = BHKType.split(',');
