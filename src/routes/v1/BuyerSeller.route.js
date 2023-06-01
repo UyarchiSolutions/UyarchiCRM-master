@@ -28,6 +28,7 @@ router.route('/getSellerRenter/POST/ForAdmin').get(BuyerSellerController.getSell
 router.route('/ApproveAndReject/:id').put(BuyerSellerController.ApproveAndReject);
 router.route('/Login/Buyer').post(BuyerSellerController.LoginWithmailBuyer);
 router.route('/getApprover/Property').post(BuyerAuth, BuyerSellerController.getApprover_Property);
+router.route('/getApprover/Property/new').get(BuyerAuth, BuyerSellerController.getApprover_Property_new);
 router.route('/BuyerLike/Property/:id').get(BuyerAuth, BuyerSellerController.BuyerLike_Property);
 router
   .route('/Update/Seller/Post/:id')

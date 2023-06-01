@@ -175,6 +175,11 @@ const getApprover_Property = catchAsync(async (req, res) => {
   const data = await buyersellerService.getApprover_Property(req.query, userId, req.body);
   res.send(data);
 });
+const getApprover_Property_new = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getApprover_Property_new(req.query, userId, req.body);
+  res.send(data);
+});
 
 const BuyerLike_Property = catchAsync(async (req, res) => {
   let userId = req.userId;
@@ -708,4 +713,5 @@ module.exports = {
   getNotificationDetails,
   getNotificationFor_Buyers,
   BuyerReshedule,
+  getApprover_Property_new,
 };

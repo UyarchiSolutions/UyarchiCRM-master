@@ -332,6 +332,7 @@ const getLocationByAddress = async (text) => {
 };
 
 const getApprover_Property = async (query, userId, body) => {
+  console.log(query);
   // let locationss = await getLocationByAddress('Anna Nagar, Chennai, Tamil Nadu, India');
   // console.log(locationss);
   let cityMatch = { active: true };
@@ -982,6 +983,680 @@ const getApprover_Property = async (query, userId, body) => {
     total: total.length,
     // single: values[0],
     // nearby,
+  };
+};
+
+const getApprover_Property_new = async (query, userId, body) => {
+  let {
+    pincode,
+    priceTo,
+    priceFrom,
+    BHKType,
+    HouseOrCommercialType,
+    range,
+    page,
+    type,
+    propertType,
+    rentDetails,
+    furnishing,
+    parking,
+    rentprefer,
+    propAge,
+    bathroom,
+    floor,
+    buildupto,
+    buildupfrom,
+    propStatus,
+    amenities,
+  } = query;
+  let match_A = []; //Perfect Match
+  let match_B = []; //
+  let match_C = [];
+  let match_D = [];
+  let match_E = [];
+  let match_F = [];
+  let match_G = [];
+  let match_H = [];
+  let match_I = [];
+  let match_J = [];
+  let match_K = [];
+  let match_L = [];
+  let match_M = [];
+  let match_N = [];
+  if (range == '' || range == null) {
+    range = 10;
+  }
+  range = parseInt(range);
+  // condition -1 A
+  if (pincode != null && pincode !== '') {
+    pincode = pincode.split(',');
+    let eq = [];
+    let neq = [];
+    pincode.forEach((e) => {
+      eq.push({ $eq: ['$pineCode', parseInt(e)] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -2 B
+  if (BHKType != null && BHKType !== '') {
+    BHKType = BHKType.split(',');
+    let eq = [];
+    let neq = [];
+    BHKType.forEach((e) => {
+      eq.push({ $eq: ['$BHKType', e] });
+      neq.push({ $ne: ['$BHKType', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: neq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -3 C
+  if (priceTo != null && priceTo !== '' && priceFrom != null && priceFrom !== '') {
+    match_A.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_A.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_B.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_B.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_C.push({ $gte: ['$MonthlyRentFrom', 0] });
+
+    match_D.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_D.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_E.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_E.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_F.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_F.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_G.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_G.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_H.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_H.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_I.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_I.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_J.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_J.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_K.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_K.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_L.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_L.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_M.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_M.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+
+    match_N.push({ $gte: ['$MonthlyRentFrom', parseInt(priceFrom)] });
+    match_N.push({ $lte: ['$MonthlyRentFrom', parseInt(priceTo)] });
+  }
+  // condition -4
+  if (HouseOrCommercialType != null && HouseOrCommercialType !== '') {
+    match_A.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_B.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_C.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_D.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_E.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_F.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_G.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_H.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_I.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_J.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_K.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_L.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_M.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+    match_N.push({ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] });
+  }
+  // condition -5
+  if (type != null && type !== '') {
+    match_A.push({ $eq: ['$Type', type] });
+    match_B.push({ $eq: ['$Type', type] });
+    match_C.push({ $eq: ['$Type', type] });
+    match_D.push({ $eq: ['$Type', type] });
+    match_E.push({ $eq: ['$Type', type] });
+    match_F.push({ $eq: ['$Type', type] });
+    match_G.push({ $eq: ['$Type', type] });
+    match_H.push({ $eq: ['$Type', type] });
+    match_I.push({ $eq: ['$Type', type] });
+    match_J.push({ $eq: ['$Type', type] });
+    match_K.push({ $eq: ['$Type', type] });
+    match_L.push({ $eq: ['$Type', type] });
+    match_M.push({ $eq: ['$Type', type] });
+    match_N.push({ $eq: ['$Type', type] });
+  }
+  // condition -6 D
+  if (propertType != null && propertType !== '' && propertType != null && propertType !== '') {
+    propertType = propertType.split(',');
+    let eq = [];
+    let neq = [];
+    propertType.forEach((e) => {
+      eq.push({ $eq: ['$propertType', e] });
+      neq.push({ $ne: ['$rentDetails', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: neq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -7 E
+  if (rentDetails != null && rentDetails !== '') {
+    rentDetails = rentDetails.split(',');
+    let eq = [];
+    let neq = [];
+    rentDetails.forEach((e) => {
+      eq.push({ $eq: ['$rentDetails', e] });
+      neq.push({ $ne: ['$rentDetails', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: neq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -8 F
+  if (furnishing != null && furnishing !== '') {
+    furnishing = furnishing.split(',');
+    let eq = [];
+    let neq = [];
+    furnishing.forEach((e) => {
+      eq.push({ $eq: ['$furnishingStatus', e] });
+      neq.push({ $ne: ['$furnishingStatus', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: neq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -9 G
+  if (parking != null && parking !== '') {
+    parking = parking.split(',');
+    let eq = [];
+    let neq = [];
+    parking.forEach((e) => {
+      eq.push({ $eq: ['$parkingFacilities', e] });
+      neq.push({ $ne: ['$parkingFacilities', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: neq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -10 H
+  if (rentprefer != null && rentprefer !== '') {
+    rentprefer = rentprefer.split(',');
+    let eq = [];
+    let neq = [];
+    rentprefer.forEach((e) => {
+      eq.push({ $eq: ['$RentPrefer', e] });
+      neq.push({ $ne: ['$RentPrefer', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: neq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -11 I
+  if (propAge != null && propAge !== '') {
+    propAge = propAge.split(',');
+    let eq = [];
+    let neq = [];
+    propAge.forEach((e) => {
+      eq.push({ $eq: ['$ageOfBuilding', e] });
+      neq.push({ $ne: ['$ageOfBuilding', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: neq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -12 J
+  if (bathroom != null && bathroom !== '') {
+    bathroom = bathroom.split(',');
+    let eq = [];
+    let neq = [];
+    bathroom.forEach((e) => {
+      eq.push({ $eq: ['$bathRoomCount', e] });
+      neq.push({ $ne: ['$bathRoomCount', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: neq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -13 K
+  if (floor != null && floor !== '') {
+    let eq = [];
+    let neq = [];
+    let value = floor.split(',');
+    value.forEach((e) => {
+      let apli = e.split('-');
+      if (apli.length == 1) {
+        let oneValue = parseInt(apli[0]);
+        if (oneValue != 13) {
+          eq.push({ $eq: ['$floorCount', oneValue] });
+        } else {
+          eq.push({ $gte: ['$floorCount', oneValue] });
+        }
+      } else {
+        let from = parseInt(apli[0]);
+        let to = parseInt(apli[1]);
+        eq.push({
+          $and: [{ $gte: ['$floorCount', parseInt(from)] }, { $lte: ['$floorCount', parseInt(to)] }],
+        });
+      }
+    });
+    neq.push({ $lte: ['$floorCount', 0] });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: neq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: eq });
+  }
+  // condition -14 L
+  if (buildupto != null && buildupto !== '' && buildupfrom != null && buildupfrom !== '') {
+    match_A.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_A.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_B.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_B.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_C.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_C.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_D.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_D.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_E.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_E.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_F.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_F.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_G.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_G.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_H.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_H.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_I.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_I.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_J.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_J.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_K.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_K.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_L.push({ $gte: ['$BuildedSize', 0] });
+
+    match_M.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_M.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+
+    match_N.push({ $gte: ['$BuildedSize', parseInt(buildupfrom)] });
+    match_N.push({ $lte: ['$BuildedSize', parseInt(buildupto)] });
+  }
+  // condition -15 M
+  if (propStatus != null && propStatus != '') {
+    propStatus = propStatus.split(',');
+    let eq = [];
+    let neq = [];
+    propStatus.forEach((e) => {
+      eq.push({ $eq: ['$propStatus', e] });
+      neq.push({ $ne: ['$propStatus', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: neq });
+    match_N.push({ $or: eq });
+  }
+  // condition -16 N
+  if (amenities != null && amenities != '') {
+    console.log(amenities);
+    amenities = amenities.split(',');
+    let eq = [];
+    let neq = [];
+    amenities.forEach((e) => {
+      eq.push({ $in: [e, '$Amenities'] });
+      neq.push({ $ne: ['$Amenities', e] });
+    });
+    match_A.push({ $or: eq });
+    match_B.push({ $or: eq });
+    match_C.push({ $or: eq });
+    match_D.push({ $or: eq });
+    match_E.push({ $or: eq });
+    match_F.push({ $or: eq });
+    match_G.push({ $or: eq });
+    match_H.push({ $or: eq });
+    match_I.push({ $or: eq });
+    match_J.push({ $or: eq });
+    match_K.push({ $or: eq });
+    match_L.push({ $or: eq });
+    match_M.push({ $or: eq });
+    match_N.push({ $or: neq });
+  }
+  let perfectMatch = await SellerPost.aggregate([
+    { $match: { $and: [{ finsh: { $eq: true } }] } },
+    {
+      $addFields: {
+        condition: {
+          $cond: {
+            if: { $and: match_A },
+            then: 'A',
+            else: {
+              $cond: {
+                if: { $and: match_B },
+                then: 'B',
+                else: {
+                  $cond: {
+                    if: { $and: match_C },
+                    then: 'C',
+                    else: {
+                      $cond: {
+                        if: { $and: match_D },
+                        then: 'D',
+                        else: {
+                          $cond: {
+                            if: { $and: match_E },
+                            then: 'E',
+                            else: {
+                              $cond: {
+                                if: { $and: match_F },
+                                then: 'F',
+                                else: {
+                                  $cond: {
+                                    if: { $and: match_G },
+                                    then: 'G',
+                                    else: {
+                                      $cond: {
+                                        if: { $and: match_H },
+                                        then: 'H',
+                                        else: {
+                                          $cond: {
+                                            if: { $and: match_I },
+                                            then: 'I',
+                                            else: {
+                                              $cond: {
+                                                if: { $and: match_J },
+                                                then: 'J',
+                                                else: {
+                                                  $cond: {
+                                                    if: { $and: match_K },
+                                                    then: 'K',
+                                                    else: {
+                                                      $cond: {
+                                                        if: { $and: match_L },
+                                                        then: 'L',
+                                                        else: {
+                                                          $cond: {
+                                                            if: { $and: match_M },
+                                                            then: 'M',
+                                                            else: {
+                                                              $cond: {
+                                                                if: { $and: match_N },
+                                                                then: 'N',
+                                                                else: false,
+                                                              },
+                                                            },
+                                                          },
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $match: { $and: [{ condition: { $ne: false } }] },
+    },
+    { $sort: { condition: 1 } },
+    {
+      $skip: range * page,
+    },
+    {
+      $limit: range,
+    },
+  ]);
+
+  let total = await SellerPost.aggregate([
+    {
+      $addFields: {
+        condition: {
+          $cond: {
+            if: { $and: match_A },
+            then: 'A',
+            else: {
+              $cond: {
+                if: { $and: match_B },
+                then: 'B',
+                else: {
+                  $cond: {
+                    if: { $and: match_C },
+                    then: 'C',
+                    else: {
+                      $cond: {
+                        if: { $and: match_D },
+                        then: 'D',
+                        else: {
+                          $cond: {
+                            if: { $and: match_E },
+                            then: 'E',
+                            else: {
+                              $cond: {
+                                if: { $and: match_F },
+                                then: 'F',
+                                else: {
+                                  $cond: {
+                                    if: { $and: match_G },
+                                    then: 'G',
+                                    else: {
+                                      $cond: {
+                                        if: { $and: match_H },
+                                        then: 'H',
+                                        else: {
+                                          $cond: {
+                                            if: { $and: match_I },
+                                            then: 'I',
+                                            else: {
+                                              $cond: {
+                                                if: { $and: match_J },
+                                                then: 'J',
+                                                else: {
+                                                  $cond: {
+                                                    if: { $and: match_K },
+                                                    then: 'K',
+                                                    else: {
+                                                      $cond: {
+                                                        if: { $and: match_L },
+                                                        then: 'L',
+                                                        else: {
+                                                          $cond: {
+                                                            if: { $and: match_M },
+                                                            then: 'M',
+                                                            else: {
+                                                              $cond: {
+                                                                if: { $and: match_N },
+                                                                then: 'N',
+                                                                else: false,
+                                                              },
+                                                            },
+                                                          },
+                                                        },
+                                                      },
+                                                    },
+                                                  },
+                                                },
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $match: { $and: [{ condition: { $ne: false } }] },
+    },
+    { $sort: { condition: 1 } },
+    {
+      $skip: range * (page + 1),
+    },
+    {
+      $limit: range,
+    },
+  ]);
+
+  return {
+    values: perfectMatch,
+    next: total.length != 0,
   };
 };
 
@@ -2721,4 +3396,5 @@ module.exports = {
   getNotificationDetails,
   getNotificationFor_Buyers,
   BuyerReshedule,
+  getApprover_Property_new,
 };
