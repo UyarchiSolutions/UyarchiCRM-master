@@ -1024,6 +1024,7 @@ const getApprover_Property_new = async (query, userId, body) => {
   let match_L = [];
   let match_M = [];
   let match_N = [];
+  let match_O = [];
   if (range == '' || range == null) {
     range = 10;
   }
@@ -1057,6 +1058,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_L.push({ $or: eq });
     match_M.push({ $or: eq });
     match_N.push({ $or: eq });
+    match_O.push({ $or: eq });
   }
 
   // condition -1 A
@@ -1085,7 +1087,7 @@ const getApprover_Property_new = async (query, userId, body) => {
   // condition -2 B
   if (BHKType != null && BHKType !== '') {
     BHKType = BHKType.split(',');
-    console.log(BHKType)
+    console.log(BHKType);
     let eq = [];
     let neq = [];
     BHKType.forEach((e) => {
@@ -1095,7 +1097,6 @@ const getApprover_Property_new = async (query, userId, body) => {
       } else {
         eq.push({ $gte: ['$BhkCount', 4] });
       }
-
     });
     neq.push({ $gte: ['$BHKType', 0] });
     match_A.push({ $or: eq });
@@ -1548,7 +1549,13 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                               $cond: {
                                                                 if: { $and: match_N },
                                                                 then: 'N',
-                                                                else: false,
+                                                                else: {
+                                                                  $cond: {
+                                                                    if: { $and: match_N },
+                                                                    then: 'O',
+                                                                    else: false,
+                                                                  },
+                                                                },
                                                               },
                                                             },
                                                           },
