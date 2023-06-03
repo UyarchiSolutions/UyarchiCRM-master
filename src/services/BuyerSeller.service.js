@@ -1029,7 +1029,11 @@ const getApprover_Property_new = async (query, userId, body) => {
     range = 10;
   }
   range = parseInt(range);
-
+  if (page == '' || page == null) {
+    page = 0;
+  }
+  page = parseInt(page);
+  
   // { $regexMatch: { input: "$description", regex: "line", options: "i" } }
 
   // condition -1 A
@@ -1053,7 +1057,7 @@ const getApprover_Property_new = async (query, userId, body) => {
         localmatch.push({ $regexMatch: { input: '$formatedAddress', regex: a, options: 'i' } });
       });
       eq.push({ $and: localmatch });
-          }
+    }
     match_A.push({ $or: eq });
     match_B.push({ $or: eq });
     match_C.push({ $or: eq });
@@ -1611,6 +1615,7 @@ const getApprover_Property_new = async (query, userId, body) => {
   ]);
 
   let total = await SellerPost.aggregate([
+    { $match: { $and: [{ finsh: { $eq: true } }] } },
     {
       $addFields: {
         condition: {
