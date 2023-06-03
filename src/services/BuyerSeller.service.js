@@ -1058,21 +1058,21 @@ const getApprover_Property_new = async (query, userId, body) => {
       });
       eq.push({ $and: localmatch });
     }
-    match_A.push({ $or: eq });
-    match_B.push({ $or: eq });
-    match_C.push({ $or: eq });
-    match_D.push({ $or: eq });
-    match_E.push({ $or: eq });
-    match_F.push({ $or: eq });
-    match_G.push({ $or: eq });
-    match_H.push({ $or: eq });
-    match_I.push({ $or: eq });
-    match_J.push({ $or: eq });
-    match_K.push({ $or: eq });
-    match_L.push({ $or: eq });
-    match_M.push({ $or: eq });
-    match_N.push({ $or: eq });
-    match_O.push({ $or: eq });
+    match_A.push({ $and: eq });
+    match_B.push({ $and: eq });
+    match_C.push({ $and: eq });
+    match_D.push({ $and: eq });
+    match_E.push({ $and: eq });
+    match_F.push({ $and: eq });
+    match_G.push({ $and: eq });
+    match_H.push({ $and: eq });
+    match_I.push({ $and: eq });
+    match_J.push({ $and: eq });
+    match_K.push({ $and: eq });
+    match_L.push({ $and: eq });
+    match_M.push({ $and: eq });
+    match_N.push({ $and: eq });
+    match_O.push({ $and: eq });
   }
 
   // condition -1 A
@@ -1620,10 +1620,8 @@ const getApprover_Property_new = async (query, userId, body) => {
     {
       $addFields: {
         usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
-      }
-
+      },
     },
-    
 
     {
       $match: { $and: [{ condition: { $ne: false } }] },
