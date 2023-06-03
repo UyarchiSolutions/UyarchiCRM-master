@@ -1039,11 +1039,21 @@ const getApprover_Property_new = async (query, userId, body) => {
     let neq = [];
     if (Array.isArray(formatAdd)) {
       formatAdd.forEach((e) => {
-        eq.push({ $regexMatch: { input: '$formatedAddress', regex: e, options: 'i' } });
+        let localmatch = [];
+        let format = e.split(',');
+        format.forEach((a) => {
+          localmatch.push({ $regexMatch: { input: '$formatedAddress', regex: a, options: 'i' } });
+        });
+        eq.push({ $and: localmatch });
       });
     } else {
-      eq.push({ $regexMatch: { input: '$formatedAddress', regex: formatAdd, options: 'i' } });
-    }
+      let localmatch = [];
+      let format = formatAdd.split(',');
+      format.forEach((a) => {
+        localmatch.push({ $regexMatch: { input: '$formatedAddress', regex: a, options: 'i' } });
+      });
+      eq.push({ $and: localmatch });
+          }
     match_A.push({ $or: eq });
     match_B.push({ $or: eq });
     match_C.push({ $or: eq });
