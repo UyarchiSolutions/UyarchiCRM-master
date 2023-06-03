@@ -1033,7 +1033,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     page = 0;
   }
   page = parseInt(page);
-  
+
   // { $regexMatch: { input: "$description", regex: "line", options: "i" } }
 
   // condition -1 A
@@ -1508,6 +1508,21 @@ const getApprover_Property_new = async (query, userId, body) => {
   let perfectMatch = await SellerPost.aggregate([
     { $match: { $and: [{ finsh: { $eq: true } }] } },
     {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
       $addFields: {
         condition: {
           $cond: {
@@ -1602,6 +1617,14 @@ const getApprover_Property_new = async (query, userId, body) => {
         },
       },
     },
+    {
+      $addFields: {
+        usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
+      }
+
+    },
+    
+
     {
       $match: { $and: [{ condition: { $ne: false } }] },
     },
