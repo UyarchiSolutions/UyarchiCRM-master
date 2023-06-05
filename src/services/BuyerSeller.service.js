@@ -2173,6 +2173,7 @@ const BuyerSeller_Profile = async (userId) => {
     Type: values.Type,
     created: values.created,
     date: values.date,
+    Role: values.Role,
   };
   return userData;
 };
