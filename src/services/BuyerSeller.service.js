@@ -1938,7 +1938,7 @@ const giveInterest = async (id, userId) => {
   } else {
     post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $pull: { intrestedUsers: userId } }, { new: true });
     let viewdData = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: post._id });
-    viewdData = await PropertyBuyerRelation.findByIdAndUpdate({ _id: viewdData._id }, { status: 'Viewed' });
+    viewdData = await PropertyBuyerRelation.findByIdAndUpdate({ _id: viewdData._id }, { status: 'Viewed' }, { new: true });
   }
 
   return post;
