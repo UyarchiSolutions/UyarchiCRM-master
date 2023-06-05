@@ -1620,10 +1620,8 @@ const getApprover_Property_new = async (query, userId, body) => {
     {
       $addFields: {
         usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
-      }
-
+      },
     },
-    
 
     {
       $match: { $and: [{ condition: { $ne: false } }] },
@@ -1937,6 +1935,10 @@ const giveInterest = async (id, userId) => {
       sellerId: post.userId,
       type: 'Intrest',
     });
+  } else {
+    post = await SellerPost.findByIdAndUpdate({ _id: post._id }, { $pull: { intrestedUsers: userId } }, { new: true });
+    let viewdData = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: post._id });
+    viewdData = await PropertyBuyerRelation.findByIdAndUpdate({ _id: viewdData._id }, { status: 'Viewed' });
   }
 
   return post;
