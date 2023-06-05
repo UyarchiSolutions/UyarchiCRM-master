@@ -1009,6 +1009,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     propStatus,
     amenities,
     formatAdd,
+    index,
   } = query;
   let match_A = []; //Perfect Match
   let match_B = []; //
@@ -1738,9 +1739,17 @@ const getApprover_Property_new = async (query, userId, body) => {
     },
   ]);
 
+  index;
+  let ind;
+  if (index) {
+    ind = parseInt(index);
+  } else {
+    ind = 0;
+  }
   return {
     values: perfectMatch,
     next: total.length != 0,
+    nextData: perfectMatch[ind],
   };
 };
 
