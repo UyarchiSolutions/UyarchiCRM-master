@@ -2164,18 +2164,19 @@ const BuyerSeller_Profile = async (userId) => {
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'User Not Fount Token Issue');
   }
+  console.log(values);
   let userData = {
     verified: values.verified,
     _id: values._id,
+    Role: values.Role,
     userName: values.userName,
     mobile: values.mobile,
     email: values.email,
     Type: values.Type,
     created: values.created,
     date: values.date,
-    Role: values.Role,
   };
-  return userData;
+  return values;
 };
 
 // change password By Loged In users
