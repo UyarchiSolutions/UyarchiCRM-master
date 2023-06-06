@@ -3235,7 +3235,7 @@ const PropertyDeatails_after_intrested = async (id) => {
         status: {
           $in: [
             'Intrested',
-            'Reject',
+            'Rejected',
             'Shcedule',
             'Ignored',
             'Accept',
