@@ -1933,7 +1933,12 @@ const giveInterest = async (id, userId) => {
     }
     viewdData = await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: viewdData._id },
-      { status: 'Intrested', intrestedDate: moment().toDate(), $push: { history: { intrested: moment().toDate() } } }
+      {
+        status: 'Intrested',
+        intrestedDate: moment().toDate(),
+        $push: { history: { status: 'Intrested', date_Time: moment().toDate() } },
+      },
+      { new: true }
     );
     await shortList.create({ created: moment(), propertyId: post._id, userId: userId });
     await post.save();
@@ -2158,7 +2163,7 @@ const AddViewed_Data = async (id, userId) => {
       created: moment(),
       propertyId: values._id,
       userId: userId,
-      history: { viewd: moment().toDate() },
+      history: { status: 'Viewed', date_Time: moment().toDate() },
       status: 'Viewed',
     });
     console.log('working.....');
@@ -2416,7 +2421,11 @@ const AcceptIgnore = async (propId, body, userId) => {
       let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
       users = await PropertyBuyerRelation.findByIdAndUpdate(
         { _id: users._id },
-        { created: moment().toDate(), status: 'Accepted', $push: { history: { accept: moment().toDate() } } },
+        {
+          created: moment().toDate(),
+          status: 'Accepted',
+          $push: { history: { status: 'Accepted', date_Time: moment().toDate() } },
+        },
         { new: true }
       );
     }
@@ -2429,7 +2438,11 @@ const AcceptIgnore = async (propId, body, userId) => {
       let users = await PropertyBuyerRelation.findOne({ userId: userId, propertyId: propId });
       users = await PropertyBuyerRelation.findByIdAndUpdate(
         { _id: users._id },
-        { created: moment().toDate(), status: 'Ignored', $push: { history: { Ignored: moment().toDate() } } },
+        {
+          created: moment().toDate(),
+          status: 'Ignored',
+          $push: { history: { status: 'Ignored', date_Time: moment().toDate() } },
+        },
         { new: true }
       );
     }
@@ -2454,6 +2467,7 @@ const updateBuyerRelation = async (id, body, userId) => {
         status: 'Rejected',
         rejected: moment().toDate(),
         rejectedDate: moment().toDate(),
+        $push: { history: { status: 'Rejected', date_Time: moment().toDate() } },
       },
       { new: true }
     );
@@ -2473,6 +2487,7 @@ const updateBuyerRelation = async (id, body, userId) => {
         propertyId: body.postId,
         userId: body.buyerId,
         status: body.type,
+        $push: { history: { status: 'Schedule', date_Time: moment().toDate() } },
       },
       { new: true }
     );
