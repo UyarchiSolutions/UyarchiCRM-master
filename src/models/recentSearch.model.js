@@ -67,6 +67,21 @@ const RecentSearchSchema = new mongoose.Schema({
   userId: {
     type: String,
   },
+  floor: {
+    type: String,
+  },
+  routeLink: {
+    type: String,
+  },
+  ageOfBuilding: {
+    type: String,
+  },
+  amenities: {
+    type: String,
+  },
+  buildingType: {
+    type: String,
+  },
 });
 
 const RecentSearch = mongoose.model('RecentSearch', RecentSearchSchema);

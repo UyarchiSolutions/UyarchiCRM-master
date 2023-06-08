@@ -5,7 +5,6 @@ const RecentSearch = require('../models/recentSearch.model');
 const moment = require('moment');
 
 const createRcentSearch = async (body, userId) => {
-  const { BHKType, HouseOrCommercialType, MonthlyRentFrom, MonthlyRentTo, Type, area, propertType } = body;
   let data = { ...body, ...{ created: moment(), userId: userId } };
   const recentSearch = await RecentSearch.create(data);
   return recentSearch;
