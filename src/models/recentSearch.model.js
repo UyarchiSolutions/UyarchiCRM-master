@@ -68,19 +68,19 @@ const RecentSearchSchema = new mongoose.Schema({
     type: String,
   },
   floor: {
-    type: String,
+    type: Array,
   },
   routeLink: {
     type: String,
   },
   ageOfBuilding: {
-    type: String,
+    type: Array,
   },
   amenities: {
-    type: String,
+    type: Array,
   },
   buildingType: {
-    type: String,
+    type: Array,
   },
 });
 
