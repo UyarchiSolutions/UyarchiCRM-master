@@ -31,12 +31,17 @@ const propertyAlert = require('./property.alert.route');
 const RequestStreamRoute = require('./request.route');
 const StreamPlanRoute = require('./StreamPlan.route');
 const SubHostRoute = require('./SubHost.route');
+const EnquieryRoute = require('./Enquiry.route');
 const router = express.Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/EnquieryRoute',
+    route: EnquieryRoute,
   },
   {
     path: '/requestStream',

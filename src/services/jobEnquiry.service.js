@@ -9,10 +9,8 @@ const createjobEnquiry = async (body) => {
 };
 
 const getjobEnquiry = async () => {
-  const jobEnquiry= await jobEnquirymodel.find();
+  const jobEnquiry = await jobEnquirymodel.find();
   return jobEnquiry;
 };
 
-module.exports = { createjobEnquiry , getjobEnquiry };
-
-
+module.exports = { createjobEnquiry, getjobEnquiry };
