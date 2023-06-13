@@ -25,7 +25,7 @@ const remove = catchAsync(async (req, res) => {
 });
 
 const createFAQ = catchAsync(async (req, res) => {
-  const data = await EnquieryService.createEnquiry(req.body);
+  const data = await EnquieryService.createFAQ(req.body);
   res.send(data);
 });
 
