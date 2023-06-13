@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
-
+let ejs = require('ejs');
 const transport = nodemailer.createTransport(config.email.smtp);
 /* istanbul ignore next */
 if (config.env !== 'test') {
@@ -81,10 +81,12 @@ If you did not create an account, then ignore this email.`;
 
 const sendEmail_Enquiry = async (data) => {
   let { email, Enquiry, date, Answer } = data;
-  const subject = `Reply To Enquiry On:${date}-Register`;
+  // const subject = `Reply To Enquiry On:${date}-Register`;
+  let datas = await ejs.renderFile(__dirname + '/Enquiry.ejs', data);
+  const subject = 'Reply';
   const text = `Enquiry:${Enquiry} Answer:${Answer}`;
-  let to = email
-  let msg = { from: config.email.from, to, subject, text };
+  let to = email;
+  let msg = { from: config.email.from, to, subject, text, html: datas };
   await transport.sendMail(msg);
 };
 
