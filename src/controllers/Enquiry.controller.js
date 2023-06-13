@@ -29,10 +29,16 @@ const createFAQ = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const updateFaq = catchAsync(async (req, res) => {
+  const data = await EnquieryService.updateFaq(req.params.id, req.body);
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
   sendReplayEnquiry,
   remove,
   createFAQ,
+  updateFaq,
 };

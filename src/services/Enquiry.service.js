@@ -86,10 +86,20 @@ const createFAQ = async (body) => {
   return data;
 };
 
+const updateFaq = async (id, body) => {
+  let values = await FAQ.findById(id);
+  if (!values) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'FAQ Not Available');
+  }
+  values = await FAQ.findByIdAndUpdate({ _id: id }, body, { new: true });
+  return values;
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
   sendReplayEnquiry,
   remove,
   createFAQ,
+  updateFaq,
 };
