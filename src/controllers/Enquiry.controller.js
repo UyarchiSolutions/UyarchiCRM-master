@@ -19,8 +19,14 @@ const sendReplayEnquiry = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const remove = catchAsync(async (req, res) => {
+  const data = await EnquieryService.remove(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
   sendReplayEnquiry,
+  remove,
 };

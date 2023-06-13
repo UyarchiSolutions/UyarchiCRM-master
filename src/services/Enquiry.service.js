@@ -63,8 +63,18 @@ const getEnquiry = async (query) => {
   return { values: data, next: next };
 };
 
+const remove = async (id) => {
+  let data = await Enquiery.findById(id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Enquery not Available');
+  }
+  data = await Enquiery.findByIdAndUpdate({ _id: id }, { Remove: 'Rejected' }, { new: true });
+  return data;
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
   sendReplayEnquiry,
+  remove,
 };
