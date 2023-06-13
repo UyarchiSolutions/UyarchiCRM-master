@@ -31,6 +31,9 @@ const EnquireSchema = new mongoose.Schema(
     date: {
       type: String,
     },
+    Remove: {
+      type: String,
+    },
     answer: {
       type: String,
     },
