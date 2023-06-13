@@ -68,7 +68,7 @@ const remove = async (id) => {
   if (!data) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Enquery not Available');
   }
-  data = await Enquiery.findByIdAndUpdate({ _id: id }, { Remove: 'Rejected' }, { new: true });
+  data = await Enquiery.findByIdAndUpdate({ _id: id }, { status: 'Rejected' }, { new: true });
   return data;
 };
 
