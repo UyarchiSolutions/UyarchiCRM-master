@@ -75,6 +75,15 @@ const remove = async (id) => {
 const createFAQ = async (body) => {
   const { heading } = body;
   let existHeading = await Heading.findById(heading);
+  let headId;
+  if (!existHeading) {
+    let creation = await Heading.create({ heading: heading });
+    headId = creation._id;
+  } else {
+    headId = existHeading._id;
+  }
+  let data = await FAQ.create({ ...body, ...{ headingId: headId } });
+  return data;
 };
 
 module.exports = {
@@ -82,4 +91,5 @@ module.exports = {
   getEnquiry,
   sendReplayEnquiry,
   remove,
+  createFAQ,
 };

@@ -24,9 +24,15 @@ const remove = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createFAQ = catchAsync(async (req, res) => {
+  const data = await EnquieryService.createEnquiry(req.body);
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
   sendReplayEnquiry,
   remove,
+  createFAQ,
 };
