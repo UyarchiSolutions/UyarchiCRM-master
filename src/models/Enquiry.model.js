@@ -34,6 +34,7 @@ const EnquireSchema = new mongoose.Schema(
     answer: {
       type: String,
     },
+    EnquiryId: String,
   },
   { timestamps: true }
 );

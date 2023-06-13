@@ -5,7 +5,23 @@ const { Enquiery } = require('../models/Enquiry.model');
 
 const createEnquiry = async (body) => {
   const date = moment().format('DD-MM-YYYY');
-  let values = { ...body, ...{ date: date } };
+  let findOrders = await Enquiery.find().count();
+  let center = '';
+  if (findOrders < 9) {
+    center = '0000';
+  }
+  if (findOrders < 99 && findOrders >= 9) {
+    center = '000';
+  }
+  if (findOrders < 999 && findOrders >= 99) {
+    center = '00';
+  }
+  if (findOrders < 9999 && findOrders >= 999) {
+    center = '0';
+  }
+  let count = findOrders + 1;
+  let orderId = `ENQ${center}${count}`;
+  let values = { ...body, ...{ date: date, EnquiryId: orderId } };
   const creation = await Enquiery.create(values);
   return creation;
 };
