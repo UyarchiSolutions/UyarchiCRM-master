@@ -34,6 +34,11 @@ const updateFaq = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getFaq = catchAsync(async (req, res) => {
+  const data = await EnquieryService.getFaq();
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -41,4 +46,5 @@ module.exports = {
   remove,
   createFAQ,
   updateFaq,
+  getFaq,
 };

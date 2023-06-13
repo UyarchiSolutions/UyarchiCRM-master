@@ -95,6 +95,11 @@ const updateFaq = async (id, body) => {
   return values;
 };
 
+const getFaq = async () => {
+  const data = await FAQ.find({ active: true });
+  return data;
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -102,4 +107,5 @@ module.exports = {
   remove,
   createFAQ,
   updateFaq,
+  getFaq,
 };

@@ -6,6 +6,6 @@ const Auth = require('../../controllers/BuyerAuth');
 router.route('/').post(EnquiryController.createEnquiry).get(EnquiryController.getEnquiry);
 router.route('/sendReplay/Enquiry').post(EnquiryController.sendReplayEnquiry);
 router.route('/remove/:id').get(EnquiryController.remove);
-router.route('/create/FAQ').post(EnquiryController.createFAQ);
+router.route('/create/FAQ').post(EnquiryController.createFAQ).get(EnquiryController.getFaq);
 router.route('/updateFaq/:id').put(EnquiryController.updateFaq);
 module.exports = router;
