@@ -86,10 +86,19 @@ If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
+const sendEmail_Enquiry = async (data) => {
+  const { email, Enquiry, date, Answer } = data;
+  const subject = `Reply To Enquiry On:${date}-Register`;
+  const text = `Enquiry:${Enquiry}`;
+  const text1 = `Answer:${Answer}`;
+  await sendEmail(email, subject, text, text1);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendEmailSeller,
+  sendEmail_Enquiry,
 };

@@ -28,6 +28,12 @@ const EnquireSchema = new mongoose.Schema(
       type: String,
       default: 'Pending',
     },
+    date: {
+      type: String,
+    },
+    answer: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

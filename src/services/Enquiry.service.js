@@ -4,7 +4,9 @@ const moment = require('moment');
 const { Enquiery } = require('../models/Enquiry.model');
 
 const createEnquiry = async (body) => {
-  const creation = await Enquiery.create(body);
+  const date = moment().format('DD-MM-YYYY');
+  let values = { ...body, ...{ date: date } };
+  const creation = await Enquiery.create(values);
   return creation;
 };
 
@@ -14,16 +16,16 @@ const getEnquiry = async (query) => {
     {
       $sort: { createdAt: -1 },
     },
-    { $skip: range * page },
+    { $skip: parseInt(range) * parseInt(page) },
     {
-      $limit: range,
+      $limit: parseInt(range),
     },
   ]);
 
   const total = await Enquiery([
-    { $skip: range * (page + 1) },
+    { $skip: parseInt(range) * (parseInt(page) + 1) },
     {
-      $limit: range,
+      $limit: parseInt(range),
     },
   ]);
 
