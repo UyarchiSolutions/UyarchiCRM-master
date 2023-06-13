@@ -31,7 +31,7 @@ const sendReplayEnquiry = async (body) => {
   if (!data) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Enquery Not Bad');
   }
-  data = await Enquiery.findByIdAndUpdate({ _id: body._id }, { status: 'Replied' }, { new: true });
+  data = await Enquiery.findByIdAndUpdate({ _id: body._id }, { status: 'Replied', answer: Answer }, { new: true });
 };
 
 const getEnquiry = async (query) => {
