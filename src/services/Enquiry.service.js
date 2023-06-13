@@ -28,6 +28,7 @@ const createEnquiry = async (body) => {
 
 const getEnquiry = async (query) => {
   const { range, page } = query;
+  console.log(parseInt(range) * (parseInt(page) + 1));
   const data = await Enquiery.aggregate([
     {
       $sort: { createdAt: -1 },
@@ -38,11 +39,11 @@ const getEnquiry = async (query) => {
     },
   ]);
 
-  const total = await Enquiery([
-    { $skip: parseInt(range) * (parseInt(page) + 1) },
+  const total = await Enquiery.aggregate([
     {
       $limit: parseInt(range),
     },
+    { $skip: parseInt(range) * (parseInt(page) + 1) },
   ]);
 
   let next;
