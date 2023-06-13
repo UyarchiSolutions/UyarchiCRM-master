@@ -26,6 +26,14 @@ const createEnquiry = async (body) => {
   return creation;
 };
 
+const sendReplayEnquiry = async (body) => {
+  let data = await Enquiery.findById(body._id);
+  if (!data) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Enquery Not Bad');
+  }
+  data = await Enquiery.findByIdAndUpdate({ _id: body._id }, { status: 'Replied' }, { new: true });
+};
+
 const getEnquiry = async (query) => {
   const { range, page } = query;
   console.log(parseInt(range) * (parseInt(page) + 1));
@@ -58,4 +66,5 @@ const getEnquiry = async (query) => {
 module.exports = {
   createEnquiry,
   getEnquiry,
+  sendReplayEnquiry,
 };
