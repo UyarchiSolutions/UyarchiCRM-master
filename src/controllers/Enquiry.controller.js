@@ -39,6 +39,11 @@ const getFaq = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getHeadingOnly = catchAsync(async (req, res) => {
+  const data = await EnquieryService.getHeadingOnly();
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -47,4 +52,5 @@ module.exports = {
   createFAQ,
   updateFaq,
   getFaq,
+  getHeadingOnly,
 };

@@ -8,4 +8,5 @@ router.route('/sendReplay/Enquiry').post(EnquiryController.sendReplayEnquiry);
 router.route('/remove/:id').get(EnquiryController.remove);
 router.route('/create/faq').post(EnquiryController.createFAQ).get(EnquiryController.getFaq);
 router.route('/updateFaq/:id').put(EnquiryController.updateFaq);
+router.route('/getHeading/Only').get(EnquiryController.getHeadingOnly);
 module.exports = router;

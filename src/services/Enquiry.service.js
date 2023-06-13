@@ -100,6 +100,11 @@ const getFaq = async () => {
   return data;
 };
 
+const getHeadingOnly = async () => {
+  const data = await Heading.find({ active: true });
+  res.send(data);
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -108,4 +113,5 @@ module.exports = {
   createFAQ,
   updateFaq,
   getFaq,
+  getHeadingOnly,
 };
