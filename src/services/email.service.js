@@ -11,13 +11,6 @@ if (config.env !== 'test') {
     .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
 }
 
-/**
- * Send an email
- * @param {string} to
- * @param {string} subject
- * @param {string} text
- * @returns {Promise}
- */
 const generateOTP = () => {
   digits = '0123456789';
   let OTP = '';
@@ -87,11 +80,12 @@ If you did not create an account, then ignore this email.`;
 };
 
 const sendEmail_Enquiry = async (data) => {
-  const { email, Enquiry, date, Answer } = data;
-  const subjects = `Reply To Enquiry On:${date}-Register`;
-  const texts = `Enquiry:${Enquiry}`;
-  const text1 = `Answer:${Answer}`;
-  await sendEmail(email, subjects, texts, text1);
+  let { email, Enquiry, date, Answer } = data;
+  const subject = `Reply To Enquiry On:${date}-Register`;
+  const text = `Enquiry:${Enquiry} Answer:${Answer}`;
+  let to = email
+  let msg = { from: config.email.from, to, subject, text };
+  await transport.sendMail(msg);
 };
 
 module.exports = {
