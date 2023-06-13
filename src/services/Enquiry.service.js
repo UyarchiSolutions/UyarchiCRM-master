@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const moment = require('moment');
-const { Enquiery } = require('../models/Enquiry.model');
+const { Enquiery, Heading, FAQ } = require('../models/Enquiry.model');
 
 const createEnquiry = async (body) => {
   const date = moment().format('DD-MM-YYYY');
@@ -70,6 +70,11 @@ const remove = async (id) => {
   }
   data = await Enquiery.findByIdAndUpdate({ _id: id }, { Remove: 'Rejected' }, { new: true });
   return data;
+};
+
+const createFAQ = async (body) => {
+  const { heading } = body;
+  let existHeading = await Heading.findById(heading);
 };
 
 module.exports = {
