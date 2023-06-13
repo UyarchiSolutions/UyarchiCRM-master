@@ -96,7 +96,25 @@ const updateFaq = async (id, body) => {
 };
 
 const getFaq = async () => {
-  const data = await FAQ.find({ active: true });
+  const data = await FAQ.aggregate([
+    {
+      $match: { active: true },
+    },
+    {
+      $lookup: {
+        from: 'headings',
+        localField: 'headingId',
+        foreignField: '_id',
+        as: 'heading',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$heading',
+      },
+    },
+  ]);
   return data;
 };
 
