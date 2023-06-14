@@ -1506,6 +1506,7 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_M.push({ $or: eq });
     match_N.push({ $or: neq });
   }
+  await getCoordinatesByAddress();
   let perfectMatch = await SellerPost.aggregate([
     { $match: { $and: [{ finsh: { $eq: true } }] } },
     {
@@ -1624,6 +1625,35 @@ const getApprover_Property_new = async (query, userId, body) => {
       },
     },
 
+    {
+      $lookup: {
+        from: 'sellerposts', // Replace with the name of your geocoding collection
+        let: { formatedAddress: '$formatedAddress' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$formatedAddress', '$$formatedAddress'],
+              },
+            },
+          },
+        
+        ],
+        as: 'sellerposts',
+      },
+    },
+    {
+      $geoNear: {
+        // includeLocs: "locationCoordinates",
+        near: { type: 'Point', coordinates: [80.2316737,13.0391935] },
+        distanceField: 'distance',
+        spherical: true,
+        // maxDistance: 10000000000,
+      },
+    },
+    {
+      $unwind: '$sellerposts',
+    },
     {
       $match: { $and: [{ condition: { $ne: false } }] },
     },
@@ -2549,6 +2579,7 @@ const UpdateSellerPost_As_Raw_Data = async (id, body, userId) => {
   values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
   if (body.lat != null && body.long != null) {
     values.locationCoordinates = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
+    values.location = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
     values.save();
   }
   return values;
