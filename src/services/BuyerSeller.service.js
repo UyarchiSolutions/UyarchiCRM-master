@@ -1638,51 +1638,52 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                     then: 'O',
                                                                     else: {
                                                                       $cond: {
-                                                                        if: { $and: [match_A,{$lte:["$distance",5000]}] },
+                                                                        if: { $and: [{ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] },{ $eq: ['$Type', type] },{$lte:["$distance",5000]}] },
                                                                         then: 'PA',
-                                                                        else: {
-                                                                          $cond: {
-                                                                            if: { $and: [match_B,{$lte:["$distance",5000]}] },
-                                                                            then: 'PB',
-                                                                            else: {
-                                                                              $cond: {
-                                                                                if: { $and: [match_C,{$lte:["$distance",5000]}] },
-                                                                                then: 'PC',
-                                                                                else: {
-                                                                                  $cond: {
-                                                                                    if: { $and: [match_D,{$lte:["$distance",5000]}] },
-                                                                                    then: 'PD',
-                                                                                    else: {
-                                                                                      $cond: {
-                                                                                        if: { $and: [match_E,{$lte:["$distance",5000]}] },
-                                                                                        then: 'PE',
-                                                                                        else: {
-                                                                                          $cond: {
-                                                                                            if: { $and: [match_F,{$lte:["$distance",5000]}] },
-                                                                                            then: 'PF',
-                                                                                            else: {
-                                                                                              $cond: {
-                                                                                                if: { $and: [match_G,{$lte:["$distance",5000]}] },
-                                                                                                then: 'PG',
-                                                                                                else: {
-                                                                                                  $cond: {
-                                                                                                    if: { $and: [match_H,{$lte:["$distance",5000]}] },
-                                                                                                    then: 'PH',
-                                                                                                    else:false
-                                                                                                  },
-                                                                                                },
-                                                                                              },
-                                                                                            },
-                                                                                          },
-                                                                                        },
-                                                                                      },
-                                                                                    },
-                                                                                  },
-                                                                                },
-                                                                              },
-                                                                            },
-                                                                          },
-                                                                        },
+                                                                        else:false
+                                                                        // else: {
+                                                                        //   $cond: {
+                                                                        //     if: { $and: [match_B,{$lte:["$distance",5000]}] },
+                                                                        //     then: 'PB',
+                                                                        //     else: {
+                                                                        //       $cond: {
+                                                                        //         if: { $and: [match_C,{$lte:["$distance",5000]}] },
+                                                                        //         then: 'PC',
+                                                                        //         else: {
+                                                                        //           $cond: {
+                                                                        //             if: { $and: [match_D,{$lte:["$distance",5000]}] },
+                                                                        //             then: 'PD',
+                                                                        //             else: {
+                                                                        //               $cond: {
+                                                                        //                 if: { $and: [match_E,{$lte:["$distance",5000]}] },
+                                                                        //                 then: 'PE',
+                                                                        //                 else: {
+                                                                        //                   $cond: {
+                                                                        //                     if: { $and: [match_F,{$lte:["$distance",5000]}] },
+                                                                        //                     then: 'PF',
+                                                                        //                     else: {
+                                                                        //                       $cond: {
+                                                                        //                         if: { $and: [match_G,{$lte:["$distance",5000]}] },
+                                                                        //                         then: 'PG',
+                                                                        //                         else: {
+                                                                        //                           $cond: {
+                                                                        //                             if: { $and: [match_H,{$lte:["$distance",5000]}] },
+                                                                        //                             then: 'PH',
+                                                                        //                             else:false
+                                                                        //                           },
+                                                                        //                         },
+                                                                        //                       },
+                                                                        //                     },
+                                                                        //                   },
+                                                                        //                 },
+                                                                        //               },
+                                                                        //             },
+                                                                        //           },
+                                                                        //         },
+                                                                        //       },
+                                                                        //     },
+                                                                        //   },
+                                                                        // },
                                                                       },
                                                                     },
                                                                   },
@@ -1816,51 +1817,52 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                     then: 'O',
                                                                     else: {
                                                                       $cond: {
-                                                                        if: { $and: [match_A,{$lte:["$distance",5000]}] },
+                                                                        if: { $and: [{ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] },{ $eq: ['$Type', type] },{$lte:["$distance",5000]}] },
                                                                         then: 'PA',
-                                                                        else: {
-                                                                          $cond: {
-                                                                            if: { $and: [match_B,{$lte:["$distance",5000]}] },
-                                                                            then: 'PB',
-                                                                            else: {
-                                                                              $cond: {
-                                                                                if: { $and: [match_C,{$lte:["$distance",5000]}] },
-                                                                                then: 'PC',
-                                                                                else: {
-                                                                                  $cond: {
-                                                                                    if: { $and: [match_D,{$lte:["$distance",5000]}] },
-                                                                                    then: 'PD',
-                                                                                    else: {
-                                                                                      $cond: {
-                                                                                        if: { $and: [match_E,{$lte:["$distance",5000]}] },
-                                                                                        then: 'PE',
-                                                                                        else: {
-                                                                                          $cond: {
-                                                                                            if: { $and: [match_F,{$lte:["$distance",5000]}] },
-                                                                                            then: 'PF',
-                                                                                            else: {
-                                                                                              $cond: {
-                                                                                                if: { $and: [match_G,{$lte:["$distance",5000]}] },
-                                                                                                then: 'PG',
-                                                                                                else: {
-                                                                                                  $cond: {
-                                                                                                    if: { $and: [match_H,{$lte:["$distance",5000]}] },
-                                                                                                    then: 'PH',
-                                                                                                    else:false
-                                                                                                  },
-                                                                                                },
-                                                                                              },
-                                                                                            },
-                                                                                          },
-                                                                                        },
-                                                                                      },
-                                                                                    },
-                                                                                  },
-                                                                                },
-                                                                              },
-                                                                            },
-                                                                          },
-                                                                        },
+                                                                        else:false
+                                                                        // else: {
+                                                                        //   $cond: {
+                                                                        //     if: { $and: [match_B,{$lte:["$distance",5000]}] },
+                                                                        //     then: 'PB',
+                                                                        //     else: {
+                                                                        //       $cond: {
+                                                                        //         if: { $and: [match_C,{$lte:["$distance",5000]}] },
+                                                                        //         then: 'PC',
+                                                                        //         else: {
+                                                                        //           $cond: {
+                                                                        //             if: { $and: [match_D,{$lte:["$distance",5000]}] },
+                                                                        //             then: 'PD',
+                                                                        //             else: {
+                                                                        //               $cond: {
+                                                                        //                 if: { $and: [match_E,{$lte:["$distance",5000]}] },
+                                                                        //                 then: 'PE',
+                                                                        //                 else: {
+                                                                        //                   $cond: {
+                                                                        //                     if: { $and: [match_F,{$lte:["$distance",5000]}] },
+                                                                        //                     then: 'PF',
+                                                                        //                     else: {
+                                                                        //                       $cond: {
+                                                                        //                         if: { $and: [match_G,{$lte:["$distance",5000]}] },
+                                                                        //                         then: 'PG',
+                                                                        //                         else: {
+                                                                        //                           $cond: {
+                                                                        //                             if: { $and: [match_H,{$lte:["$distance",5000]}] },
+                                                                        //                             then: 'PH',
+                                                                        //                             else:false
+                                                                        //                           },
+                                                                        //                         },
+                                                                        //                       },
+                                                                        //                     },
+                                                                        //                   },
+                                                                        //                 },
+                                                                        //               },
+                                                                        //             },
+                                                                        //           },
+                                                                        //         },
+                                                                        //       },
+                                                                        //     },
+                                                                        //   },
+                                                                        // },
                                                                       },
                                                                     },
                                                                   },
