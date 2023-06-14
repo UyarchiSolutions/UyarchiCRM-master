@@ -120,7 +120,7 @@ const getFaq = async () => {
 
 const getHeadingOnly = async () => {
   const data = await Heading.find({ active: true });
-  res.send(data);
+  return data;
 };
 
 module.exports = {
