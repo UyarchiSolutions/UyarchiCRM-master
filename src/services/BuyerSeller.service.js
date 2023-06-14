@@ -1038,12 +1038,38 @@ const getApprover_Property_new = async (query, userId, body) => {
   // { $regexMatch: { input: "$description", regex: "line", options: "i" } }
 
   // condition -1 A
-  console.log(query);
+  let nearby_location = {
+    $geoNear: {
+      near: { type: 'Point', coordinates: [80.2316737, 13.0391935] },
+      key: 'location',
+      distanceField: 'distance',
+      spherical: true,
+    },
+  };
   if (formatAdd != null && formatAdd !== '') {
     let eq = [];
     let neq = [];
     if (Array.isArray(formatAdd)) {
-      formatAdd.forEach((e) => {
+      let near = await getCoordinatesByAddress(formatAdd[0]);
+      if (near != null) {
+        if (near.results.length != 0) {
+          let lat = near.results[0].geometry.location.lat;
+          let lng = near.results[0].geometry.location.lng;
+          nearby_location = {
+            $geoNear: {
+              near: { type: 'Point', coordinates: [lng, lat] },
+              key: 'location',
+              distanceField: 'distance',
+              spherical: true,
+            },
+          };
+        }
+      }
+      formatAdd.forEach(async (e) => {
+        // console.log(near)
+        if (near != null) {
+          console.log(near.geometry);
+        }
         let localmatch = [];
         let format = e.split(',');
         format.forEach((a) => {
@@ -1054,6 +1080,21 @@ const getApprover_Property_new = async (query, userId, body) => {
     } else {
       let localmatch = [];
       let format = formatAdd.split(',');
+      let near = await getCoordinatesByAddress(formatAdd);
+      if (near != null) {
+        if (near.results.length != 0) {
+          let lat = near.results[0].geometry.location.lat;
+          let lng = near.results[0].geometry.location.lng;
+          nearby_location = {
+            $geoNear: {
+              near: { type: 'Point', coordinates: [lng, lat] },
+              key: 'location',
+              distanceField: 'distance',
+              spherical: true,
+            },
+          };
+        }
+      }
       format.forEach((a) => {
         localmatch.push({ $regexMatch: { input: '$formatedAddress', regex: a, options: 'i' } });
       });
@@ -1506,8 +1547,17 @@ const getApprover_Property_new = async (query, userId, body) => {
     match_M.push({ $or: eq });
     match_N.push({ $or: neq });
   }
-  await getCoordinatesByAddress();
+  // let matching = await SellerPost.find();
+  // matching.forEach(async (e) => {
+  //   console.log(e.lat);
+  //   if (e.lat != null) {
+  //     e.location = { type: 'Point', coordinates: [parseFloat(e.long), parseFloat(e.lat)] };
+  //     e.locationCoordinates = { type: 'Point', coordinates: [parseFloat(e.long), parseFloat(e.lat)] };
+  //     e.save();
+  //   }
+  // });
   let perfectMatch = await SellerPost.aggregate([
+    nearby_location,
     { $match: { $and: [{ finsh: { $eq: true } }] } },
     {
       $lookup: {
@@ -1586,7 +1636,55 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                   $cond: {
                                                                     if: { $and: match_O },
                                                                     then: 'O',
-                                                                    else: false,
+                                                                    else: {
+                                                                      $cond: {
+                                                                        if: { $and: [match_A,{$lte:["$distance",5000]}] },
+                                                                        then: 'PA',
+                                                                        else: {
+                                                                          $cond: {
+                                                                            if: { $and: [match_B,{$lte:["$distance",5000]}] },
+                                                                            then: 'PB',
+                                                                            else: {
+                                                                              $cond: {
+                                                                                if: { $and: [match_C,{$lte:["$distance",5000]}] },
+                                                                                then: 'PC',
+                                                                                else: {
+                                                                                  $cond: {
+                                                                                    if: { $and: [match_D,{$lte:["$distance",5000]}] },
+                                                                                    then: 'PD',
+                                                                                    else: {
+                                                                                      $cond: {
+                                                                                        if: { $and: [match_E,{$lte:["$distance",5000]}] },
+                                                                                        then: 'PE',
+                                                                                        else: {
+                                                                                          $cond: {
+                                                                                            if: { $and: [match_F,{$lte:["$distance",5000]}] },
+                                                                                            then: 'PF',
+                                                                                            else: {
+                                                                                              $cond: {
+                                                                                                if: { $and: [match_G,{$lte:["$distance",5000]}] },
+                                                                                                then: 'PG',
+                                                                                                else: {
+                                                                                                  $cond: {
+                                                                                                    if: { $and: [match_H,{$lte:["$distance",5000]}] },
+                                                                                                    then: 'PH',
+                                                                                                    else:false
+                                                                                                  },
+                                                                                                },
+                                                                                              },
+                                                                                            },
+                                                                                          },
+                                                                                        },
+                                                                                      },
+                                                                                    },
+                                                                                  },
+                                                                                },
+                                                                              },
+                                                                            },
+                                                                          },
+                                                                        },
+                                                                      },
+                                                                    },
                                                                   },
                                                                 },
                                                               },
@@ -1624,36 +1722,6 @@ const getApprover_Property_new = async (query, userId, body) => {
         usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
       },
     },
-
-    {
-      $lookup: {
-        from: 'sellerposts', // Replace with the name of your geocoding collection
-        let: { formatedAddress: '$formatedAddress' },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $eq: ['$formatedAddress', '$$formatedAddress'],
-              },
-            },
-          },
-        
-        ],
-        as: 'sellerposts',
-      },
-    },
-    {
-      $geoNear: {
-        // includeLocs: "locationCoordinates",
-        near: { type: 'Point', coordinates: [80.2316737,13.0391935] },
-        distanceField: 'distance',
-        spherical: true,
-        // maxDistance: 10000000000,
-      },
-    },
-    {
-      $unwind: '$sellerposts',
-    },
     {
       $match: { $and: [{ condition: { $ne: false } }] },
     },
@@ -1667,7 +1735,23 @@ const getApprover_Property_new = async (query, userId, body) => {
   ]);
 
   let total = await SellerPost.aggregate([
+    nearby_location,
     { $match: { $and: [{ finsh: { $eq: true } }] } },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
     {
       $addFields: {
         condition: {
@@ -1726,7 +1810,61 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                               $cond: {
                                                                 if: { $and: match_N },
                                                                 then: 'N',
-                                                                else: false,
+                                                                else: {
+                                                                  $cond: {
+                                                                    if: { $and: match_O },
+                                                                    then: 'O',
+                                                                    else: {
+                                                                      $cond: {
+                                                                        if: { $and: [match_A,{$lte:["$distance",5000]}] },
+                                                                        then: 'PA',
+                                                                        else: {
+                                                                          $cond: {
+                                                                            if: { $and: [match_B,{$lte:["$distance",5000]}] },
+                                                                            then: 'PB',
+                                                                            else: {
+                                                                              $cond: {
+                                                                                if: { $and: [match_C,{$lte:["$distance",5000]}] },
+                                                                                then: 'PC',
+                                                                                else: {
+                                                                                  $cond: {
+                                                                                    if: { $and: [match_D,{$lte:["$distance",5000]}] },
+                                                                                    then: 'PD',
+                                                                                    else: {
+                                                                                      $cond: {
+                                                                                        if: { $and: [match_E,{$lte:["$distance",5000]}] },
+                                                                                        then: 'PE',
+                                                                                        else: {
+                                                                                          $cond: {
+                                                                                            if: { $and: [match_F,{$lte:["$distance",5000]}] },
+                                                                                            then: 'PF',
+                                                                                            else: {
+                                                                                              $cond: {
+                                                                                                if: { $and: [match_G,{$lte:["$distance",5000]}] },
+                                                                                                then: 'PG',
+                                                                                                else: {
+                                                                                                  $cond: {
+                                                                                                    if: { $and: [match_H,{$lte:["$distance",5000]}] },
+                                                                                                    then: 'PH',
+                                                                                                    else:false
+                                                                                                  },
+                                                                                                },
+                                                                                              },
+                                                                                            },
+                                                                                          },
+                                                                                        },
+                                                                                      },
+                                                                                    },
+                                                                                  },
+                                                                                },
+                                                                              },
+                                                                            },
+                                                                          },
+                                                                        },
+                                                                      },
+                                                                    },
+                                                                  },
+                                                                },
                                                               },
                                                             },
                                                           },
@@ -1755,6 +1893,11 @@ const getApprover_Property_new = async (query, userId, body) => {
             },
           },
         },
+      },
+    },
+    {
+      $addFields: {
+        usersStatus: { $ifNull: ['$users.status', 'unViewed'] },
       },
     },
     {
@@ -2578,8 +2721,8 @@ const UpdateSellerPost_As_Raw_Data = async (id, body, userId) => {
   }
   values = await SellerPost.findByIdAndUpdate({ _id: id }, body, { new: true });
   if (body.lat != null && body.long != null) {
-    values.locationCoordinates = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
-    values.location = { type: 'Point', coordinates: [parseFloat(body.lat), parseFloat(body.long)] };
+    values.locationCoordinates = { type: 'Point', coordinates: [parseFloat(body.long), parseFloat(body.lat)] };
+    values.location = { type: 'Point', coordinates: [parseFloat(body.long), parseFloat(body.lat)] };
     values.save();
   }
   return values;

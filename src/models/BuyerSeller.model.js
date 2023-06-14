@@ -209,8 +209,7 @@ const sellerPostSchema = new mongoose.Schema({
     type: String,
   },
   location: {
-    type: { type: String },
-    coordinates: [Number],
+    type: Object,
   },
   kitchenType: {
     type: String,
@@ -542,6 +541,7 @@ const sellerPostSchema = new mongoose.Schema({
   // },
 });
 sellerPostSchema.index({ location: '2dsphere' });
+sellerPostSchema.index({ locationCoordinates: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
 const BuyerRentieSchema = mongoose.Schema({
