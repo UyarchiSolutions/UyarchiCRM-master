@@ -91,7 +91,16 @@ const updateFaq = async (id, body) => {
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'FAQ Not Available');
   }
-  values = await FAQ.findByIdAndUpdate({ _id: id }, body, { new: true });
+  let headingId;
+  let heading = await Heading.findById(body.heading);
+  if (!heading) {
+    let head = await Heading.create({ heading: body.heading });
+    headingId = head._id;
+  } else {
+    headingId = heading._id;
+  }
+  let data = { ...body, ...{ headingId: headingId } };
+  values = await FAQ.findByIdAndUpdate({ _id: id }, data, { new: true });
   return values;
 };
 
