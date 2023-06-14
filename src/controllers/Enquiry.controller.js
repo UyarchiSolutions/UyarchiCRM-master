@@ -44,6 +44,11 @@ const getHeadingOnly = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const RemoveFAQ = catchAsync(async (req, res) => {
+  const data = await EnquieryService.RemoveFAQ(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -53,4 +58,5 @@ module.exports = {
   updateFaq,
   getFaq,
   getHeadingOnly,
+  RemoveFAQ,
 };

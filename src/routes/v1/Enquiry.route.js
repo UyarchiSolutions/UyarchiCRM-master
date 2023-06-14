@@ -9,4 +9,5 @@ router.route('/remove/:id').get(EnquiryController.remove);
 router.route('/create/faq').post(EnquiryController.createFAQ).get(EnquiryController.getFaq);
 router.route('/updateFaq/:id').put(EnquiryController.updateFaq);
 router.route('/getHeading/Only').get(EnquiryController.getHeadingOnly);
+router.route('/RemoveFAQ/:id').get(EnquiryController.RemoveFAQ);
 module.exports = router;

@@ -132,6 +132,15 @@ const getHeadingOnly = async () => {
   return data;
 };
 
+const RemoveFAQ = async (id) => {
+  let faq = await FAQ.findById(id);
+  if (!faq) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'FAQ Not Available');
+  }
+  faq = await FAQ.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  return faq;
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -141,4 +150,5 @@ module.exports = {
   updateFaq,
   getFaq,
   getHeadingOnly,
+  RemoveFAQ,
 };
