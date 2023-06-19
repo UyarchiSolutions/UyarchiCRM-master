@@ -3619,9 +3619,14 @@ const getNotificationFor_Buyers = async (userId) => {
 };
 
 const getIntrestedPropertyByUser_pagination = async (userId, query) => {
-  let { type, ctype, page, range } = query;
+  let { type, ctype, page, range, ind } = query;
   page = parseInt(page);
   range = parseInt(range);
+  if (!ind) {
+    ind = 0;
+  } else {
+    ind = parseInt(ind);
+  }
   const data = await SellerPost.aggregate([
     {
       $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
@@ -3644,13 +3649,18 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
       $limit: parseInt(range),
     },
   ]);
-  return { values: data, total: total.length != 0 ? true : false };
+  return { values: data, total: total.length != 0 ? true : false, nextData: values[ind] };
 };
 
 const getsavedPropertyByUser_pagination = async (userId, query) => {
-  let { type, ctype, page, range } = query;
+  let { type, ctype, page, range, ind } = query;
   page = parseInt(page);
   range = parseInt(range);
+  if (!ind) {
+    ind = 0;
+  } else {
+    ind = parseInt(ind);
+  }
   const data = await SellerPost.aggregate([
     {
       $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
@@ -3673,7 +3683,7 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
       $limit: parseInt(range),
     },
   ]);
-  return { values: data, total: total.length != 0 ? true : false };
+  return { values: data, total: total.length != 0 ? true : false, nextData: values[ind] };
 };
 
 module.exports = {
