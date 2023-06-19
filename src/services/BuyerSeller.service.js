@@ -3632,6 +3632,21 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
       $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
     },
     {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
       $skip: parseInt(range) * parseInt(page),
     },
     {
@@ -3641,6 +3656,21 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
   const total = await SellerPost.aggregate([
     {
       $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
     },
     {
       $skip: parseInt(range) * (parseInt(page) + 1),
@@ -3666,6 +3696,21 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
       $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
     },
     {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+    {
       $skip: parseInt(range) * parseInt(page),
     },
     {
@@ -3675,6 +3720,21 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
   const total = await SellerPost.aggregate([
     {
       $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
     },
     {
       $skip: parseInt(range) * (parseInt(page) + 1),
