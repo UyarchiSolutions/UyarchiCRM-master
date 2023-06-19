@@ -3649,7 +3649,7 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
       $limit: parseInt(range),
     },
   ]);
-  return { values: data, total: total.length != 0 ? true : false, nextData: values[ind] };
+  return { values: data, total: total.length != 0 ? true : false, nextData: data[ind] };
 };
 
 const getsavedPropertyByUser_pagination = async (userId, query) => {
@@ -3683,7 +3683,7 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
       $limit: parseInt(range),
     },
   ]);
-  return { values: data, total: total.length != 0 ? true : false, nextData: values[ind] };
+  return { values: data, total: total.length != 0 ? true : false, nextData: data[ind] };
 };
 
 module.exports = {
