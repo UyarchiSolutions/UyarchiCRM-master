@@ -3647,6 +3647,35 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
   return { values: data, total: total.length != 0 ? true : false };
 };
 
+const getsavedPropertyByUser_pagination = async (userId, query) => {
+  let { type, ctype, page, range } = query;
+  page = parseInt(page);
+  range = parseInt(range);
+  const data = await SellerPost.aggregate([
+    {
+      $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $skip: parseInt(range) * parseInt(page),
+    },
+    {
+      $limit: parseInt(range),
+    },
+  ]);
+  const total = await SellerPost.aggregate([
+    {
+      $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $skip: parseInt(range) * (parseInt(page) + 1),
+    },
+    {
+      $limit: parseInt(range),
+    },
+  ]);
+  return { values: data, total: total.length != 0 ? true : false };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -3739,4 +3768,5 @@ module.exports = {
   BuyerReshedule,
   getApprover_Property_new,
   getIntrestedPropertyByUser_pagination,
+  getsavedPropertyByUser_pagination,
 };

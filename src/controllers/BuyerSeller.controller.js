@@ -631,6 +631,12 @@ const getIntrestedPropertyByUser_pagination = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getsavedPropertyByUser_pagination = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getsavedPropertyByUser_pagination(userId, req.query);
+  res.send(data);
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -720,5 +726,6 @@ module.exports = {
   getNotificationFor_Buyers,
   BuyerReshedule,
   getApprover_Property_new,
+  getsavedPropertyByUser_pagination,
   getIntrestedPropertyByUser_pagination,
 };
