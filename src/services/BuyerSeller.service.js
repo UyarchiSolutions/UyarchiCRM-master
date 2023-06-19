@@ -3685,9 +3685,11 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
   } else {
     ind = parseInt(ind);
   }
+
+  console.log(query);
   const data = await SellerPost.aggregate([
     {
-      $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
+      $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
     },
     {
       $lookup: {
@@ -3713,7 +3715,7 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
   ]);
   const total = await SellerPost.aggregate([
     {
-      $match: { WhishList: { $in: [userId] }, WhishList: { $eq: ctype }, Type: { $eq: type } },
+      $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
     },
     {
       $lookup: {
