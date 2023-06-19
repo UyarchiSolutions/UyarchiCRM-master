@@ -108,4 +108,7 @@ router.route('/Delete/property/video/:id').delete(BuyerSellerController.Delete_p
 router.route('/getNotification/Details/intrested').get(BuyerAuth, BuyerSellerController.getNotificationDetails);
 router.route('/getNotificationFor/Buyers').get(BuyerAuth, BuyerSellerController.getNotificationFor_Buyers);
 router.route('/Reshedule/BuyerReshedule').post(BuyerAuth, BuyerSellerController.BuyerReshedule);
+router
+  .route('/getIntrestedPropertyByUser/pagination')
+  .get(BuyerAuth, BuyerSellerController.getIntrestedPropertyByUser_pagination);
 module.exports = router;

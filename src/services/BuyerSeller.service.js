@@ -1638,9 +1638,20 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                     then: 'O',
                                                                     else: {
                                                                       $cond: {
-                                                                        if: { $and: [{ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] },{ $eq: ['$Type', type] },{$lte:["$distance",5000]}] },
+                                                                        if: {
+                                                                          $and: [
+                                                                            {
+                                                                              $eq: [
+                                                                                '$HouseOrCommercialType',
+                                                                                HouseOrCommercialType,
+                                                                              ],
+                                                                            },
+                                                                            { $eq: ['$Type', type] },
+                                                                            { $lte: ['$distance', 5000] },
+                                                                          ],
+                                                                        },
                                                                         then: 'PA',
-                                                                        else:false
+                                                                        else: false,
                                                                         // else: {
                                                                         //   $cond: {
                                                                         //     if: { $and: [match_B,{$lte:["$distance",5000]}] },
@@ -1817,9 +1828,20 @@ const getApprover_Property_new = async (query, userId, body) => {
                                                                     then: 'O',
                                                                     else: {
                                                                       $cond: {
-                                                                        if: { $and: [{ $eq: ['$HouseOrCommercialType', HouseOrCommercialType] },{ $eq: ['$Type', type] },{$lte:["$distance",5000]}] },
+                                                                        if: {
+                                                                          $and: [
+                                                                            {
+                                                                              $eq: [
+                                                                                '$HouseOrCommercialType',
+                                                                                HouseOrCommercialType,
+                                                                              ],
+                                                                            },
+                                                                            { $eq: ['$Type', type] },
+                                                                            { $lte: ['$distance', 5000] },
+                                                                          ],
+                                                                        },
                                                                         then: 'PA',
-                                                                        else:false
+                                                                        else: false,
                                                                         // else: {
                                                                         //   $cond: {
                                                                         //     if: { $and: [match_B,{$lte:["$distance",5000]}] },
@@ -3596,6 +3618,35 @@ const getNotificationFor_Buyers = async (userId) => {
   return values;
 };
 
+const getIntrestedPropertyByUser_pagination = async (userId, query) => {
+  let { type, ctype, page, range } = query;
+  page = parseInt(page);
+  range = parseInt(range);
+  const data = await SellerPost.aggregate([
+    {
+      $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $skip: parseInt(range) * parseInt(page),
+    },
+    {
+      $limit: parseInt(range),
+    },
+  ]);
+  const total = await SellerPost.aggregate([
+    {
+      $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $skip: parseInt(range) * (parseInt(page) + 1),
+    },
+    {
+      $limit: parseInt(range),
+    },
+  ]);
+  return { values: data, total: total.length != 0 ? true : false };
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -3687,4 +3738,5 @@ module.exports = {
   getNotificationFor_Buyers,
   BuyerReshedule,
   getApprover_Property_new,
+  getIntrestedPropertyByUser_pagination,
 };
