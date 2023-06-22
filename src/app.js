@@ -28,6 +28,9 @@ var bodyParser = require('body-parser');
 const { SellerPost, Buyer } = require('./models/BuyerSeller.model');
 const multer = require('multer');
 const userPlane = require('./models/usersPlane.model');
+
+const routes_v2 = require('./routes/v1/liveStreaming');
+
 // const io = require('socket.io')(httpServer, {
 //   cors: {
 //     origin: '*',
@@ -112,6 +115,11 @@ io.on('connection', (socket) => {
   //   console.log('A disconnection has been made');
   // });
 });
+
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
+});
 // server.listen(PORT, () => console.log(`Server is Quannected to Port ${PORT}`));
 
 // io.on('connection', (socket) => {
@@ -157,12 +165,17 @@ if (config.env === 'production') {
 }
 // v1 api routes
 app.use('/v1', routes);
+app.use('/v2', routes_v2);
+
 //default routes
 app.get('/', (req, res) => {
   res.sendStatus(200);
 });
 // default v1 route
 app.get('/v1', (req, res) => {
+  res.sendStatus(200);
+});
+app.get('/v2', (req, res) => {
   res.sendStatus(200);
 });
 // health status code

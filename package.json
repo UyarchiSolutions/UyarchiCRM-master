@@ -49,6 +49,7 @@
     "prettier"
   ],
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "agora": "^0.0.2",
     "agora-access-token": "^2.0.4",
     "aws-sdk": "^2.1285.0",
@@ -64,6 +65,7 @@
     "express-fileupload": "^1.4.0",
     "express-mongo-sanitize": "^2.0.0",
     "express-rate-limit": "^5.0.0",
+    "fluent-ffmpeg": "^2.1.2",
     "generate-api-key": "^1.0.2",
     "geolib": "^3.3.3",
     "helmet": "^4.1.0",
