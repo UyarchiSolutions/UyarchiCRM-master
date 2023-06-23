@@ -24,6 +24,10 @@ const createRequestStream = async (body, userId) => {
   }
   let endTimes = planes.Duration_per_stream;
   let datess = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime() + endTimes * 60 * 1000);
+  console.log(startTime);
+  const datecheck = new Date(dateTime);
+  const dateTimeString = datecheck.toLocaleString(); // Convert to local date and time string
+  console.log(dateTimeString, 'plan', endTimes);
   const isoendTime = moment(dateTime).add(endTimes, 'days').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
   let datas = {
@@ -48,6 +52,7 @@ const createRequestStream = async (body, userId) => {
   await PurchasePlan.findByIdAndUpdate({ _id: planId }, { availableStream: stream.toString() }, { new: true });
   let data = await RequestStream.create(datas);
   return data;
+  // return { message: 'Under Working......' };
 };
 
 // Fetch request Stream By Id
