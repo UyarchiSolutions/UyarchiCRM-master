@@ -2716,6 +2716,25 @@ const updateBuyerRelation = async (id, body, userId) => {
       type: 'Visited',
     });
   }
+  if (body.type === 'Fixed') {
+    let findIntrest = await PropertyBuyerRelation.findOne({
+      _id: id,
+    });
+    await PropertyBuyerRelation.findByIdAndUpdate(
+      { _id: findIntrest._id },
+      {
+        status: body.type,
+        $push: { history: { status: 'Fixed', date_Time: moment().toDate() } },
+      },
+      { new: true }
+    );
+    await SellerNotification.create({
+      postId: findIntrest.postId,
+      buyerId: findIntrest.userId,
+      sellerId: userId,
+      type: 'Fixed',
+    });
+  }
   return values;
 };
 
@@ -3602,7 +3621,7 @@ const getNotificationFor_Buyers = async (userId) => {
     {
       $match: {
         buyerId: userId,
-        type: { $in: ['Schedule', 'Visited', 'Accept'] },
+        type: { $in: ['Schedule', 'Visited', 'Accept', 'Fixed'] },
       },
     },
     {
