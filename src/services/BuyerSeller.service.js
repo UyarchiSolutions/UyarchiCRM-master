@@ -3603,7 +3603,7 @@ const getNotificationFor_Buyers = async (userId) => {
     {
       $match: {
         buyerId: userId,
-        type: 'Schedule',
+        type: { $in: ['Schedule', 'Visited'] },
       },
     },
     {
