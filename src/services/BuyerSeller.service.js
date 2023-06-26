@@ -2700,7 +2700,6 @@ const updateBuyerRelation = async (id, body, userId) => {
   if (body.type === 'Visited') {
     let findIntrest = await PropertyBuyerRelation.findOne({
       _id: id,
-      status: { $in: ['Accept'] },
     });
     await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: findIntrest._id },
@@ -2711,8 +2710,8 @@ const updateBuyerRelation = async (id, body, userId) => {
       { new: true }
     );
     await SellerNotification.create({
-      postId: body.postId,
-      buyerId: body.buyerId,
+      postId: findIntrest.postId,
+      buyerId: findIntrest.userId,
       sellerId: userId,
       type: 'Visited',
     });
@@ -3603,7 +3602,7 @@ const getNotificationFor_Buyers = async (userId) => {
     {
       $match: {
         buyerId: userId,
-        type: { $in: ['Schedule', 'Visited'] },
+        type: { $in: ['Schedule', 'Visited', 'Accept'] },
       },
     },
     {
