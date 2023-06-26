@@ -2699,18 +2699,12 @@ const updateBuyerRelation = async (id, body, userId) => {
   }
   if (body.type === 'Visited') {
     let findIntrest = await PropertyBuyerRelation.findOne({
-      userId: body.buyerId,
-      status: { $in: ['Intrested', 'request_Reschedule', 'Accept'] },
-      propertyId: body.postId,
+      _id: id,
+      status: { $in: ['Accept'] },
     });
-    console.log(findIntrest._id);
     await PropertyBuyerRelation.findByIdAndUpdate(
       { _id: findIntrest._id },
       {
-        scheduleDate: body.schedule,
-        scheduletime: body.scheduletime,
-        propertyId: body.postId,
-        userId: body.buyerId,
         status: body.type,
         $push: { history: { status: 'Visited', date_Time: moment().toDate() } },
       },
@@ -2720,8 +2714,6 @@ const updateBuyerRelation = async (id, body, userId) => {
       postId: body.postId,
       buyerId: body.buyerId,
       sellerId: userId,
-      scheduleDate: body.schedule,
-      scheduleTime: body.scheduletime,
       type: 'Visited',
     });
   }
