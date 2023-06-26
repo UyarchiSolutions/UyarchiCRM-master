@@ -180,6 +180,15 @@ const changePassword = async (body) => {
   return { message: 'Password Updated......' };
 };
 
+const DeleteSubHostById = async (id) => {
+  const subhost = await SubHost.findById(id);
+  if (!subhost) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'SunHost Not Available');
+  }
+  await subhost.remove();
+  return subhost;
+};
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -196,4 +205,5 @@ module.exports = {
   getStream_By_SubHost,
   changePassword,
   changePassword_SubHost,
+  DeleteSubHostById,
 };

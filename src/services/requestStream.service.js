@@ -184,6 +184,15 @@ const getApprovedStream_For_Buyers = async () => {
   return values;
 };
 
+const CancelStreamById = async (id) => {
+  let stream = await RequestStream.findById(id);
+  if (!stream) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Stream Not Available');
+  }
+  stream = await RequestStream.findOneAndUpdate({ _id: id }, { status: 'Cancelled' }, { new: true });
+  return stream;
+};
+
 module.exports = {
   createRequestStream,
   getRequsetStreamById,
@@ -193,4 +202,5 @@ module.exports = {
   AdminStream_Approved_Cancel,
   getStreamById,
   getApprovedStream_For_Buyers,
+  CancelStreamById,
 };

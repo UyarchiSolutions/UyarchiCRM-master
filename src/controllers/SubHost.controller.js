@@ -91,6 +91,11 @@ const changePassword_SubHost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const DeleteSubHostById = catchAsync(async (req, res) => {
+  const data = await SubHostService.DeleteSubHostById(req.params.id);
+  res.send();
+});
+
 module.exports = {
   create_SubHost,
   get_created_Subhost_By_Seller,
@@ -107,4 +112,5 @@ module.exports = {
   getStream_By_SubHost,
   changePassword,
   changePassword_SubHost,
+  DeleteSubHostById,
 };

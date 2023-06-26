@@ -11,4 +11,5 @@ router.route('/getStreams/Admin/Side').get(RequestStreamController.getStreams_Ad
 router.route('/AdminStream/Approved/Cancel/:id').put(RequestStreamController.AdminStream_Approved_Cancel);
 router.route('/getStreamById/:id').get(RequestStreamController.getStreamById);
 router.route('/getApprovedStream/For/Buyers').get(RequestStreamController.getApprovedStream_For_Buyers);
+router.route('/CancelStreamById/:id').get(RequestStreamController.CancelStreamById);
 module.exports = router;

@@ -19,4 +19,5 @@ router.route('/getSubHostBy/Login/users').get(SubHostAuth, SubHostController.get
 router.route('/getStream/By/SubHost').get(SubHostAuth, SubHostController.getStream_By_SubHost);
 router.route('/changePassword').post(SubHostController.changePassword);
 router.route('/changePassword/SubHost').post(SubHostAuth, SubHostController.changePassword_SubHost);
+router.route('/DeleteSubHostById/:id').delete(SubHostController.DeleteSubHostById);
 module.exports = router;
