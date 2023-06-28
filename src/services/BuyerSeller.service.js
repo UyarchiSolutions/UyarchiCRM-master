@@ -2694,7 +2694,7 @@ const updateBuyerRelation = async (id, body, userId) => {
       sellerId: userId,
       scheduleDate: body.schedule,
       scheduleTime: body.scheduletime,
-      type: 'Schedule',
+      type: 'Schedule', 
     });
   }
   if (body.type === 'Visited') {
@@ -2710,7 +2710,7 @@ const updateBuyerRelation = async (id, body, userId) => {
       { new: true }
     );
     await SellerNotification.create({
-      postId: findIntrest.postId,
+      postId: body.postId,
       buyerId: findIntrest.userId,
       sellerId: userId,
       type: 'Visited',
@@ -2729,7 +2729,7 @@ const updateBuyerRelation = async (id, body, userId) => {
       { new: true }
     );
     await SellerNotification.create({
-      postId: findIntrest.postId,
+      postId: body.postId,
       buyerId: findIntrest.userId,
       sellerId: userId,
       type: 'Fixed',
