@@ -323,7 +323,7 @@ const ApproveAndReject = async (id, body) => {
 
 const getLocationByAddress = async (text) => {
   let values = await Axios.get(
-    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${text}&inputtype=textquery&fields=geometry&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
+    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${text}&inputtype=textquery&fields=geometry&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
   );
   if (values.data) {
     let location = values.data.candidates[0].geometry.location;
@@ -2301,7 +2301,7 @@ const AdminLoginFlow = async (body) => {
 
 const getCoordinatesByAddress = async (location) => {
   let response = await Axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
   );
   return response.data;
 };
@@ -2967,17 +2967,17 @@ const GetBuyerPost = async (userId) => {
 const neighbour_api = async (lat, long, type, radius) => {
   // console.log(location,type,radius)
   let response = await Axios.get(
-    `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=${type}&keyword=${type}&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
+    `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${long}&radius=${radius}&type=${type}&keyword=${type}&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
   );
 
   return response.data;
 };
 
 const Places_AutoComplete = async (input, city) => {
-  //https://maps.googleapis.com/maps/api/place/autocomplete/json?input=alwarepet&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE
+  //https://maps.googleapis.com/maps/api/place/autocomplete/json?input=alwarepet&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I
   let res = await Axios.get(
-    // `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input},&type=${city}&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
-    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
+    // `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input},&type=${city}&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
   );
   return res.data;
 };
@@ -3324,7 +3324,7 @@ const getAddress_By_Lat_long = async (query) => {
   lat = parseFloat(lat);
   long = parseFloat(long);
   console.log(lat);
-  let apikey = 'AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE';
+  let apikey = 'AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I';
   let values = await Axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apikey}`);
   return values.data.results;
 };

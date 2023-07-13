@@ -196,7 +196,7 @@ const getSupplierDetails = async (supplierId, productId, page) => {
 
 const getMapLocation = async (query) => {
   let response = await Axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.long}&key=AIzaSyD8NFC9JWmp2ofQFhglFmovCa-pzPUn-gE`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.long}&key=AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I`
   );
   return response.data;
 };
