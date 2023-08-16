@@ -275,6 +275,11 @@ const getPostedProperty_For_IndividualSeller = catchAsync(async (req, res) => {
   );
   res.send(data);
 });
+const getPostedProperty_For_IndividualSeller_Mobile = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getPostedProperty_For_IndividualSeller_Mobile(userId, req.query);
+  res.send(data);
+});
 
 const getOtpWithRegisterNumber = catchAsync(async (req, res) => {
   const data = await buyersellerService.getOtpWithRegisterNumber(req.body);
@@ -728,4 +733,5 @@ module.exports = {
   getApprover_Property_new,
   getsavedPropertyByUser_pagination,
   getIntrestedPropertyByUser_pagination,
+  getPostedProperty_For_IndividualSeller_Mobile,
 };

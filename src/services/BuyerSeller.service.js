@@ -2283,6 +2283,90 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
   return { values: values, total: total.length };
 };
 
+const getPostedProperty_For_IndividualSeller_Mobile = async (id, query) => {
+  let fin;
+  if ((query.finish = 'true')) {
+    fin = true;
+  } else {
+    fin = false;
+  }
+  let values = await SellerPost.aggregate([
+    {
+      $match: { userId: id, finsh: fin },
+    },
+    {
+      $sort: { created: -1 },
+    },
+    {
+      $project: {
+        _id: 1,
+        viewedUsers: 1,
+        intrestedUsers: 1,
+        AdditionalDetails: 1,
+        image: 1,
+        propertyExpired: 1,
+        propStatus: 1,
+        HouseOrCommercialType: 1,
+        propertType: 1,
+        ageOfBuilding: 1,
+        BHKType: 1,
+        furnishingStatus: 1,
+        bathRoomCount: 1,
+        landSize: 1,
+        noOfFloor: 1,
+        floorNo: 1,
+        IfCommercial: 1,
+        Type: 1,
+        BuildingName: 1,
+        BuildedSize: 1,
+        buildingDirection: 1,
+        discription: 1,
+        availability: 1,
+        RentPrefer: 1,
+        Address: 1,
+        pineCode: 1,
+        city: 1,
+        locality: 1,
+        parkingFacilities: 1,
+        bathRoomType: 1,
+        balconyCount: 1,
+        roomType: 1,
+        floorType: 1,
+        MonthlyRentFrom: 1,
+        MonthlyRentTo: 1,
+        depositeAmount: 1,
+        periodOfRentFrom: 1,
+        periodOfRentTo: 1,
+        lat: 1,
+        long: 1,
+        Negociable: 1,
+        created: 1,
+        date: 1,
+        userId: 1,
+        videos: 1,
+        Accept: 1,
+        active: 1,
+        WhishList: 1,
+        viwersCount: { $size: '$viewedUsers' },
+        WhishListCount: { $size: '$WhishList' },
+        intrestedCount: { $size: '$intrestedUsers' },
+        AcceptCount: { $size: '$Accept' },
+        IgnoreCount: { $size: '$Ignore' },
+        rentDetails: 1,
+        buildingType: 1,
+        area: 1,
+        expectedPrice: 1,
+      },
+    },
+  ]);
+  let total = await SellerPost.aggregate([
+    {
+      $match: { userId: id, finsh: fin },
+    },
+  ]);
+  return { values: values, total: total.length };
+};
+
 const createAdminLogin = async (body) => {
   let data = { ...body, ...{ created: moment() } };
   let values = await Admin.create(data);
@@ -2694,7 +2778,7 @@ const updateBuyerRelation = async (id, body, userId) => {
       sellerId: userId,
       scheduleDate: body.schedule,
       scheduleTime: body.scheduletime,
-      type: 'Schedule', 
+      type: 'Schedule',
     });
   }
   if (body.type === 'Visited') {
@@ -3867,4 +3951,5 @@ module.exports = {
   getApprover_Property_new,
   getIntrestedPropertyByUser_pagination,
   getsavedPropertyByUser_pagination,
+  getPostedProperty_For_IndividualSeller_Mobile,
 };

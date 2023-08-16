@@ -44,6 +44,9 @@ router.route('/getIntrestedUsersByProperty/:id').get(BuyerSellerController.getIn
 router
   .route('/getPostedProperty/For/IndividualSeller/:page/:range')
   .get(BuyerAuth, BuyerSellerController.getPostedProperty_For_IndividualSeller);
+router
+  .route('/getPostedProperty/For/IndividualSeller/mobile')
+  .get(BuyerAuth, BuyerSellerController.getPostedProperty_For_IndividualSeller_Mobile);
 router.route('/getOtpWithRegisterNumber').post(BuyerSellerController.getOtpWithRegisterNumber);
 router.route('/OTPVerify').post(BuyerSellerController.OTPVerify);
 router.route('/updatePassword/:id').put(BuyerSellerController.updatePassword);
