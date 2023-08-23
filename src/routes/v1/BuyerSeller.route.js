@@ -114,5 +114,14 @@ router.route('/Reshedule/BuyerReshedule').post(BuyerAuth, BuyerSellerController.
 router
   .route('/getIntrestedPropertyByUser/pagination')
   .get(BuyerAuth, BuyerSellerController.getIntrestedPropertyByUser_pagination);
+
+router
+  .route('/getIntrestedPropertyByUser/Mobile')
+  .get(BuyerAuth, BuyerSellerController.getIntrestedPropertyByUser_pagination_Mobile);
+
+// getIntrestedPropertyByUser_pagination_Mobile
 router.route('/getsaved/PropertyByUser/pagination').get(BuyerAuth, BuyerSellerController.getsavedPropertyByUser_pagination);
+router
+  .route('/getsaved/PropertyByUser/Mobile')
+  .get(BuyerAuth, BuyerSellerController.getsavedPropertyByUser_pagination_Mobile);
 module.exports = router;

@@ -3798,6 +3798,37 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
   return { values: data, total: total.length, nextData: data[ind] };
 };
 
+const getIntrestedPropertyByUser_pagination_Mobile = async (userId, query) => {
+  let { type, ctype, ind } = query;
+
+  if (!ind) {
+    ind = 0;
+  } else {
+    ind = parseInt(ind);
+  }
+  const data = await SellerPost.aggregate([
+    {
+      $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+  ]);
+  return { values: data, nextData: data[ind] };
+};
+
 const getsavedPropertyByUser_pagination = async (userId, query) => {
   let { type, ctype, page, range, ind } = query;
   page = parseInt(page);
@@ -3836,6 +3867,38 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
     },
   ]);
   const total = await SellerPost.aggregate([
+    {
+      $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+    },
+    {
+      $lookup: {
+        from: 'properbuyerrelations',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [{ $match: { userId: userId } }, { $sort: { created: -1 } }, { $limit: 1 }],
+        as: 'users',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$users',
+      },
+    },
+  ]);
+  return { values: data, total: total.length, nextData: data[ind] };
+};
+
+const getsavedPropertyByUser_pagination_Mobile = async (userId, query) => {
+  let { type, ctype, ind } = query;
+  if (!ind) {
+    ind = 0;
+  } else {
+    ind = parseInt(ind);
+  }
+
+  console.log(query);
+  const data = await SellerPost.aggregate([
     {
       $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
     },
@@ -3952,4 +4015,5 @@ module.exports = {
   getIntrestedPropertyByUser_pagination,
   getsavedPropertyByUser_pagination,
   getPostedProperty_For_IndividualSeller_Mobile,
+  getIntrestedPropertyByUser_pagination_Mobile,
 };

@@ -636,9 +636,21 @@ const getIntrestedPropertyByUser_pagination = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getIntrestedPropertyByUser_pagination_Mobile = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getIntrestedPropertyByUser_pagination_Mobile(userId, req.query);
+  res.send(data);
+});
+
 const getsavedPropertyByUser_pagination = catchAsync(async (req, res) => {
   let userId = req.userId;
   const data = await buyersellerService.getsavedPropertyByUser_pagination(userId, req.query);
+  res.send(data);
+});
+
+const getsavedPropertyByUser_pagination_Mobile = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.getsavedPropertyByUser_pagination_Mobile(userId, req.query);
   res.send(data);
 });
 
@@ -734,4 +746,6 @@ module.exports = {
   getsavedPropertyByUser_pagination,
   getIntrestedPropertyByUser_pagination,
   getPostedProperty_For_IndividualSeller_Mobile,
+  getsavedPropertyByUser_pagination_Mobile,
+  getIntrestedPropertyByUser_pagination_Mobile,
 };
