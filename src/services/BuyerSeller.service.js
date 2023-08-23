@@ -3799,16 +3799,10 @@ const getIntrestedPropertyByUser_pagination = async (userId, query) => {
 };
 
 const getIntrestedPropertyByUser_pagination_Mobile = async (userId, query) => {
-  let { type, ctype, ind } = query;
-
-  if (!ind) {
-    ind = 0;
-  } else {
-    ind = parseInt(ind);
-  }
+  let { ind } = query;
   const data = await SellerPost.aggregate([
     {
-      $match: { intrestedUsers: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+      $match: { intrestedUsers: { $in: [userId] } },
     },
     {
       $lookup: {
@@ -3890,17 +3884,16 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
 };
 
 const getsavedPropertyByUser_pagination_Mobile = async (userId, query) => {
-  let { type, ctype, ind } = query;
+  let { ind } = query;
   if (!ind) {
     ind = 0;
   } else {
     ind = parseInt(ind);
   }
 
-  console.log(query);
   const data = await SellerPost.aggregate([
     {
-      $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
+      $match: { WhishList: { $in: [userId] } },
     },
     {
       $lookup: {
@@ -4016,4 +4009,5 @@ module.exports = {
   getsavedPropertyByUser_pagination,
   getPostedProperty_For_IndividualSeller_Mobile,
   getIntrestedPropertyByUser_pagination_Mobile,
+  getsavedPropertyByUser_pagination_Mobile,
 };
