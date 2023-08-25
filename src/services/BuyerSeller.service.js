@@ -3911,7 +3911,7 @@ const getsavedPropertyByUser_pagination_Mobile = async (userId, query) => {
       },
     },
   ]);
-  return { values: data, total: total.length, nextData: data[ind] };
+  return { values: data, nextData: data[ind] };
 };
 
 module.exports = {
