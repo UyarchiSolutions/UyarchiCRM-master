@@ -170,18 +170,19 @@ const getAllReport = async () => {
         as: 'propReport',
       },
     },
-    { $unwind: '$propReport' },
-    {
-      $lookup: {
-        from: 'buyers',
-        localField: 'userId',
-        foreignField: '_id',
-        as: 'seller',
-      },
-    },
-    {
-      $unwind: '$seller',
-    },
+    { $addFields: { report: { $size: '$propReport' } } },
+    { $match: { report: { $gt: 0 } } },
+    // {
+    //   $lookup: {
+    //     from: 'buyers',
+    //     localField: 'userId',
+    //     foreignField: '_id',
+    //     as: 'seller',
+    //   },
+    // },
+    // {
+    //   $unwind: '$seller',
+    // },
   ]);
   return allReports;
 };
