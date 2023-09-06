@@ -10,4 +10,6 @@ router.route('/create/faq').post(EnquiryController.createFAQ).get(EnquiryControl
 router.route('/updateFaq/:id').put(EnquiryController.updateFaq);
 router.route('/getHeading/Only').get(EnquiryController.getHeadingOnly);
 router.route('/RemoveFAQ/:id').get(EnquiryController.RemoveFAQ);
+router.route('/create/Report').post(Auth, EnquiryController.createReport);
+router.route('/getAll/Report').get(EnquiryController.getAllReport);
 module.exports = router;

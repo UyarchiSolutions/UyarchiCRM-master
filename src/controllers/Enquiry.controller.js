@@ -49,6 +49,17 @@ const RemoveFAQ = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createReport = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await EnquieryService.createReport(req.body, userId);
+  res.send(data);
+});
+
+const getAllReport = catchAsync(async (req, res) => {
+  const data = await EnquieryService.getAllReport();
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -59,4 +70,6 @@ module.exports = {
   getFaq,
   getHeadingOnly,
   RemoveFAQ,
+  createReport,
+  getAllReport,
 };

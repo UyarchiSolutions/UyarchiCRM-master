@@ -88,8 +88,34 @@ const HeadingSchema = new mongoose.Schema(
 );
 const Heading = mongoose.model('heading', HeadingSchema);
 
+const ReportSchema = mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: v4,
+    },
+    propertyId: {
+      type: String,
+    },
+    userId: {
+      type: String,
+    },
+    reason: {
+      type: String,
+    },
+    status: {
+      type: String,
+      default: 'Pending',
+    },
+  },
+  { timestamps: true }
+);
+
+const Report = mongoose.model('report', ReportSchema);
+
 module.exports = {
   Enquiery,
   FAQ,
   Heading,
+  Report,
 };

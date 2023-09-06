@@ -2027,10 +2027,20 @@ const getOtpWithRegisterNumber = async (body) => {
 };
 
 const OTPVerify = async (body) => {
-  let values = await StoreOtp.findOne({ otp: body.otp, active: true });
+  let values = await StoreOtp.findOne({ otp: body.otp, active: true }).sort({ created: -1 });
   if (!values) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid OTP');
   }
+  const findotp = {
+    create: moment(new Date()).subtract(1, 'minutes'),
+  };
+  const createTimestampString = values.created;
+  const createTimestamp = moment(createTimestampString);
+
+  if (createTimestamp.isBefore(findotp.create)) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'OTP Expired');
+  }
+
   await StoreOtp.findByIdAndUpdate({ _id: values._id }, { active: false }, { new: true });
   let value = await Buyer.findOne({ mobile: values.number, Type: body.type });
   console.log(value.Type);

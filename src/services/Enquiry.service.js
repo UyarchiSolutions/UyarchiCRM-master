@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const moment = require('moment');
-const { Enquiery, Heading, FAQ } = require('../models/Enquiry.model');
-
+const { Enquiery, Heading, FAQ, Report } = require('../models/Enquiry.model');
+const { SellerPost } = require('../models/BuyerSeller.model');
 const createEnquiry = async (body) => {
   const date = moment().format('DD-MM-YYYY');
   let findOrders = await Enquiery.find().count();
@@ -141,6 +141,51 @@ const RemoveFAQ = async (id) => {
   return faq;
 };
 
+// Report
+const createReport = async (body, userId) => {
+  let creation = await Report.create({ ...body, ...{ userId: userId } });
+  return creation;
+};
+
+const getAllReport = async () => {
+  let allReports = await SellerPost.aggregate([
+    {
+      $lookup: {
+        from: 'reports',
+        localField: '_id',
+        foreignField: 'propertyId',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'buyers',
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'buyer',
+            },
+          },
+          {
+            $unwind: '$buyer',
+          },
+        ],
+        as: 'propReport',
+      },
+    },
+    { $unwind: '$propReport' },
+    {
+      $lookup: {
+        from: 'buyers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'seller',
+      },
+    },
+    {
+      $unwind: '$seller',
+    },
+  ]);
+  return allReports;
+};
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -151,4 +196,6 @@ module.exports = {
   getFaq,
   getHeadingOnly,
   RemoveFAQ,
+  createReport,
+  getAllReport,
 };
