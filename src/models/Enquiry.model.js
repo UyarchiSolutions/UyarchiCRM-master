@@ -103,6 +103,9 @@ const ReportSchema = mongoose.Schema(
     reason: {
       type: String,
     },
+    description: {
+      type: String,
+    },
     status: {
       type: String,
       default: 'Pending',
