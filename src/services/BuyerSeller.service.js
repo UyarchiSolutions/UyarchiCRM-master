@@ -3715,7 +3715,7 @@ const getNotificationFor_Buyers = async (userId) => {
     {
       $match: {
         buyerId: userId,
-        type: { $in: ['Schedule', 'Visited', 'Accept', 'Fixed'] },
+        type: { $in: ['Schedule', 'Visited', 'Accept', 'Fixed', 'Report'] },
       },
     },
     {
