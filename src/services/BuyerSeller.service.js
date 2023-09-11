@@ -3942,8 +3942,8 @@ const DisableReported_Property = async (id) => {
   await SellerNotification.create({
     type: 'Report',
     // buyerId: userId,
-    sellerId: findNotify.userId,
-    postId: findNotify._id,
+    sellerId: value.userId,
+    postId: value._id,
     reportId: creation,
     reportDate_Time: moment(),
   });
