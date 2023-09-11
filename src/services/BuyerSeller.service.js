@@ -3944,7 +3944,6 @@ const DisableReported_Property = async (id) => {
     // buyerId: userId,
     sellerId: value.userId,
     postId: value._id,
-    reportId: creation,
     reportDate_Time: moment(),
   });
   return { message: 'Message Send To Seller' };
