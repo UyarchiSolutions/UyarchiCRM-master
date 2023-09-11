@@ -659,6 +659,11 @@ const DisableNotifications = catchAsync(async (req, res) => {
   res.send({ message: 'Notification Deleted' });
 });
 
+const DisableReported_Property = catchAsync(async (req, res) => {
+  const data = await buyersellerService.DisableReported_Property(req.params.id);
+  res.send(data)
+})
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -754,4 +759,5 @@ module.exports = {
   getsavedPropertyByUser_pagination_Mobile,
   getIntrestedPropertyByUser_pagination_Mobile,
   DisableNotifications,
+  DisableReported_Property,
 };

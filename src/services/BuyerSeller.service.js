@@ -3931,6 +3931,14 @@ const DisableNotifications = async (id) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Notification not found');
   }
   findNotify = await SellerNotification.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  return findNotify;
+};
+
+const DisableReported_Property = async (id) => {
+  let value = await SellerPost.findById(id);
+  if (!value) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Not Found');
+  }
   await SellerNotification.create({
     type: 'Report',
     // buyerId: userId,
@@ -3939,7 +3947,7 @@ const DisableNotifications = async (id) => {
     reportId: creation,
     reportDate_Time: moment(),
   });
-  return findNotify;
+  return { message: 'Message Send To Seller' };
 };
 
 module.exports = {
@@ -4039,4 +4047,5 @@ module.exports = {
   getIntrestedPropertyByUser_pagination_Mobile,
   getsavedPropertyByUser_pagination_Mobile,
   DisableNotifications,
+  DisableReported_Property,
 };
