@@ -3,6 +3,8 @@ const ApiError = require('../utils/ApiError');
 const moment = require('moment');
 const { Enquiery, Heading, FAQ, Report } = require('../models/Enquiry.model');
 const { SellerPost } = require('../models/BuyerSeller.model');
+const { SellerNotification } = require('../models/BuyerPropertyRelation.model');
+
 const createEnquiry = async (body) => {
   const date = moment().format('DD-MM-YYYY');
   let findOrders = await Enquiery.find().count();
@@ -143,7 +145,19 @@ const RemoveFAQ = async (id) => {
 
 // Report
 const createReport = async (body, userId) => {
+  let findProp = await SellerPost.findById(body.propertyId);
+  if (!findProp) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Property not found');
+  }
   let creation = await Report.create({ ...body, ...{ userId: userId } });
+  await SellerNotification.create({
+    type: 'Report',
+    buyerId: userId,
+    sellerId: findProp.userId,
+    postId: findProp._id,
+    reportId: creation,
+    reportDate_Time: moment(),
+  });
   return creation;
 };
 

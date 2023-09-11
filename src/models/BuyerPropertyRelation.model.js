@@ -91,6 +91,12 @@ const SellerNotificationSchema = new mongoose.Schema(
     scheduleTime: {
       type: String,
     },
+    reportId: {
+      type: String,
+    },
+    reportDate_Time: {
+      type: String,
+    },
     active: {
       type: Boolean,
       default: true,
