@@ -654,6 +654,11 @@ const getsavedPropertyByUser_pagination_Mobile = catchAsync(async (req, res) => 
   res.send(data);
 });
 
+const DisableNotifications = catchAsync(async (req, res) => {
+  const data = await buyersellerService.DisableNotifications(req.params.id);
+  res.send({ message: 'Notification Deleted' });
+});
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -748,4 +753,5 @@ module.exports = {
   getPostedProperty_For_IndividualSeller_Mobile,
   getsavedPropertyByUser_pagination_Mobile,
   getIntrestedPropertyByUser_pagination_Mobile,
+  DisableNotifications,
 };

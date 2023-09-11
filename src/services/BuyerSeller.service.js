@@ -3925,6 +3925,15 @@ const getsavedPropertyByUser_pagination_Mobile = async (userId, query) => {
   return { values: data, nextData: data[ind] };
 };
 
+const DisableNotifications = async (id) => {
+  let findNotify = await SellerNotification.findById(id);
+  if (!findNotify) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Notification not found');
+  }
+  findNotify = await SellerNotification.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  return findNotify;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -4021,4 +4030,5 @@ module.exports = {
   getPostedProperty_For_IndividualSeller_Mobile,
   getIntrestedPropertyByUser_pagination_Mobile,
   getsavedPropertyByUser_pagination_Mobile,
+  DisableNotifications,
 };

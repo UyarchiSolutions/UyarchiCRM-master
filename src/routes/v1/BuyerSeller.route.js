@@ -124,4 +124,5 @@ router.route('/getsaved/PropertyByUser/pagination').get(BuyerAuth, BuyerSellerCo
 router
   .route('/getsaved/PropertyByUser/Mobile')
   .get(BuyerAuth, BuyerSellerController.getsavedPropertyByUser_pagination_Mobile);
+router.route('/Disable/Notifications/:id').get(BuyerSellerController.DisableNotifications);
 module.exports = router;
