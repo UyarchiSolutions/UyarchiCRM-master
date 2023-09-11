@@ -3931,6 +3931,14 @@ const DisableNotifications = async (id) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Notification not found');
   }
   findNotify = await SellerNotification.findByIdAndUpdate({ _id: id }, { active: false }, { new: true });
+  await SellerNotification.create({
+    type: 'Report',
+    // buyerId: userId,
+    sellerId: findNotify.userId,
+    postId: findNotify._id,
+    reportId: creation,
+    reportDate_Time: moment(),
+  });
   return findNotify;
 };
 

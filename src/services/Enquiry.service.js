@@ -150,14 +150,14 @@ const createReport = async (body, userId) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Property not found');
   }
   let creation = await Report.create({ ...body, ...{ userId: userId } });
-  await SellerNotification.create({
-    type: 'Report',
-    buyerId: userId,
-    sellerId: findProp.userId,
-    postId: findProp._id,
-    reportId: creation,
-    reportDate_Time: moment(),
-  });
+  // await SellerNotification.create({
+  //   type: 'Report',
+  //   buyerId: userId,
+  //   sellerId: findProp.userId,
+  //   postId: findProp._id,
+  //   reportId: creation,
+  //   reportDate_Time: moment(),
+  // });
   return creation;
 };
 
