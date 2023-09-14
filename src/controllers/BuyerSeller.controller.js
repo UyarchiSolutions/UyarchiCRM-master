@@ -664,6 +664,11 @@ const DisableReported_Property = catchAsync(async (req, res) => {
   res.send(data)
 })
 
+const getLocalityBy_LocationId = catchAsync(async (req, res) => {
+  const data = await buyersellerService.getLocalityBy_LocationId(req.params.id);
+  res.send(data)
+})
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -760,4 +765,5 @@ module.exports = {
   getIntrestedPropertyByUser_pagination_Mobile,
   DisableNotifications,
   DisableReported_Property,
+  getLocalityBy_LocationId,
 };

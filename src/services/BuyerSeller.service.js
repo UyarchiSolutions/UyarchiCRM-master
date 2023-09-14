@@ -3418,7 +3418,7 @@ const getAddress_By_Lat_long = async (query) => {
   lat = parseFloat(lat);
   long = parseFloat(long);
   console.log(lat);
-  let apikey = 'AIzaSyCtNVpo-In4_Sqm_qDzijG68wuvw0RkI7I';
+  let apikey = 'AIzaSyARM6-Qr_hsR53GExv9Gmu9EtFTV5ZuDX4';
   let values = await Axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${apikey}`);
   return values.data.results;
 };
@@ -3949,6 +3949,11 @@ const DisableReported_Property = async (id) => {
   return { message: 'Message Send To Seller' };
 };
 
+const getLocalityBy_LocationId = async (id) => {
+  let ax = await Axios.get(`https://www.nobroker.in/v5/localities/nearby?localityIds=${id}`);
+  return ax.data;
+};
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -4047,4 +4052,5 @@ module.exports = {
   getsavedPropertyByUser_pagination_Mobile,
   DisableNotifications,
   DisableReported_Property,
+  getLocalityBy_LocationId,
 };
