@@ -3950,8 +3950,48 @@ const DisableReported_Property = async (id) => {
 };
 
 const getLocalityBy_LocationId = async (id) => {
+  oooo;
   let ax = await Axios.get(`https://www.nobroker.in/v5/localities/nearby?localityIds=${id}`);
   return ax.data;
+};
+
+const multipleImage_Upload_For_Post = async (req) => {
+  let post = await SellerPost.findById(req.params.id);
+  if (!post) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
+  }
+  let files;
+  if (req.files.length == 0) {
+    throw new ApiErrirError(httpStatus.BAD_REQUEST, 'Please Select And Upload At Least One Image');
+  } else {
+    files = req.files;
+  }
+  const s3 = new AWS.S3({
+    accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+    secretAccessKey: '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',
+    region: 'ap-south-1',
+  });
+
+  let Uploaded = [];
+
+  return new Promise((resolve, reject) => {
+    files.map((e) => {
+      let params = {
+        Bucket: 'realestatevideoupload',
+        Key: e.originalname,
+        Body: e.buffer,
+      };
+      s3.upload(params, async (err, data) => {
+        Uploaded.push(data.Location);
+        if (Uploaded.length == files.length) {
+          post = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { image: Uploaded }, { new: true });
+          resolve({msg:"Success",post});
+        }
+      });
+    });
+  })
+
+ 
 };
 
 module.exports = {
@@ -4053,4 +4093,5 @@ module.exports = {
   DisableNotifications,
   DisableReported_Property,
   getLocalityBy_LocationId,
+  multipleImage_Upload_For_Post,
 };

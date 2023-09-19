@@ -669,6 +669,11 @@ const getLocalityBy_LocationId = catchAsync(async (req, res) => {
   res.send(data)
 })
 
+const multipleImage_Upload_For_Post = catchAsync(async (req, res) => {
+  const data = await buyersellerService.multipleImage_Upload_For_Post(req);
+  res.send(data)
+})
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -766,4 +771,5 @@ module.exports = {
   DisableNotifications,
   DisableReported_Property,
   getLocalityBy_LocationId,
+  multipleImage_Upload_For_Post,
 };

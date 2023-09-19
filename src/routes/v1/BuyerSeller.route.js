@@ -7,7 +7,16 @@ const sellerBuyrimg = require('../../middlewares/buyrSeller');
 const Video = require('../../middlewares/videoUpload');
 const Vid = require('../../middlewares/vide');
 const sellerDocument = require('../../middlewares/seller.document');
-const { BuyerSeller } = require('../../models/BuyerSeller.model');
+const multer = require('multer');
+
+const storage = multer.memoryStorage({
+  destination: function (req, res, callback) {
+    callback(null, '');
+  },
+});
+const upload = multer({ storage }).array('image');
+
+
 
 router.route('/Register').post(BuyerSellerController.createBuyer);
 router.route('/verify').post(BuyerSellerController.verifyOtp);
@@ -127,4 +136,5 @@ router
 router.route('/Disable/Notifications/:id').get(BuyerSellerController.DisableNotifications);
 router.route('/Disable/Reported/Property/:id').get(BuyerSellerController.DisableReported_Property);
 router.route('/get/LocalityBy/LocationId/:id').get(BuyerSellerController.getLocalityBy_LocationId);
+router.route('/multipleImage/Upload/For/Post/:id').put(upload,BuyerSellerController.multipleImage_Upload_For_Post)
 module.exports = router;
