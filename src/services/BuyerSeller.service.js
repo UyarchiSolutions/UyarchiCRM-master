@@ -3983,15 +3983,18 @@ const multipleImage_Upload_For_Post = async (req) => {
       };
       s3.upload(params, async (err, data) => {
         Uploaded.push(data.Location);
+        post = await SellerPost.findByIdAndUpdate(
+          { _id: req.params.id },
+          { $push: { image: data.Location } },
+          { new: true }
+        );
+
         if (Uploaded.length == files.length) {
-          post = await SellerPost.findByIdAndUpdate({ _id: req.params.id }, { image: Uploaded }, { new: true });
-          resolve({msg:"Success",post});
+          resolve({ msg: 'Success', post });
         }
       });
     });
-  })
-
- 
+  });
 };
 
 module.exports = {
