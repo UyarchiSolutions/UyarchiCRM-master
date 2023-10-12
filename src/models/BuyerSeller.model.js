@@ -435,6 +435,10 @@ const sellerPostSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  Delete: {
+    type: Boolean,
+    default: false,
+  },
   expiredDate: {
     type: String,
   },
