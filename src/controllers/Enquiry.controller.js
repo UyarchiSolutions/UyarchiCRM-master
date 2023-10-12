@@ -61,7 +61,7 @@ const getAllReport = catchAsync(async (req, res) => {
 });
 
 const getFAQByHeadingId = catchAsync(async (req, res) => {
-  const data = await EnquieryService.getFAQByHeadingId(req.params.id);
+  const data = await EnquieryService.getFAQByHeadingId();
   res.send(data);
 });
 
