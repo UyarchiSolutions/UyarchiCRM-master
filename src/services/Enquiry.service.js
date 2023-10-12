@@ -156,6 +156,13 @@ const getFAQByHeadingId = async () => {
         val: { $push: { Answer: '$Answer', Question: '$Question' } },
       },
     },
+    {
+      $project:{
+        _id:"$_id._id",
+        heading:"$_id.heading",
+        FAQ:"$val"
+      }
+    }
   ]);
   return data;
 };
