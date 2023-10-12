@@ -12,4 +12,5 @@ router.route('/getHeading/Only').get(EnquiryController.getHeadingOnly);
 router.route('/RemoveFAQ/:id').get(EnquiryController.RemoveFAQ);
 router.route('/create/Report').post(Auth, EnquiryController.createReport);
 router.route('/getAll/Report').get(EnquiryController.getAllReport);
+router.route('/getFAQByHeadingId/:id').get(EnquiryController.getFAQByHeadingId);
 module.exports = router;

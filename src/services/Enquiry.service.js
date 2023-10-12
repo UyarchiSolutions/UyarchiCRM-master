@@ -129,6 +129,18 @@ const getFaq = async () => {
   return data;
 };
 
+const getFAQByHeadingId = async (id) => {
+  const data = await FAQ.aggregate([
+    {
+      $match: {
+        active: true,
+        headingId: id,
+      },
+    },
+  ]);
+  return data;
+};
+
 const getHeadingOnly = async () => {
   const data = await Heading.find({ active: true });
   return data;
@@ -213,4 +225,5 @@ module.exports = {
   RemoveFAQ,
   createReport,
   getAllReport,
+  getFAQByHeadingId,
 };

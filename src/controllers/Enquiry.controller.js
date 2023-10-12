@@ -60,6 +60,11 @@ const getAllReport = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getFAQByHeadingId = catchAsync(async (req, res) => {
+  const data = await EnquiryService.getFAQByHeadingId(req.params.id);
+  res.send(data);
+});
+
 module.exports = {
   createEnquiry,
   getEnquiry,
@@ -72,4 +77,5 @@ module.exports = {
   RemoveFAQ,
   createReport,
   getAllReport,
+  getFAQByHeadingId,
 };
