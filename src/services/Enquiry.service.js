@@ -129,12 +129,31 @@ const getFaq = async () => {
   return data;
 };
 
-const getFAQByHeadingId = async (id) => {
+const getFAQByHeadingId = async () => {
   const data = await FAQ.aggregate([
     {
       $match: {
         active: true,
-        headingId: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'headings',
+        localField: 'headingId',
+        foreignField: '_id',
+        as: 'heading',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$heading',
+      },
+    },
+    {
+      $group: {
+        _id: '$heading',
+        val: { $push: { Answer: '$Answer', Question: '$Question' } },
       },
     },
   ]);
