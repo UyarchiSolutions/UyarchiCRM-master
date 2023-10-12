@@ -2212,7 +2212,7 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
   }
   let values = await SellerPost.aggregate([
     {
-      $match: { userId: id, finsh: fin,Delete:false },
+      $match: { userId: id, finsh: fin },
     },
     {
       $sort: { created: -1 },
@@ -2287,7 +2287,7 @@ const getPostedProperty_For_IndividualSeller = async (id, pag, rang, query) => {
   ]);
   let total = await SellerPost.aggregate([
     {
-      $match: { userId: id, finsh: fin,Delete:false },
+      $match: { userId: id, finsh: fin },
     },
   ]);
   return { values: values, total: total.length };
