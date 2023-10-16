@@ -157,12 +157,12 @@ const getFAQByHeadingId = async () => {
       },
     },
     {
-      $project:{
-        _id:"$_id._id",
-        heading:"$_id.heading",
-        FAQ:"$val"
-      }
-    }
+      $project: {
+        _id: '$_id._id',
+        heading: '$_id.heading',
+        FAQ: '$val',
+      },
+    },
   ]);
   return data;
 };
