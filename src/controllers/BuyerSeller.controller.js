@@ -146,6 +146,27 @@ const createBuyer = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const createBuyerMobile = catchAsync(async (req, res) => {
+  const { email, mobile, Type } = req.body;
+  const checkemail = await Buyer.findOne({ email: email, Type: Type });
+  if (checkemail) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'email Already Registered');
+  }
+  const checkmobile = await BuyerSeller.findOne({ mobile: mobile, Type: Type });
+  if (checkmobile) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Mobile Already registered');
+  }
+  let values;
+  if (Type === 'Seller') {
+    values = await mailService.sendEmailSellerMobile(req.body.email, mobile);
+  }
+  if (Type === 'Buyer') {
+    values = await mailService.sendEmailMobile(req.body.email, mobile);
+  }
+  const data = await buyersellerService.createBuyer(req.body, values.otp);
+  res.send(data);
+});
+
 // create Admin
 
 const createAdmin = catchAsync(async (req, res) => {
@@ -661,18 +682,18 @@ const DisableNotifications = catchAsync(async (req, res) => {
 
 const DisableReported_Property = catchAsync(async (req, res) => {
   const data = await buyersellerService.DisableReported_Property(req.params.id);
-  res.send(data)
-})
+  res.send(data);
+});
 
 const getLocalityBy_LocationId = catchAsync(async (req, res) => {
   const data = await buyersellerService.getLocalityBy_LocationId(req.params.id);
-  res.send(data)
-})
+  res.send(data);
+});
 
 const multipleImage_Upload_For_Post = catchAsync(async (req, res) => {
   const data = await buyersellerService.multipleImage_Upload_For_Post(req);
-  res.send(data)
-})
+  res.send(data);
+});
 
 module.exports = {
   createBuyerSeller,
@@ -772,4 +793,5 @@ module.exports = {
   DisableReported_Property,
   getLocalityBy_LocationId,
   multipleImage_Upload_For_Post,
+  createBuyerMobile,
 };
