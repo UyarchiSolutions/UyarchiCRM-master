@@ -208,7 +208,7 @@ const sendEmail = async (to, mobile, subject, text) => {
 const sendEmailMobile = async (to, mobile, subject, text) => {
   subject = 'Verification Mail';
   let otp = generateOTP();
-  let link = `https://mrealestate.lotsmart.in/#/verify-mail?mobile=${mobile}`;
+  let link = `https://mrealestate.lotsmart.in/#/buyer/verfiy-otp?mobile=${mobile}`;
   // text = `Thank you For Register With Uyarchi, Click the Link To Verify Your Email : ${link}`;
 
   let msg = {
@@ -400,7 +400,7 @@ const sendEmailSellerMobile = async (to, mobile, subject, text) => {
   console.log(mobile);
   subject = "Don't share your otp";
   let otp = generateOTP();
-  let link = `https://mrealestate.lotsmart.in/#/varifi-seller?mobile=${mobile}`;
+  let link = `https://mrealestate.lotsmart.in/#/verfiy-otp?mobile=${mobile}`;
   text = `Thank you For Register With Uyarchi, Click the Link To Verify Your Email : ${link}`;
   let msg = { from: config.email.from, to, subject, text, otp };
   await transport.sendMail(msg);
