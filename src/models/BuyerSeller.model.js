@@ -545,6 +545,7 @@ const sellerPostSchema = new mongoose.Schema({
   // },
 });
 sellerPostSchema.index({ location: '2dsphere' });
+sellerPostSchema.indexes({point:"2dsphere"});
 sellerPostSchema.index({ locationCoordinates: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
