@@ -211,6 +211,9 @@ const PurchasedPlan = new mongoose.Schema(
     suppierId: {
       type: String,
     },
+    userType: {
+      type: String,
+    },
     created: {
       type: Date,
     },
