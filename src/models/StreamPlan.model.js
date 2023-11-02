@@ -17,6 +17,9 @@ const StreamPlanSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userType: {
+      type: String,
+    },
     created: {
       type: Date,
     },
