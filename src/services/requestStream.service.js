@@ -42,7 +42,7 @@ const createRequestStream = async (body, userId) => {
       streamingDate_time: isoDateTime,
       sellerId: userId,
       chat_need: planes.Chat_Needed,
-      noOfParticipants: parseInt(planes.No_of_participants_Limit),
+      noOfParticipants: parseInt(planes.numberOfParticipants?planes.numberOfParticipants:10),
       Duration: parseInt(planes.Duration_per_stream ? planes.Duration_per_stream : 0),
     },
   };
