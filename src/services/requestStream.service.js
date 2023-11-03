@@ -22,7 +22,8 @@ const createRequestStream = async (body, userId) => {
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
-  let endTimes = planes.Duration_per_stream;
+
+  let endTimes = planes.Duration_per_stream ? parseInt(planes.Duration_per_stream) : 0;
   let datess = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime() + endTimes * 60 * 1000);
   console.log(startTime);
   const datecheck = new Date(dateTime);
