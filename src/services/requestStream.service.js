@@ -24,7 +24,7 @@ const createRequestStream = async (body, userId) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
 
-  let endTimes = planes.Duration_per_stream ? parseInt(planes.Duration_per_stream) : 0;
+  let endTimes = planes.Duration ? parseInt(planes.Duration) : 0;
   let datess = new Date().setTime(new Date(`${streamingDate}T${time}`).getTime() + endTimes * 60 * 1000);
   console.log(startTime);
   const datecheck = new Date(dateTime);
@@ -43,7 +43,7 @@ const createRequestStream = async (body, userId) => {
       sellerId: userId,
       chat_need: planes.Chat_Needed,
       noOfParticipants: parseInt(planes.numberOfParticipants?planes.numberOfParticipants:10),
-      Duration: parseInt(planes.Duration_per_stream ? planes.Duration_per_stream : 0),
+      Duration: parseInt(planes.Duration ? planes.Duration : 0),
     },
   };
   let stream = parseInt(planes.availableStream) - 1;
