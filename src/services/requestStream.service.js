@@ -42,8 +42,7 @@ const createRequestStream = async (body, userId) => {
       sellerId: userId,
       chat_need: planes.Chat_Needed,
       noOfParticipants: parseInt(planes.No_of_participants_Limit),
-      max_post_per_stream: parseInt(planes.no_of_host_per_Stream),
-      Duration: parseInt(planes.Duration_per_stream),
+      Duration: parseInt(planes.Duration_per_stream ? planes.Duration_per_stream : 0),
     },
   };
   let stream = parseInt(planes.availableStream) - 1;
