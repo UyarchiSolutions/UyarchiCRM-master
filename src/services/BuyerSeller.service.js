@@ -3544,7 +3544,7 @@ const forgotPassword = async (id, body) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found');
   }
   values = await Buyer.findByIdAndUpdate({ _id: id }, { password: body.password }, { new: true });
-  return { message: 'Password Rest SuccessFully' };
+  return { message: 'Password Reset SuccessFully' };
 };
 
 const updateuserProfile = async (id, body) => {
