@@ -105,6 +105,7 @@ router.route('/delete/:id').get(BuyerSellerController.DeleteByUserId);
 router.route('/sellerPost/:id').get(BuyerAuth, BuyerSellerController.getDataById);
 router.route('/delete/DraftBy/user').get(BuyerAuth, BuyerSellerController.delete_DraftBy_user);
 router.route('/get/DraftBy_user').get(BuyerAuth, BuyerSellerController.get_DraftBy_user);
+router.route('/get/DraftBy_user/Mobile').get(BuyerAuth, BuyerSellerController.get_DraftBy_user_Mobile);
 router.route('/post/active/inactive/:id').put(BuyerAuth, BuyerSellerController.post_active_inactive);
 router.route('/Remove/Post/:id').get(BuyerSellerController.Remove_Post);
 // localities

@@ -3525,6 +3525,14 @@ const get_DraftBy_user = async (userId) => {
   return getDraft;
 };
 
+const get_DraftBy_user_Mobile = async (userId) => {
+  let getDraft = await SellerPost.findOne({ userId: userId, finsh: false, device: 'Mobile' }).sort({ created: -1 });
+  if (!getDraft) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'There Is No Draft Available');
+  }
+  return getDraft;
+};
+
 const prev_Next = async (index) => {
   let i = parseInt(index);
   let values = await SellerPost.aggregate([
@@ -4097,4 +4105,5 @@ module.exports = {
   DisableReported_Property,
   getLocalityBy_LocationId,
   multipleImage_Upload_For_Post,
+  get_DraftBy_user_Mobile,
 };

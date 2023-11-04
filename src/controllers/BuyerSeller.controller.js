@@ -568,6 +568,11 @@ const get_DraftBy_user = catchAsync(async (req, res) => {
   const data = await buyersellerService.get_DraftBy_user(userId);
   res.send(data);
 });
+const get_DraftBy_user_Mobile = catchAsync(async (req, res) => {
+  let userId = req.userId;
+  const data = await buyersellerService.get_DraftBy_user_Mobile(userId);
+  res.send(data);
+});
 
 const prev_Next = catchAsync(async (req, res) => {
   const data = await buyersellerService.prev_Next(req.params.index);
@@ -794,4 +799,5 @@ module.exports = {
   getLocalityBy_LocationId,
   multipleImage_Upload_For_Post,
   createBuyerMobile,
+  get_DraftBy_user_Mobile,
 };
