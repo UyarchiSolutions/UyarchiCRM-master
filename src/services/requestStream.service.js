@@ -19,7 +19,7 @@ const createRequestStream = async (body, userId) => {
   const isoTime = moment(dateTime).format('HH:mm');
   let startTime = dateTime;
   let planes = await PurchasePlan.findOne({ planId: planId });
-  console.log(planes,"Checking")
+  console.log(planes, 'Checking');
   if (!planes) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Plan Not Available');
   }
@@ -42,7 +42,7 @@ const createRequestStream = async (body, userId) => {
       streamingDate_time: isoDateTime,
       sellerId: userId,
       chat_need: planes.Chat_Needed,
-      noOfParticipants: parseInt(planes.numberOfParticipants?planes.numberOfParticipants:10),
+      noOfParticipants: parseInt(planes.numberOfParticipants ? planes.numberOfParticipants : 10),
       Duration: parseInt(planes.Duration ? planes.Duration : 0),
     },
   };

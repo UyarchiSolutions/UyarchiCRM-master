@@ -173,6 +173,12 @@ const sellerPostSchema = new mongoose.Schema({
   BhkCount: {
     type: Number,
   },
+  device: {
+    type: String,
+  },
+  mobileRoute: {
+    type: String,
+  },
   locationCoordinates: {
     type: { type: String },
     coordinates: [Number],
@@ -545,7 +551,7 @@ const sellerPostSchema = new mongoose.Schema({
   // },
 });
 sellerPostSchema.index({ location: '2dsphere' });
-sellerPostSchema.indexes({point:"2dsphere"});
+sellerPostSchema.indexes({ point: '2dsphere' });
 sellerPostSchema.index({ locationCoordinates: '2dsphere' });
 const SellerPost = mongoose.model('sellerPost', sellerPostSchema);
 
