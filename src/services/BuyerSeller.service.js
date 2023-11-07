@@ -3505,7 +3505,6 @@ const videoUpload = async (req) => {
 
 const localities = async (coordinates) => {
   const { lat, long } = coordinates;
-
   return coordinates;
 };
 

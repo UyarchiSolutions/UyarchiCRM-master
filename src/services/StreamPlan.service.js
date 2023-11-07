@@ -119,6 +119,7 @@ const Purchase_plan = async (body, userId) => {
     regularPrice: Plan.regularPrice,
     stream_expire_minutes: Plan.stream_expire_minutes,
     noOfParticipantsCost: Plan.noOfParticipantsCost,
+    chat_Option: Plan.chat_Option,
   };
   let data = await PurchasePlan.create(values);
   return data;
@@ -163,6 +164,9 @@ const getPurchased_Planes = async (userId) => {
         availableStream: 1,
         userId: 1,
         createdAt: 1,
+        validityofplan: 1,
+        numberOfParticipants: 1,
+        chat_Option:1,
       },
     },
   ]);
