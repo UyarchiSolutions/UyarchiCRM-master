@@ -166,7 +166,7 @@ const getPurchased_Planes = async (userId) => {
         createdAt: 1,
         validityofplan: 1,
         numberOfParticipants: 1,
-        chat_Option:1,
+        chat_Option: 1,
       },
     },
   ]);
