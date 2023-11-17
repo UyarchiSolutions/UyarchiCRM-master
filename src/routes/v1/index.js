@@ -32,6 +32,11 @@ const RequestStreamRoute = require('./request.route');
 const StreamPlanRoute = require('./StreamPlan.route');
 const SubHostRoute = require('./SubHost.route');
 const EnquieryRoute = require('./Enquiry.route');
+const agoraRoute = require('./AgoraAppId.route');
+const b2buser = require('./B2Busers.route');
+const role = require('./role.route');
+const menu = require('./menue.route');
+
 const router = express.Router();
 
 const defaultRoutes = [
@@ -50,6 +55,22 @@ const defaultRoutes = [
   {
     path: '/subHost',
     route: SubHostRoute,
+  },
+  {
+    path: '/agora',
+    route: agoraRoute,
+  },
+  {
+    path: '/b2bUsers',
+    route: b2buser,
+  },
+  {
+    path: '/role',
+    route: role,
+  },
+  {
+    path: '/menu',
+    route: menu,
   },
   {
     path: '/propertyAlert',
