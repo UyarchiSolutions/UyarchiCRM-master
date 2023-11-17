@@ -27,7 +27,7 @@ const mainWarehouseRoles = async () => {
 };
 
 const getRolesById = async (id) => {
-  const role = Roles.findById(id);
+  const role = await Roles.findById(id);
   if (!role) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Roles  Not Found');
   }
@@ -48,9 +48,9 @@ const getMenu = async (id) => {
         pipeline: [
           {
             $match: {
-              rolesId: id
-            }
-          }
+              rolesId: id,
+            },
+          },
         ],
         as: 'menueassigns',
       },
@@ -67,13 +67,13 @@ const getMenu = async (id) => {
         menuName: 1,
         route: 1,
         parentMenu: 1,
-        read: "$menueassigns.read",
-        write: "$menueassigns.write",
-        update: "$menueassigns.update",
-        delete: "$menueassigns.delete",
-        point: "$menueassigns.point",
-      }
-    }
+        read: '$menueassigns.read',
+        write: '$menueassigns.write',
+        update: '$menueassigns.update',
+        delete: '$menueassigns.delete',
+        point: '$menueassigns.point',
+      },
+    },
   ]);
   return menues;
 };
@@ -81,7 +81,7 @@ const getMenu = async (id) => {
 const updateRolesById = async (roleId, updateBody) => {
   // const role = await MenueAssign.deleteMany({ rolesId: roleId })
   try {
-    await MenueAssign.deleteMany({ rolesId: roleId })
+    await MenueAssign.deleteMany({ rolesId: roleId });
   } catch (e) {
     print(e);
   }
@@ -95,10 +95,10 @@ const updateRolesById = async (roleId, updateBody) => {
         write: e.write == null ? false : e.write,
         update: e.update == null ? false : e.update,
         delete: e.delete == null ? false : e.delete,
-        point: e.point==null?100:e.point,
-      })
+        point: e.point == null ? 100 : e.point,
+      });
     }
-  })
+  });
   return updateBody;
 };
 
@@ -442,17 +442,16 @@ const getsalesman = async () => {
         from: 'salesmanshops',
         localField: 'b2busersData._id',
         foreignField: 'fromSalesManId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'Assign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'Assign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshops',
       },
@@ -462,17 +461,16 @@ const getsalesman = async () => {
         from: 'salesmanshops',
         localField: 'b2busersData._id',
         foreignField: 'salesManId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'tempReassign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'tempReassign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshopsdata',
       },
@@ -504,11 +502,11 @@ const getsalesman = async () => {
             $match: {
               $and: [
                 {
-                  daStatus: { $in: ['Not Interested', 'Cannot Spot the Shop'] }
+                  daStatus: { $in: ['Not Interested', 'Cannot Spot the Shop'] },
                 },
-              ]
-            }
-          }
+              ],
+            },
+          },
         ],
         as: 'b2bshopclones_re_not',
       },
@@ -524,11 +522,11 @@ const getsalesman = async () => {
             $match: {
               $and: [
                 {
-                  Re_daStatus: { $ne: null }
+                  Re_daStatus: { $ne: null },
                 },
-              ]
-            }
-          }
+              ],
+            },
+          },
         ],
         as: 'b2bshopclones_re_da',
       },
@@ -544,11 +542,11 @@ const getsalesman = async () => {
             $match: {
               $and: [
                 {
-                  Re_daStatus: { $ne: null }
+                  Re_daStatus: { $ne: null },
                 },
-              ]
-            }
-          }
+              ],
+            },
+          },
         ],
         as: 'b2bshopclones_re_not_da',
       },
@@ -558,16 +556,16 @@ const getsalesman = async () => {
         name: '$b2busersData.name',
         b2buserId: '$b2busersData._id',
         roleName: 1,
-        assigncount: { $size: "$salesmanshops" },
-        tempcount: { $size: "$salesmanshopsdata" },
-        DA_count: { $size: "$b2bshopclones" },
-        re_assgin: { $size: "$b2bshopclones_re" },
-        re_assgin_da: { $size: "$b2bshopclones_re_da" },
-        not_intrested: { $size: "$b2bshopclones_re_not" },
-        not_intrested_da: { $size: "$b2bshopclones_re_not_da" },
-        total_re: { $add: [{ $size: "$b2bshopclones_re" }, { $size: "$b2bshopclones_re_not" }] },
-        total_re_da: { $add: [{ $size: "$b2bshopclones_re_da" }, { $size: "$b2bshopclones_re_not_da" }] },
-        count: { $add: [{ $size: "$salesmanshops" }, { $size: "$salesmanshopsdata" }] },
+        assigncount: { $size: '$salesmanshops' },
+        tempcount: { $size: '$salesmanshopsdata' },
+        DA_count: { $size: '$b2bshopclones' },
+        re_assgin: { $size: '$b2bshopclones_re' },
+        re_assgin_da: { $size: '$b2bshopclones_re_da' },
+        not_intrested: { $size: '$b2bshopclones_re_not' },
+        not_intrested_da: { $size: '$b2bshopclones_re_not_da' },
+        total_re: { $add: [{ $size: '$b2bshopclones_re' }, { $size: '$b2bshopclones_re_not' }] },
+        total_re_da: { $add: [{ $size: '$b2bshopclones_re_da' }, { $size: '$b2bshopclones_re_not_da' }] },
+        count: { $add: [{ $size: '$salesmanshops' }, { $size: '$salesmanshopsdata' }] },
         _id: 1,
       },
     },
@@ -581,7 +579,7 @@ const gettelecaller = async () => {
   let data = await Roles.aggregate([
     {
       $match: {
-        $and: [{ roleName: { $eq: "Ward CCE(WCCE)" } }],
+        $and: [{ roleName: { $eq: 'Ward CCE(WCCE)' } }],
       },
     },
     {
@@ -600,17 +598,16 @@ const gettelecaller = async () => {
         from: 'telecallershops',
         localField: 'b2busersData._id',
         foreignField: 'fromtelecallerteamId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'Assign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'Assign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshops',
       },
@@ -620,17 +617,16 @@ const gettelecaller = async () => {
         from: 'telecallershops',
         localField: 'b2busersData._id',
         foreignField: 'telecallerteamId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'tempReassign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'tempReassign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshopsdata',
       },
@@ -640,9 +636,9 @@ const gettelecaller = async () => {
         name: '$b2busersData.name',
         b2buserId: '$b2busersData._id',
         roleName: 1,
-        assigncount: { $size: "$salesmanshops" },
-        tempcount: { $size: "$salesmanshopsdata" },
-        count: { $add: [{ $size: "$salesmanshops" }, { $size: "$salesmanshopsdata" }] },
+        assigncount: { $size: '$salesmanshops' },
+        tempcount: { $size: '$salesmanshopsdata' },
+        count: { $add: [{ $size: '$salesmanshops' }, { $size: '$salesmanshopsdata' }] },
         _id: 1,
       },
     },
@@ -675,17 +671,16 @@ const getsalesmanOrder = async () => {
         from: 'salesmanordershops',
         localField: 'b2busersData._id',
         foreignField: 'fromsalesmanOrderteamId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'Assign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'Assign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshops',
       },
@@ -695,17 +690,16 @@ const getsalesmanOrder = async () => {
         from: 'salesmanordershops',
         localField: 'b2busersData._id',
         foreignField: 'salesmanOrderteamId',
-        pipeline: [{
-          $match: {
-            $or: [
-              {
-                $and: [
-                  { status: { $eq: 'tempReassign' } },
-                ],
-              },
-            ],
+        pipeline: [
+          {
+            $match: {
+              $or: [
+                {
+                  $and: [{ status: { $eq: 'tempReassign' } }],
+                },
+              ],
+            },
           },
-        },
         ],
         as: 'salesmanshopsdata',
       },
@@ -715,9 +709,9 @@ const getsalesmanOrder = async () => {
         name: '$b2busersData.name',
         b2buserId: '$b2busersData._id',
         roleName: 1,
-        assigncount: { $size: "$salesmanshops" },
-        tempcount: { $size: "$salesmanshopsdata" },
-        count: { $add: [{ $size: "$salesmanshops" }, { $size: "$salesmanshopsdata" }] },
+        assigncount: { $size: '$salesmanshops' },
+        tempcount: { $size: '$salesmanshopsdata' },
+        count: { $add: [{ $size: '$salesmanshops' }, { $size: '$salesmanshopsdata' }] },
         _id: 1,
       },
     },
@@ -791,7 +785,7 @@ const getAllSalesmanShops = async () => {
 const get_user_menu = async (userRole) => {
   let menus = await Menues.aggregate([
     {
-      $match: { parentMenu: "0" }
+      $match: { parentMenu: '0' },
     },
     {
       $lookup: {
@@ -801,8 +795,8 @@ const get_user_menu = async (userRole) => {
         pipeline: [
           {
             $match: {
-              rolesId: { $eq: userRole }
-            }
+              rolesId: { $eq: userRole },
+            },
           },
           {
             $lookup: {
@@ -818,13 +812,12 @@ const get_user_menu = async (userRole) => {
                     pipeline: [
                       {
                         $match: {
-                          rolesId: { $eq: userRole }
-                        }
+                          rolesId: { $eq: userRole },
+                        },
                       },
                     ],
-                    as: "menueassigns"
-                  }
-
+                    as: 'menueassigns',
+                  },
                 },
                 {
                   $unwind: '$menueassigns',
@@ -836,24 +829,22 @@ const get_user_menu = async (userRole) => {
                     route: 1,
                     parentMenu: 1,
                     parentName: 1,
-                    read: "$menueassigns.read",
-                    write: "$menueassigns.write",
-                    update: "$menueassigns.update",
-                    delete: "$menueassigns.delete",
-                    point: "$menueassigns.point",
-                  }
+                    read: '$menueassigns.read',
+                    write: '$menueassigns.write',
+                    update: '$menueassigns.update',
+                    delete: '$menueassigns.delete',
+                    point: '$menueassigns.point',
+                  },
                 },
                 {
                   $sort: {
-                    point: 1
-                  }
-                }
-
+                    point: 1,
+                  },
+                },
               ],
               as: 'menues',
             },
           },
-
         ],
         as: 'menueassigns',
       },
@@ -868,24 +859,24 @@ const get_user_menu = async (userRole) => {
         route: 1,
         parentMenu: 1,
         parentName: 1,
-        read: "$menueassigns.read",
-        write: "$menueassigns.write",
-        update: "$menueassigns.update",
-        delete: "$menueassigns.delete",
-        point: "$menueassigns.point",
-        child: "$menueassigns.menues",
-        createdDate: 1
-      }
+        read: '$menueassigns.read',
+        write: '$menueassigns.write',
+        update: '$menueassigns.update',
+        delete: '$menueassigns.delete',
+        point: '$menueassigns.point',
+        child: '$menueassigns.menues',
+        createdDate: 1,
+      },
     },
     {
       $sort: {
         createdDate: 1,
         point: 1,
-      }
-    }
-  ])
+      },
+    },
+  ]);
   return menus;
-}
+};
 module.exports = {
   createRoles,
   getAllRoles,
