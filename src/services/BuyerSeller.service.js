@@ -4141,7 +4141,7 @@ const multipleImage_Upload_For_Post = async (req) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
   }
   let existImgLen = post.image ? post.image.length : 0;
-  if (existImgLen == 0) {
+  if (existImgLen == 5) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Maximum Images Reached');
   }
   let total = existImgLen + req.files.length;
