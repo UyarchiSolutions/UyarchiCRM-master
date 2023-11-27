@@ -2101,6 +2101,9 @@ const Login = async (body) => {
   if (!getEmailBy) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email not Registered');
   }
+  if(getEmailBy.active == false){
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Account has been inactive / deactivated');
+  }
   let values = await Buyer.findOne({ email: body.email, password: body.password, active: true, Type: body.Type });
   if (!values) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'User Not Available');
