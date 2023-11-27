@@ -4022,7 +4022,7 @@ const RepoerRemove = async (id)=>{
   if(!value){
     throw new ApiError(httpStatus.BAD_REQUEST, "Property Not Found")
   }
-  value = await SellerPost.findByIdAndUpdate({_id:id},{finsh:false,reportRemove:true},{ne:true})
+  value = await SellerPost.findByIdAndUpdate({_id:id},{finsh:false,reportRemove:true},{new:true})
   return value
 }
 
