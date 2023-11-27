@@ -987,6 +987,8 @@ const getApprover_Property = async (query, userId, body) => {
 };
 
 const getApprover_Property_new = async (query, userId, body) => {
+  let today = moment().toDate();
+
   let {
     pincode,
     priceTo,
