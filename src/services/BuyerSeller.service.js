@@ -2101,7 +2101,7 @@ const Login = async (body) => {
   if (!getEmailBy) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email not Registered');
   }
-  if(getEmailBy.active == false){
+  if (getEmailBy.active == false) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Account has been inactive / deactivated');
   }
   let values = await Buyer.findOne({ email: body.email, password: body.password, active: true, Type: body.Type });
@@ -3725,7 +3725,7 @@ const getNotificationFor_Buyers = async (userId) => {
     {
       $match: {
         buyerId: userId,
-        active: true,
+        // active: true,
         type: { $in: ['Schedule', 'Visited', 'Accept', 'Fixed', 'Report'] },
       },
     },
@@ -3970,14 +3970,14 @@ const multipleImage_Upload_For_Post = async (req) => {
   if (!post) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
   }
-  let existImgLen = post.image?post.image.length:0;
-if(existImgLen == 0){
-  throw new ApiError(httpStatus.BAD_REQUEST, 'Maximum Images Reached')
-}
-let total = existImgLen +  req.files.length
-if(total>5){
-  throw new ApiError(httpStatus.BAD_REQUEST, `Limit Exceeded: You have space only for ${ 5 - existImgLen} images`)
-}
+  let existImgLen = post.image ? post.image.length : 0;
+  if (existImgLen == 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Maximum Images Reached');
+  }
+  let total = existImgLen + req.files.length;
+  if (total > 5) {
+    throw new ApiError(httpStatus.BAD_REQUEST, `Limit Exceeded: You have space only for ${5 - existImgLen} images`);
+  }
 
   let files;
   if (req.files.length == 0) {
