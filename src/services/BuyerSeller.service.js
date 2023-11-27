@@ -3967,6 +3967,15 @@ const multipleImage_Upload_For_Post = async (req) => {
   if (!post) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Post Not Found');
   }
+  let existImgLen = post.image?post.image.length:0;
+if(existImgLen == 0){
+  throw new ApiError(httpStatus.BAD_REQUEST, 'Maximum Images Reached')
+}
+let total = existImgLen +  req.files.length
+if(total>5){
+  throw new ApiError(httpStatus.BAD_REQUEST, `Limit Exceeded: You have space only for ${ 5 - existImgLen} images`)
+}
+
   let files;
   if (req.files.length == 0) {
     throw new ApiErrirError(httpStatus.BAD_REQUEST, 'Please Select And Upload At Least One Image');
@@ -4002,6 +4011,7 @@ const multipleImage_Upload_For_Post = async (req) => {
       });
     });
   });
+  return post;
 };
 
 module.exports = {

@@ -409,6 +409,7 @@ const sellerPostSchema = new mongoose.Schema({
   },
   image: {
     type: Array,
+    default: [],
   },
   videos: {
     type: Array,
