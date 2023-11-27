@@ -4017,6 +4017,15 @@ const multipleImage_Upload_For_Post = async (req) => {
   return post;
 };
 
+const RepoerRemove = async (id)=>{
+  let value = await SellerPost.findById(id)
+  if(!value){
+    throw new ApiError(httpStatus.BAD_REQUEST, "Property Not Found")
+  }
+  value = await SellerPost.findByIdAndUpdate({_id:id},{finsh:false,reportRemove:true},{ne:true})
+  return value
+}
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -4118,4 +4127,5 @@ module.exports = {
   getLocalityBy_LocationId,
   multipleImage_Upload_For_Post,
   get_DraftBy_user_Mobile,
+  RepoerRemove,
 };

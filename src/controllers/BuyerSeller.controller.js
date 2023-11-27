@@ -700,6 +700,11 @@ const multipleImage_Upload_For_Post = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const RepoerRemove = catchAsync(async (req, res) => {
+  const data = await buyersellerService.RepoerRemove(req.params.id);
+  res.send(data);
+})
+
 module.exports = {
   createBuyerSeller,
   verifyOtp,
@@ -800,4 +805,5 @@ module.exports = {
   multipleImage_Upload_For_Post,
   createBuyerMobile,
   get_DraftBy_user_Mobile,
+  RepoerRemove,
 };

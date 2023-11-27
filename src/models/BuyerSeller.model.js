@@ -161,6 +161,10 @@ const sellerPostSchema = new mongoose.Schema({
   buildingType: {
     type: String,
   },
+  reportRemove: {
+    type: Boolean,
+    default: false,
+  },
   leaseDuration: {
     type: String,
   },

@@ -137,4 +137,5 @@ router.route('/Disable/Notifications/:id').get(BuyerSellerController.DisableNoti
 router.route('/Disable/Reported/Property/:id').get(BuyerSellerController.DisableReported_Property);
 router.route('/get/LocalityBy/LocationId/:id').get(BuyerSellerController.getLocalityBy_LocationId);
 router.route('/multipleImage/Upload/For/Post/:id').put(upload, BuyerSellerController.multipleImage_Upload_For_Post);
+router.route('/Repoer/Remove/:id').get(BuyerSellerController.RepoerRemove);
 module.exports = router;
