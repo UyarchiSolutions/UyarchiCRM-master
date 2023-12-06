@@ -36,6 +36,7 @@ const agoraRoute = require('./AgoraAppId.route');
 const b2buser = require('./B2Busers.route');
 const role = require('./role.route');
 const menu = require('./menue.route');
+const Demo = require('./demo.realestate.route');
 
 const router = express.Router();
 
@@ -43,6 +44,10 @@ const defaultRoutes = [
   {
     path: '/auth',
     route: authRoute,
+  },
+  {
+    path: '/demo',
+    route: Demo,
   },
   {
     path: '/EnquieryRoute',

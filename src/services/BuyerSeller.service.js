@@ -4024,7 +4024,6 @@ const getsavedPropertyByUser_pagination = async (userId, query) => {
     ind = parseInt(ind);
   }
 
-  console.log(query);
   const data = await SellerPost.aggregate([
     {
       $match: { WhishList: { $in: [userId] }, HouseOrCommercialType: { $eq: ctype }, Type: { $eq: type } },
@@ -4130,7 +4129,6 @@ const DisableReported_Property = async (id) => {
 };
 
 const getLocalityBy_LocationId = async (id) => {
-  oooo;
   let ax = await Axios.get(`https://www.nobroker.in/v5/localities/nearby?localityIds=${id}`);
   return ax.data;
 };
@@ -4184,7 +4182,6 @@ const multipleImage_Upload_For_Post = async (req) => {
       });
     });
   });
-  return post;
 };
 
 const RepoerRemove = async (id)=>{
