@@ -50,6 +50,9 @@ const DemoPostSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    location: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
@@ -71,7 +74,9 @@ const DemoUserSchema = mongoose.Schema(
     mobileNumber: {
       type: String,
     },
-
+    location: {
+      type: String,
+    },
     active: {
       type: Boolean,
       default: true,
