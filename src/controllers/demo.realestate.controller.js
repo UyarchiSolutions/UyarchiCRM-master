@@ -21,9 +21,15 @@ const imageUploadForPost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getUsers = catchAsync(async (req, res) => {
+  const data = await DemoUserService.getUsers(req);
+  res.send(data);
+});
+
 module.exports = {
   createDemoUser,
   createDemoPost,
   updatePostById,
   imageUploadForPost,
+  getUsers,
 };

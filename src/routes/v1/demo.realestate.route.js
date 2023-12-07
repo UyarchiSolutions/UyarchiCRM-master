@@ -13,5 +13,6 @@ router.route('/user').post(DemoUserController.createDemoUser);
 router.route('/post').post(DemoUserController.createDemoPost);
 router.route('/post/:id').put(DemoUserController.updatePostById);
 router.route('/image/:id').put(upload, DemoUserController.imageUploadForPost);
+router.route('/getUsers').get(DemoUserController.getUsers);
 
 module.exports = router;

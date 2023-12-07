@@ -61,9 +61,21 @@ const imageUploadForPost = async (req, res) => {
   });
 };
 
+const getUsers = async (req) => {
+  let values = await DemoUser.aggregate([
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   createDemoUser,
   createDemoPost,
   updatePostById,
   imageUploadForPost,
+  getUsers,
 };
