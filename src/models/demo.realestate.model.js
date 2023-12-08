@@ -93,7 +93,7 @@ const DemoUserSchema = mongoose.Schema(
       type: String,
     },
     mobileNumber: {
-      type: String,
+      type: Number,
     },
     location: {
       type: String,

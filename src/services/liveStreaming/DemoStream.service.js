@@ -88,6 +88,7 @@ const get_stream_details = async (req) => {
 };
 
 const send_otp = async (req) => {
+  console.log(req.query.id)
   let stream = await DemoPost.findById(req.query.id);
   if (!stream) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
