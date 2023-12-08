@@ -2,8 +2,6 @@ const httpStatus = require('http-status');
 const ApiError = require('../../utils/ApiError');
 const moment = require('moment');
 const { AgoraAppId } = require('../../models/AgoraAppId.model');
-const Dates = require('../Date.serive');
-const paymentgatway = require('../paymentgatway.service');
 const axios = require('axios');
 
 const {

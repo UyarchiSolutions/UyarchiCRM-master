@@ -2,7 +2,7 @@ const express = require('express');
 
 
 const router = express.Router();
-const demostream = require('../../controllers/liveStreaming/DemoStream.controller');
+const demostream = require('../../../controllers/liveStreaming/DemoStream.controller');
 
 
 router.route('/getDatas').get(demostream.getDatas);
