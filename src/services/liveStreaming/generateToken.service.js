@@ -1268,6 +1268,42 @@ const production_supplier_token = async (req) => {
 
 // };
 
+const get_stream_details = async (req) => {
+  let userId = req.userId;
+  let streamId = req.query.id;
+  let stream = await RequestStream.aggregate([
+    { $match: { $and: [{ _id: { $eq: streamId } }, { sellerId: { $eq: userId } }] } },
+    {
+      $lookup: {
+        from: 'temptokens',
+        localField: '_id',
+        foreignField: 'streamId',
+        pipeline: [
+          { $match: { $and: [{ supplierId: { $eq: userId } }] } }
+        ],
+        as: 'userToken',
+      },
+    },
+    { $unwind: "$userToken" },
+    {
+      $lookup: {
+        from: 'sellerposts',
+        localField: 'postId',
+        foreignField: '_id',
+        as: 'sellerposts',
+      },
+    },
+    { $unwind: "$sellerposts" }
+  ])
+
+    if (stream.length == 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'plan_not_found');
+  }
+  return stream[0];
+
+  // return stream;
+}
+
 module.exports = {
   // generateToken,
   // getHostTokens,
@@ -1296,5 +1332,6 @@ module.exports = {
   // get_stream_complete_videos,
   // videoConverter,
   // get_current_live_stream,
-  // cloud_recording_start
+  // cloud_recording_start,
+  get_stream_details
 };

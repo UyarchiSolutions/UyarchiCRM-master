@@ -53,6 +53,16 @@ const DemoPostSchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    Description: {
+      type: String,
+    },
+    imageArr: {
+      type: Array,
+    },
+    bhkBuilding: {
+      type: String,
+    }
+
   },
   { timestamps: true }
 );

@@ -152,6 +152,12 @@ const production_supplier_token = catchAsync(async (req, res) => {
 //   res.status(httpStatus.CREATED).send(tokens);
 // });
 
+const get_stream_details=async (req, res) => {
+  let tokens = await generateTokenService.get_stream_details(req);
+  // req.io.emit('subscriberjoined', { user: 'sd' });
+  res.status(httpStatus.CREATED).send(tokens);
+}
+
 
 module.exports = {
   // generateToken,
@@ -181,5 +187,6 @@ module.exports = {
   // get_stream_complete_videos,
   // videoConverter,
   // get_current_live_stream,
-  // cloud_recording_start
+  // cloud_recording_start,
+  get_stream_details
 };

@@ -39,4 +39,8 @@ router.route('/livestream/generateToken/seller').post(Authorization,generateToke
 // router.route('/cloud/recording/start').get(generateToken.cloud_recording_start);
 
 
+router.route('/get/stream/details').get(Authorization,generateToken.get_stream_details);
+
+
+
 module.exports = router;

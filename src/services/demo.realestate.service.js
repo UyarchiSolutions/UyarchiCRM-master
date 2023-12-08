@@ -61,6 +61,61 @@ const imageUploadForPost = async (req, res) => {
   });
 };
 
+
+
+const image_upload_multiple = async (req, res) => {
+  let id = req.params.id;
+  if (!req.files) {
+    throw new ApiErrirError(httpStatus.BAD_REQUEST, 'Please Select And Upload At Least One Image');
+  }
+  let images = await multible_image_array(req.files);
+
+  let findById = await DemoPost.findByIdAndUpdate({ _id: id }, { imageArr: images }, { new: true });
+
+  return findById;
+
+};
+
+
+const multible_image_array = (filePaths) => {
+  const uploadPromises = filePaths.map(async (filePath, index) => await uploadToS3(filePath, index));
+  let urls = [];
+  return Promise.all(uploadPromises)
+    .then((results) => {
+      results.forEach((result) => {
+        urls.push(result);
+      });
+      return urls;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+
+function uploadToS3(filePath) {
+  const s3 = new AWS.S3({
+    accessKeyId: 'AKIA3323XNN7Y2RU77UG',
+    secretAccessKey: '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',
+    region: 'ap-south-1',
+  });
+
+  return new Promise((resolve, reject) => {
+    const params = {
+      Bucket: 'realestatevideoupload',
+      Key: filePath.originalname, // Key under which the file will be stored in S3
+      Body: filePath.buffer,
+    };
+    s3.upload(params, (err, data) => {
+      if (err) {
+        reject(``);
+      } else {
+        resolve(data.Location);
+      }
+    });
+  });
+}
+
 const getUsers = async (req) => {
   let values = await DemoUser.aggregate([
     {
@@ -78,4 +133,5 @@ module.exports = {
   updatePostById,
   imageUploadForPost,
   getUsers,
+  image_upload_multiple
 };

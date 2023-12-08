@@ -21,6 +21,12 @@ const imageUploadForPost = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const image_upload_multiple = catchAsync(async (req, res) => {
+  const data = await DemoUserService.image_upload_multiple(req);
+  res.send(data);
+});
+
+
 const getUsers = catchAsync(async (req, res) => {
   const data = await DemoUserService.getUsers(req);
   res.send(data);
@@ -32,4 +38,5 @@ module.exports = {
   updatePostById,
   imageUploadForPost,
   getUsers,
+  image_upload_multiple
 };
