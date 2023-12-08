@@ -95,7 +95,6 @@ const send_otp = async (req) => {
   }
 
   let res = await send_otp_now(stream);
-
   return res;
 };
 
@@ -120,16 +119,16 @@ const send_otp_now = async (stream) => {
     let otp = await Demootpverify.create({
       OTP: OTPCODE,
       verify: false,
-      mobile: token.phoneNumber,
+      mobile: token.mobileNumber,
       streamID: stream._id,
       DateIso: moment(),
       userID: stream.userId,
       expired: false,
       otpExpiedTime: exp,
     });
-    let message = `Dear ${token.name},thank you for the registration to the event AgriExpoLive2023 .Your OTP for logging into the account is ${OTPCODE}- AgriExpoLive2023(An Ookam company event)`;
+    let message = `Dear ${token.userName},thank you for the registration to the event AgriExpoLive2023 .Your OTP for logging into the account is ${OTPCODE}- AgriExpoLive2023(An Ookam company event)`;
     let reva = await axios.get(
-      `http://panel.smsmessenger.in/api/mt/SendSMS?user=ookam&password=ookam&senderid=OOKAMM&channel=Trans&DCS=0&flashsms=0&number=${token.phoneNumber}&text=${message}&route=6&peid=1701168700339760716&DLTTemplateId=1707168958877302526`
+      `http://panel.smsmessenger.in/api/mt/SendSMS?user=ookam&password=ookam&senderid=OOKAMM&channel=Trans&DCS=0&flashsms=0&number=${token.mobileNumber}&text=${message}&route=6&peid=1701168700339760716&DLTTemplateId=1707168958877302526`
     );
     // return reva.data;
     otpsend = { otpExpiedTime: otp.otpExpiedTime };
