@@ -80,6 +80,31 @@ const get_stream_details = async (req) => {
     {
       $unwind: '$demousers',
     },
+    {
+      $project: {
+        _id: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        location: "$demousers.location",
+        mail: "$demousers.mail",
+      }
+    }
   ])
   if (stream.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
@@ -130,7 +155,7 @@ const send_otp_now = async (stream) => {
     let reva = await axios.get(
       `http://panel.smsmessenger.in/api/mt/SendSMS?user=ookam&password=ookam&senderid=OOKAMM&channel=Trans&DCS=0&flashsms=0&number=${token.mobileNumber}&text=${message}&route=6&peid=1701168700339760716&DLTTemplateId=1707168958877302526`
     );
-    // return reva.data;
+    console.log(reva.data);
     otpsend = { otpExpiedTime: otp.otpExpiedTime };
   } else {
     otpsend = { otpExpiedTime: otpsend.otpExpiedTime };
