@@ -18,7 +18,7 @@ router.route('/one/more/time').post(demostream.add_one_more_time);
 
 
 router.route('/seller/go/live').post(demostream.seller_go_live);
-router.route('/seller/live/details').post(demostream.seller_go_live_details);
+router.route('/seller/live/details').get(demostream.seller_go_live_details);
 
 
 
