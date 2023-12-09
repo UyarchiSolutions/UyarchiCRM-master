@@ -72,8 +72,26 @@ const DemoPostSchema = new mongoose.Schema(
     },
     linkstatus: {
       type: String,
+      default: "Pending",
+    },
+    otp_verifiyed: {
+      type: String,
+    },
+    streamDate: {
+      type: String,
+    },
+    streamStart: {
+      type: Number
+    },
+    actualEnd: {
+      type: Number
+    },
+    streamEnd: {
+      type: Number
+    },
+    runningStream: {
+      type: String,
     }
-
   },
   { timestamps: true }
 );
@@ -414,6 +432,45 @@ const democloud_record = mongoose.Schema({
 
 const Democloudrecord = mongoose.model('democloundrecord', democloud_record);
 
+
+
+
+
+
+const mutibleDemoschema = mongoose.Schema({
+  _id: {
+    type: String,
+    default: v4,
+  },
+  status: {
+    type: String,
+    default: "Pending"
+  },
+  streamId: {
+    type: String,
+  },
+  agoraAppId: {
+    type: String,
+  },
+  start: {
+    type: Number
+  },
+  end: {
+    type: Number
+  },
+  actualEnd: {
+    type: Number
+  },
+
+
+}, { timestamps: true }
+);
+
+
+
+const MutibleDemo = mongoose.model('demostreamhis', mutibleDemoschema);
+
+
 module.exports = {
   DemoPost,
   DemoUser,
@@ -421,5 +478,6 @@ module.exports = {
   DemostreamToken,
   DemoInstested,
   Demootpverify,
-  Democloudrecord
+  Democloudrecord,
+  MutibleDemo
 };

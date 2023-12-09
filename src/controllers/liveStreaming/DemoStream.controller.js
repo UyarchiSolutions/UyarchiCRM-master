@@ -17,8 +17,28 @@ const send_otp = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
+const verify_otp = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.verify_otp(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+const select_data_time = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.select_data_time(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
+const add_one_more_time = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.add_one_more_time(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
 module.exports = {
   getDatas,
   get_stream_details,
-  send_otp
+  send_otp,
+  verify_otp,
+  select_data_time,
+  add_one_more_time
 };

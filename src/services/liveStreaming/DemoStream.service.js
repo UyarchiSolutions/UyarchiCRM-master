@@ -12,6 +12,7 @@ const {
   DemoInstested,
   Demootpverify,
   Democloudrecord,
+  MutibleDemo
 } = require('../../models/demo.realestate.model');
 const jwt = require('jsonwebtoken');
 const agoraToken = require('../AgoraAppId.service');
@@ -124,6 +125,36 @@ const send_otp = async (req) => {
 };
 
 
+
+const verify_otp = async (req) => {
+  let { otp, id } = req.body;
+  const token = await DemoPost.findById(id);
+  if (!token) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
+  }
+
+  let Datenow = new Date().getTime();
+  let verify = await Demootpverify.findOne({
+    streamID: id,
+    OTP: otp,
+    verify: false,
+    expired: false,
+    otpExpiedTime: { $gt: Datenow },
+  });
+  if (!verify) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid OTP');
+  } else {
+    verify.verify = true;
+    verify.expired = true;
+    verify.save();
+    const stream = await DemoPost.findById(verify.streamID);
+    stream.otp_verifiyed = verify._id;
+    stream.linkstatus = 'Verified';
+    stream.save();
+  }
+  return verify;
+};
+
 const send_otp_now = async (stream) => {
   let OTPCODE = Math.floor(100000 + Math.random() * 900000);
   let Datenow = new Date().getTime();
@@ -166,8 +197,52 @@ const send_otp_now = async (stream) => {
 
 
 
+const select_data_time = async (req) => {
+  let { date, id, verify, } = req.body;
+  const token = await DemoPost.findById(id);
+  if (!token) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
+  }
+  if (token.otp_verifiyed != verify) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Access');
+  }
+
+  let start = new Date(date).getTime();
+  let end = new Date(moment(date).add(30, 'minutes')).getTime();
+
+  let history = new MutibleDemo.create({
+    streamId: token._id,
+    start: start,
+    end: end,
+    actualEnd: end
+  })
+
+  return history;
+};
+
+const add_one_more_time = async (req) => {
+  let { post } = req.body;
+  const token = await DemoPost.findById(post);
+  if (!token) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
+  }
+  if (token.status != 'Completed') {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Previous Stream Not Completed');
+  }
+  token.status = 'Pending';
+  token.runningStream = history._id;
+  token.save();
+
+  return token;
+};
+
+
+
 module.exports = {
   getDatas,
   get_stream_details,
-  send_otp
+  send_otp,
+  verify_otp,
+  select_data_time,
+  add_one_more_time
 };
