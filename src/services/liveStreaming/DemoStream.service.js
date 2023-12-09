@@ -244,6 +244,7 @@ const select_data_time = async (req) => {
       actualEnd: end
     })
     token.runningStream = history._id;
+    token.status = 'Ready';
     token.save();
   }
   return history;
@@ -255,12 +256,19 @@ const add_one_more_time = async (req) => {
   if (!token) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
   }
-  if (token.status != 'Completed') {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Previous Stream Not Completed');
+  let his = await MutibleDemo.findById(token.runningStream);
+
+  if (his) {
+    if (his.status != 'Completed') {
+      his.status = 'Restream';
+    }
+    his.save();
   }
+  // if (token.status == 'Completed' || his.status) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Previous Stream Not Completed');
+  // }
   token.status = 'Pending';
   token.save();
-
   return token;
 };
 
