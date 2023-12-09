@@ -17,6 +17,7 @@ const {
 const jwt = require('jsonwebtoken');
 const agoraToken = require('../AgoraAppId.service');
 
+const Agora = require('agora-access-token');
 
 const getDatas = async () => {
   let stream = await DemostreamToken.aggregate([
@@ -244,7 +245,7 @@ const select_data_time = async (req) => {
       actualEnd: end
     })
     token.runningStream = history._id;
-    token.status = 'Ready';
+    token.status = 'Scheduled';
     token.save();
   }
   return history;
@@ -264,12 +265,85 @@ const add_one_more_time = async (req) => {
     }
     his.save();
   }
-  // if (token.status == 'Completed' || his.status) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Previous Stream Not Completed');
-  // }
   token.status = 'Pending';
   token.save();
   return token;
+};
+
+
+const seller_go_live = async (req) => {
+  let { post } = req.body;
+  const token = await DemoPost.findById(post);
+  const uid = await generateUid();
+  const role = Agora.RtcRole.PUBLISHER;
+  if (!token) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
+  }
+  let his = await MutibleDemo.findById(token.runningStream);
+  if (!his) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'History not found');
+  }
+  if (his.agoraAppId == null) {
+    let agoraID = await agoraToken.token_assign(1500, his._id, 'demo');
+    if (agoraID) {
+      his.agoraAppId = agoraID.element._id;
+      his.save();
+    }
+
+  }
+
+  if (token.status == 'Ready') {
+    let expirationTimestamp = moment(his.end) / 1000;
+    const agrotoken = await geenerate_rtc_token(his._id, uid, role, expirationTimestamp, his.agoraAppId);
+    let demotoken = await DemostreamToken.findOne({ type: 'HOST', channel: his._id });
+    if (!demotoken) {
+      demotoken = await DemostreamToken.create({
+        expirationTimestamp: expirationTimestamp * 1000,
+        streamID: token._id,
+        type: 'HOST',
+        uid: uid,
+        agoraID: his.agoraAppId,
+        token: agrotoken,
+        channel: his._id,
+        dateISO: moment(),
+        userID: token.userId,
+      });
+      token.status = 'On-Going';
+      token.save();
+      // req.io.emit(token._id + 'stream_on_going', demostream);
+    }
+
+    // await cloude_recording_stream(token._id, token.agoraAppId, his.end);
+    return token;
+  }
+
+
+
+};
+const seller_go_live_details = async (req) => {
+
+};
+const start_cloud = async (req) => {
+
+};
+
+
+const geenerate_rtc_token = async (chennel, uid, role, expirationTimestamp, agoraID) => {
+  let agoraToken = await AgoraAppId.findById(agoraID);
+  console.log(chennel, uid, role, expirationTimestamp, agoraID, agoraToken);
+  return Agora.RtcTokenBuilder.buildTokenWithUid(
+    agoraToken.appID.replace(/\s/g, ''),
+    agoraToken.appCertificate.replace(/\s/g, ''),
+    chennel,
+    uid,
+    role,
+    expirationTimestamp
+  );
+};
+const generateUid = async () => {
+  const length = 5;
+  const randomNo = Math.floor(Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1));
+  return randomNo;
 };
 
 
@@ -280,5 +354,8 @@ module.exports = {
   send_otp,
   verify_otp,
   select_data_time,
-  add_one_more_time
+  add_one_more_time,
+  seller_go_live,
+  seller_go_live_details,
+  start_cloud
 };

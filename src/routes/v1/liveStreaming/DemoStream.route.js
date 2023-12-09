@@ -14,6 +14,18 @@ router.route('/select/data/time').post(demostream.select_data_time);
 router.route('/one/more/time').post(demostream.add_one_more_time);
 
 
+
+
+
+router.route('/seller/go/live').post(demostream.seller_go_live);
+router.route('/seller/live/details').post(demostream.seller_go_live_details);
+
+
+
+router.route('/start/cloud').post(demostream.start_cloud);
+
+
+
 // router.route('').get(demostream.send_sms_now);
 
 module.exports = router;

@@ -33,6 +33,24 @@ const add_one_more_time = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
+const seller_go_live = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.seller_go_live(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
+const seller_go_live_details = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.seller_go_live_details(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
+const start_cloud = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.start_cloud(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
 
 module.exports = {
   getDatas,
@@ -40,5 +58,8 @@ module.exports = {
   send_otp,
   verify_otp,
   select_data_time,
-  add_one_more_time
+  add_one_more_time,
+  seller_go_live,
+  seller_go_live_details,
+  start_cloud
 };
