@@ -461,8 +461,6 @@ const mutibleDemoschema = mongoose.Schema({
   actualEnd: {
     type: Number
   },
-
-
 }, { timestamps: true }
 );
 

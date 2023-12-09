@@ -82,6 +82,20 @@ const get_stream_details = async (req) => {
       $unwind: '$demousers',
     },
     {
+      $lookup: {
+        from: 'demostreamhis',
+        localField: '_id',
+        foreignField: 'streamId',
+        as: 'demostreamhis',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demostreamhis',
+      },
+    },
+    {
       $project: {
         _id: 1,
         "imageArr": 1,
@@ -104,6 +118,11 @@ const get_stream_details = async (req) => {
         mobileNumber: "$demousers.mobileNumber",
         location: "$demousers.location",
         mail: "$demousers.mail",
+        start: "$demostreamhis.start",
+        end: "$demostreamhis.end",
+        actualEnd: "$demostreamhis.actualEnd",
+        streamStatus: "$demostreamhis.status",
+        agoraAppId: "$demostreamhis.agoraAppId"
       }
     }
   ])
@@ -199,6 +218,7 @@ const send_otp_now = async (stream) => {
 
 const select_data_time = async (req) => {
   let { date, id, verify, } = req.body;
+  console.log(7689, date, id, verify)
   const token = await DemoPost.findById(id);
   if (!token) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
@@ -206,17 +226,26 @@ const select_data_time = async (req) => {
   if (token.otp_verifiyed != verify) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Access');
   }
+  if (token.status == 'Completed' || token.status == 'OnGoing') {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Time Already Selected');
+  }
 
-  let start = new Date(date).getTime();
-  let end = new Date(moment(date).add(30, 'minutes')).getTime();
+  let history = await MutibleDemo.findOne({ streamId: token._id, status: { $in: ['Pending', 'OnGoing'] } });
 
-  let history = new MutibleDemo.create({
-    streamId: token._id,
-    start: start,
-    end: end,
-    actualEnd: end
-  })
+  if (!history) {
 
+    let start = new Date(date).getTime();
+    let end = new Date(moment(date).add(30, 'minutes')).getTime();
+
+    history = await MutibleDemo.create({
+      streamId: token._id,
+      start: start,
+      end: end,
+      actualEnd: end
+    })
+    token.runningStream = history._id;
+    token.save();
+  }
   return history;
 };
 
@@ -230,7 +259,6 @@ const add_one_more_time = async (req) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Previous Stream Not Completed');
   }
   token.status = 'Pending';
-  token.runningStream = history._id;
   token.save();
 
   return token;
