@@ -425,7 +425,7 @@ const seller_go_live_details = async (req) => {
 
 };
 const start_cloud = async (req) => {
-  let start = await recording_start(req.body.post);
+  let start = await recording_start(req.query.post);
   return start;
 };
 
