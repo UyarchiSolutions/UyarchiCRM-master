@@ -22,7 +22,7 @@ router.route('/seller/live/details').get(demostream.seller_go_live_details);
 
 
 
-router.route('/start/cloud').post(demostream.start_cloud);
+router.route('/video/start/cloud').post(demostream.start_cloud);
 
 
 
