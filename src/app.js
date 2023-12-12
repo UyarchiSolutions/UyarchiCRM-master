@@ -28,62 +28,123 @@ var bodyParser = require('body-parser');
 const { SellerPost, Buyer } = require('./models/BuyerSeller.model');
 const multer = require('multer');
 const userPlane = require('./models/usersPlane.model');
+const socketService = require('./services/liveStreaming/socket.service');
+const chetModule = require('./services/liveStreaming/chat.service');
+
 
 const routes_v2 = require('./routes/v1/liveStreaming');
 
-// const io = require('socket.io')(httpServer, {
-//   cors: {
-//     origin: '*',
-//   },
-// });
-// io.on('connection', (socket) => {
-// const { roomId } = socket.handshake.query;
-// socket.join(roomId);
-// socket.on('message', async ({ userId, message }) => {
-//   io.in(roomId).emit('message', { userId, message });
-//   await Messages.create({ userId: userId, message: message, roomId: roomId, created: moment() });
-//   console.log(userId, message, roomId);
-//   socket.emit('me', socket.id);
-//   console.log(socket.id);
-//   socket.on('callUser', ({ userToCall, signalData, from, name }) => {
-//     io.to(userToCall).emit('callUser', {
-//       signal: signalData,
-//       from,
-//       name,
-//     });
-//   });
-//   socket.on('updateMyMedia', ({ type, currentMediaStatus }) => {
-//     console.log('updateMyMedia');
-//     socket.broadcast.emit('updateUserMedia', { type, currentMediaStatus });
-//   });
-//   socket.on('msgUser', async ({ name, to, msg, sender }) => {
-//     io.to(to).emit('msgRcv', { name, msg, sender });
-//     await Messages.create({ userId: name, message: msg, roomId: socket.id, created: moment() });
-//   });
-//   socket.on('answerCall', (data) => {
-//     socket.broadcast.emit('updateUserMedia', {
-//       type: data.type,
-//       currentMediaStatus: data.myMediaStatus,
-//     });
-//     io.to(data.to).emit('callAccepted', data);
-//   });
-//   socket.on('endCall', ({ id }) => {
-//     io.to(id).emit('endCall');
-//   });
-// });
-// });
-// Socket Message Api's
-// app.use(fileUpload());
+let socketIO = require('socket.io');
+let io = socketIO(httpServer);
+
+
+io.sockets.on('connection', async (socket) => {
+
+  console.log("connection established")
+
+  socket.on('groupchat', async (data) => {
+    await chetModule.chat_room_create(data, io);
+  });
+
+  socket.on('groupchatsubhost', async (data) => {
+    //console.log("hello", data)
+    await chetModule.chat_room_create_subhost(data, io);
+  });
+  socket.on('groupchathost', async (data) => {
+    await chetModule.chat_room_create_host(data, io);
+  });
+
+  socket.on('toggle_controls', async (data) => {
+    await chetModule.change_controls(data, io);
+  });
+
+  socket.on('post_start_end', async (data) => {
+    await socketService.startStop_post(data, io);
+  });
+  socket.on('leave_subhost', async (data) => {
+    await socketService.leave_subhost(data, io);
+  });
+  socket.on('allow_subhost', async (data) => {
+    await socketService.admin_allow_controls(data, io);
+  });
+
+  socket.on('disconnect', async () => {
+  });
+
+  socket.on('', (msg) => {
+  });
+  socket.on('host_controll_audio', async (data) => {
+    await socketService.host_controll_audio(data, io);
+  });
+
+  socket.on('host_controll_video', async (data) => {
+    await socketService.host_controll_video(data, io);
+  });
+  socket.on('host_controll_all', async (data) => {
+    await socketService.host_controll_all(data, io);
+  });
+  socket.on('stream_view_change', async (data) => {
+    await socketService.stream_view_change(data, io);
+  });
+  socket.on('romove_message', async (data) => {
+    await socketService.romove_message(data, io);
+  });
+  socket.on('ban_user_chat', async (data) => {
+    await socketService.ban_user_chat(data, io);
+  });
+  socket.on('groupchathost_demo', async (data) => {
+    await chetModule.chat_room_create_host_demo(data, io);
+  });
+  socket.on('groupchathost_demo_buyer', async (data) => {
+    await chetModule.chat_room_create_host_demo_sub(data, io);
+  });
+  socket.on('liveleave', async (data) => {
+    await chetModule.livejoined_now(data, io, 'leave');
+  });
+  socket.on('livejoined', async (data) => {
+    await chetModule.livejoined_now(data, io, 'join');
+  });
+  socket.on('privateChat', async (data) => {
+    await privatechat.recived_message(data, io, socket.handshake.auth);
+  });
+
+  socket.on('privateChatexp', async (data) => {
+    await privatechat.recived_message_exp(data, io, socket.handshake.auth)
+  });
+
+  socket.on('same_user_jion_exhibitor', async (data) => {
+    await privatechat.same_user_jion_exhibitor(data, io, socket.handshake.auth);
+  });
+  socket.on('joinRoom', (room) => {
+    //console.log(room)
+    socket.join(room);
+    // Emit an event to notify other clients in the room about the new user joining
+    //console.log(socket.id,2136712)
+    socket.to(room).emit('userJoined', socket.id);
+    //console.log(socket.rooms)
+  });
+
+  socket.on('disconnecting', () => {
+    //console.log(socket.rooms)
+    // Get the rooms the user is currently in
+    const rooms = Object.keys(socket.rooms);
+    //console.log(rooms)
+    rooms.forEach((room) => {
+      //console.log(room)
+      // Emit an event to notify other clients in the room about the user disconnecting
+      socket.to(room).emit('userDisconnected', socket.id);
+    });
+  });
+  socket.on('disconnect', () => {
+   
+  });
+});
+
+
+
 app.use(express.static('public'));
 // const server = http.createServer(app);
-const io = require('socket.io')(httpServer, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['my-custom-header'],
-    credentials: true,
-  },
-});
+
 const { addUser, removeUser } = require('./user');
 const { S3 } = require('aws-sdk');
 // const PORT = 5000;
@@ -199,6 +260,9 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
 httpServer.listen(config.port, () => {
   logger.info(`Listening to port ${config.port}`);
 });
+
+
+
 
 // git vignesh branch
 module.exports = app;

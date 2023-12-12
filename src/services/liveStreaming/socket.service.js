@@ -4,10 +4,9 @@ const { RtcTokenBuilder, RtcRole } = require('agora-access-token');
 const Agora = require('agora-access-token');
 const moment = require('moment');
 const { Groupchat } = require('../../models/liveStreaming/chat.model');
-const { Shop } = require('../../models/b2b.ShopClone.model');
-const { Streamplan, StreamPost, Streamrequest, StreamrequestPost } = require('../../models/ecomplan.model');
 const Supplier = require('../../models/supplier.model');
-
+const config = require('../../config/config');
+const jwt = require('jsonwebtoken');
 const { tempTokenModel, Joinusers } = require('../../models/liveStreaming/generateToken.model');
 const { CodeBuild } = require('aws-sdk');
 
@@ -32,8 +31,10 @@ const leave_subhost = async (req, io) => {
   io.sockets.emit(req.streamId + req.uid, { req, token });
 }
 const stream_view_change = async (req, io) => {
-  let stream = await tempTokenModel.updateMany({ chennel: req.chennel }, { bigSize: false }, { new: true });
+  let stream = await tempTokenModel.updateMany({ chennel: req.streamId }, { bigSize: false }, { new: true });
   let token = await tempTokenModel.findByIdAndUpdate({ _id: req.tokenId }, { bigSize: req.bigSize }, { new: true });
+  // console.log(stream)
+  // console.log(token)
   io.sockets.emit(req.streamId + "stream_view_change", { req, token, stream });
 }
 
@@ -233,6 +234,29 @@ const startStop_post = async (req, io) => {
 
 }
 
+const current_live_jion_count = async (req, io) => {
+
+}
+
+
+
+
+
+const auth_details = async (socket, token, next) => {
+  try {
+    const payload = jwt.verify(token, config.jwt.secret);
+    socket.timeline = payload.timeline;
+    socket.role = payload.role;
+    socket.userId = payload._id;
+    return next();
+  } catch {
+    return next();
+  }
+}
+
+
+
+
 module.exports = {
   startStop_post,
   leave_subhost,
@@ -242,5 +266,7 @@ module.exports = {
   admin_allow_controls,
   stream_view_change,
   romove_message,
-  ban_user_chat
+  ban_user_chat,
+  current_live_jion_count,
+  auth_details,
 };

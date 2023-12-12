@@ -214,6 +214,9 @@ const Demostreamchema = mongoose.Schema({
   live: {
     type: Boolean,
     default: false,
+  },
+  demoPost: {
+    type: String,
   }
 });
 

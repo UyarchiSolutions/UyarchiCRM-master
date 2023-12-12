@@ -13,8 +13,7 @@ router.route('/verify/otp').post(demostream.verify_otp);
 router.route('/select/data/time').post(demostream.select_data_time);
 router.route('/one/more/time').post(demostream.add_one_more_time);
 
-
-
+router.route('/end/stream').get(demostream.end_stream);
 
 
 router.route('/seller/go/live').post(demostream.seller_go_live);
@@ -25,6 +24,12 @@ router.route('/seller/live/details').get(demostream.seller_go_live_details);
 router.route('/video/start/cloud').get(demostream.start_cloud);
 
 
+
+// Buyer Side Stream
+
+
+router.route('/buyer/join/stream').post(demostream.buyer_join_stream);
+router.route('/buyer/get/property').post(demostream.get_buyer_join_stream);
 
 // router.route('').get(demostream.send_sms_now);
 

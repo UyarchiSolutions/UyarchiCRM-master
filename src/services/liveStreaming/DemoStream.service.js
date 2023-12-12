@@ -85,8 +85,8 @@ const get_stream_details = async (req) => {
     {
       $lookup: {
         from: 'demostreamhis',
-        localField: '_id',
-        foreignField: 'streamId',
+        localField: 'runningStream',
+        foreignField: '_id',
         as: 'demostreamhis',
       },
     },
@@ -115,15 +115,22 @@ const get_stream_details = async (req) => {
         "postType": 1,
         "priceExp": 1,
         "propertyType": 1,
+        linkstatus: 1,
+        tenantType: 1,
+        ageOfProperty: 1,
+        otp_verifiyed: 1,
+        finish: 1,
+        streamDate: 1,
         userName: "$demousers.userName",
         mobileNumber: "$demousers.mobileNumber",
-        location: "$demousers.location",
+        locationss: "$demousers.location",
         mail: "$demousers.mail",
         start: "$demostreamhis.start",
         end: "$demostreamhis.end",
         actualEnd: "$demostreamhis.actualEnd",
         streamStatus: "$demostreamhis.status",
-        agoraAppId: "$demostreamhis.agoraAppId"
+        agoraAppId: "$demostreamhis.agoraAppId",
+        streamID: "$demostreamhis._id"
       }
     }
   ])
@@ -219,7 +226,6 @@ const send_otp_now = async (stream) => {
 
 const select_data_time = async (req) => {
   let { date, id, verify, } = req.body;
-  console.log(7689, date, id, verify)
   const token = await DemoPost.findById(id);
   if (!token) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
@@ -227,29 +233,28 @@ const select_data_time = async (req) => {
   if (token.otp_verifiyed != verify) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Access');
   }
-  if (token.status == 'Completed' || token.status == 'OnGoing') {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Time Already Selected');
-  }
+  // if (token.status == 'Completed' || token.status == 'OnGoing') {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Time Already Selected');
+  // }
 
-  let history = await MutibleDemo.findOne({ streamId: token._id, status: { $in: ['Pending', 'OnGoing'] } });
+  let history = await MutibleDemo.updateMany({ streamId: token._id, status: { $in: ['Pending', 'OnGoing'] } }, { status: "Completed", end: new Date().getTime() });
 
-  if (!history) {
 
-    let start = new Date(date).getTime();
-    let end = new Date(moment(date).add(30, 'minutes')).getTime();
+  let start = new Date(date).getTime();
+  let end = new Date(moment(date).add(30, 'minutes')).getTime();
 
-    history = await MutibleDemo.create({
-      streamId: token._id,
-      start: start,
-      end: end,
-      actualEnd: end
-    })
-    token.runningStream = history._id;
-    token.status = 'Scheduled';
-    token.save();
-  }
+  history = await MutibleDemo.create({
+    streamId: token._id,
+    start: start,
+    end: end,
+    actualEnd: end
+  })
+  token.runningStream = history._id;
+  token.status = 'Scheduled';
+  token.save();
+
   return history;
-};
+}
 
 const add_one_more_time = async (req) => {
   let { post } = req.body;
@@ -268,6 +273,16 @@ const add_one_more_time = async (req) => {
   token.status = 'Pending';
   token.save();
   return token;
+};
+
+const end_stream = async (req) => {
+  let value = await Demostream.findByIdAndUpdate(
+    { _id: req.query.id },
+    { status: 'Completed', streamEnd_Time: moment(), userList: [], end_Status: 'HostLeave' },
+    { new: true }
+  );
+  req.io.emit(req.query.id + '_stream_end', { value: true });
+  return value;
 };
 
 
@@ -402,17 +417,22 @@ const seller_go_live_details = async (req) => {
         "postType": 1,
         "priceExp": 1,
         "propertyType": 1,
+        linkstatus:1,
+        tenantType:1,
+        ageOfProperty:1,
+        otp_verifiyed:1,
+        finish:1,
+        streamDate:1,
         userName: "$demousers.userName",
         mobileNumber: "$demousers.mobileNumber",
-        location: "$demousers.location",
+        locationss: "$demousers.location",
         mail: "$demousers.mail",
         start: "$demostreamhis.start",
         end: "$demostreamhis.end",
         actualEnd: "$demostreamhis.actualEnd",
         streamStatus: "$demostreamhis.status",
         agoraAppId: "$demostreamhis.agoraAppId",
-        stream: "$demostreamhis.demostreamtokens",
-        agora: "$demostreamhis.agoraappids"
+        streamID: "$demostreamhis._id"
       }
     }
   ])
@@ -641,17 +661,194 @@ const recording_query = async (id, agoraToken) => {
     )}/cloud_recording/resourceid/${resource}/sid/${sid}/mode/${mode}/query`,
     { headers: { Authorization } }
   );
-  console.log(query.data);
+  // console.log(query.data);
   console.log(query.data.serverResponse.fileList);
-  if (query.data.serverResponse.fileList.length > 0) {
-    token.videoLink = query.data.serverResponse.fileList[0].fileName;
-    token.videoLvideoLink_objink = query.data.serverResponse.fileList;
-
-    token.recoredStart = 'query';
-    token.save();
+  if (query.data.serverResponse != null) {
+    if (query.data.serverResponse.fileList != null) {
+      if (query.data.serverResponse.fileList.length != 0) {
+        if (Array.isArray(query.data.serverResponse.fileList)) {
+          token.videoLink = query.data.serverResponse.fileList[0].fileName;
+          token.videoLink_obj = query.data.serverResponse.fileList;
+          let m3u8 = query.data.serverResponse.fileList[0].fileName;
+          if (m3u8 != null) {
+            let mp4 = m3u8.replace('.m3u8', '_0.mp4')
+            token.videoLink_mp4 = mp4;
+          }
+          token.recoredStart = 'query';
+          token.save();
+          console.log(token, 987657)
+        }
+        else {
+          token.videoLink = query.data.serverResponse.fileList.fileName;
+          let m3u8 = query.data.serverResponse.fileList.fileName;
+          if (m3u8 != null) {
+            let mp4 = m3u8.replace('.m3u8', '_0.mp4')
+            token.videoLink_mp4 = mp4;
+          }
+          token.recoredStart = 'query';
+          token.save();
+        }
+      }
+    }
   }
+
+  // if (query.data.serverResponse.fileList.length > 0) {
+  //   token.videoLink = query.data.serverResponse.fileList[0].fileName;
+  //   token.videoLvideoLink_objink = query.data.serverResponse.fileList;
+  //   token.recoredStart = 'query';
+  //   token.save();
+  // }
   return query.data;
 };
+
+
+
+const buyer_join_stream = async (req) => {
+
+  const { phoneNumber, name } = req.body;
+  const streamId = req.query.id;
+
+  let user = await Demobuyer.findOne({ phoneNumber: phoneNumber });
+
+  if (!user) {
+    user = await Demobuyer.create({ phoneNumber: phoneNumber, name: name, dateISO: moment() });
+  } else {
+    user.name = name;
+    user.save();
+  }
+
+  const stream = await MutibleDemo.findById(streamId);
+  const post = await DemoPost.findById(stream.streamId);
+  if (!stream) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+  if (stream.status == 'Completed') {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream Completed');
+  }
+  let demotoken = await DemostreamToken.findOne({ userID: user._id, streamID: stream._id });
+  if (!demotoken) {
+    demotoken = await DemostreamToken.create({
+      streamID: streamId,
+      type: 'BUYER',
+      agoraID: stream.agoraID,
+      channel: streamId,
+      dateISO: moment(),
+      userID: user._id,
+      demoPost: stream.streamId
+    });
+  }
+
+  let register = await DemostreamToken.find({ streamID: demotoken.streamID, status: 'resgistered' }).count();
+  if (register < 300) {
+    demotoken.golive = true;
+    if (post.status == 'Scheduled') {
+      post.status = 'Ready';
+      post.save();
+      stream.status = 'Ready';
+      stream.save();
+
+    }
+  } else {
+    demotoken.golive = false;
+  }
+  demotoken.status = 'resgistered';
+  demotoken.save();
+
+
+  setTimeout(async () => {
+    register = await DemostreamToken.find({ streamID: demotoken.streamID, status: 'resgistered' }).count();
+    req.io.emit(demotoken.streamID + '_buyer_registor', { register, stream });
+  }, 300);
+  return demotoken;
+}
+
+const get_buyer_join_stream = async (req) => {
+  const { streamID, verify } = req.body;
+
+  let token = await DemostreamToken.findById(verify);
+  if (!token) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream Not Found');
+  }
+  if (token.streamID != streamID) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream Not Found');
+  }
+
+  let stream = await MutibleDemo.findById(streamID);
+  if (!stream) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream Completed');
+  }
+
+  let post = await DemoPost.aggregate([
+    { $match: { $and: [{ _id: { $eq: token.demoPost } }] } },
+    {
+      $lookup: {
+        from: 'demousers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'demousers',
+      },
+    },
+    {
+      $unwind: '$demousers',
+    },
+    {
+      $lookup: {
+        from: 'demostreamhis',
+        localField: 'runningStream',
+        foreignField: '_id',
+        as: 'demostreamhis',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demostreamhis',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
+        linkstatus: 1,
+        tenantType: 1,
+        ageOfProperty: 1,
+        otp_verifiyed: 1,
+        finish: 1,
+        streamDate: 1,
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        start: "$demostreamhis.start",
+        end: "$demostreamhis.end",
+        actualEnd: "$demostreamhis.actualEnd",
+        streamStatus: "$demostreamhis.status",
+        agoraAppId: "$demostreamhis.agoraAppId",
+        streamID: "$demostreamhis._id"
+      }
+    }
+  ])
+
+  if (post.length == 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+  return post[0];
+}
 
 
 module.exports = {
@@ -663,5 +860,8 @@ module.exports = {
   add_one_more_time,
   seller_go_live,
   seller_go_live_details,
-  start_cloud
+  start_cloud,
+  end_stream,
+  buyer_join_stream,
+  get_buyer_join_stream
 };

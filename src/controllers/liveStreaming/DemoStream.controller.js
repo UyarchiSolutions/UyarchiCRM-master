@@ -33,6 +33,12 @@ const add_one_more_time = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
+
+const end_stream = catchAsync(async (req, res) => {
+  const category = await demostream.end_stream(req);
+  res.send(category);
+});
+
 const seller_go_live = catchAsync(async (req, res) => {
   const TechIssue = await demostream.seller_go_live(req);
   res.status(httpStatus.OK).send(TechIssue);
@@ -52,6 +58,17 @@ const start_cloud = catchAsync(async (req, res) => {
 
 
 
+const buyer_join_stream = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.buyer_join_stream(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+const get_buyer_join_stream = catchAsync(async (req, res) => {
+  const TechIssue = await demostream.get_buyer_join_stream(req);
+  res.status(httpStatus.OK).send(TechIssue);
+});
+
+
 module.exports = {
   getDatas,
   get_stream_details,
@@ -61,5 +78,8 @@ module.exports = {
   add_one_more_time,
   seller_go_live,
   seller_go_live_details,
-  start_cloud
+  start_cloud,
+  end_stream,
+  buyer_join_stream,
+  get_buyer_join_stream
 };
