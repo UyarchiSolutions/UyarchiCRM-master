@@ -30,6 +30,12 @@ router.route('/video/start/cloud').get(demostream.start_cloud);
 
 router.route('/buyer/join/stream').post(demostream.buyer_join_stream);
 router.route('/buyer/get/property').post(demostream.get_buyer_join_stream);
+router.route('/buyer/go/live').get(demostream.buyer_go_live_stream);
+
+
+router.route('/buyer/stream/details').get(demostream.byer_get_stream_details);
+router.route('/buyer/interest/now').post(demostream.buyer_interested);
+
 
 // router.route('').get(demostream.send_sms_now);
 

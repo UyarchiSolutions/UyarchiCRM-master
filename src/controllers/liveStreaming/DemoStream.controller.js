@@ -68,6 +68,21 @@ const get_buyer_join_stream = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
+const buyer_go_live_stream = catchAsync(async (req, res) => {
+  const data = await demostream.buyer_go_live_stream(req);
+  res.status(httpStatus.CREATED).send(data);
+});
+
+const byer_get_stream_details = catchAsync(async (req, res) => {
+  const data = await demostream.byer_get_stream_details(req);
+  res.status(httpStatus.CREATED).send(data);
+});
+
+const buyer_interested = catchAsync(async (req, res) => {
+  const data = await demostream.buyer_interested(req);
+  res.status(httpStatus.CREATED).send(data);
+});
+
 
 module.exports = {
   getDatas,
@@ -81,5 +96,8 @@ module.exports = {
   start_cloud,
   end_stream,
   buyer_join_stream,
-  get_buyer_join_stream
+  get_buyer_join_stream,
+  buyer_go_live_stream,
+  byer_get_stream_details,
+  buyer_interested
 };

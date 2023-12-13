@@ -71,9 +71,10 @@ const chat_room_create_host_demo_sub = async (req, io) => {
 
   let temp = await DemostreamToken.findById(req.userId);
   let user = await Demobuyer.findById(temp.userID);
+  console.log(user)
   let dateIso = new Date(new Date(moment().format('YYYY-MM-DD') + ' ' + moment().format('HH:mm:ss'))).getTime();
   // let user = await Demoseller.findById(token.userID)
-  let data = await Groupchat.create({ ...req, ...{ created: moment(), dateISO: dateIso, userName: user.userName, userType: "buyer", supplierId: user._id, joinuser: temp._id, user } })
+  let data = await Groupchat.create({ ...req, ...{ created: moment(), dateISO: dateIso, userName: user.name, userType: "buyer", supplierId: user._id, joinuser: temp._id, user } })
   io.sockets.emit(req.channel, data);
 }
 
@@ -82,7 +83,7 @@ const livejoined_now = async (req, io, type) => {
 
   let temp = await DemostreamToken.findById(req.user);
   if (temp) {
-    let stream = await Demostream.findById(temp.streamID);
+    let stream = await DemoPost.findById(temp.streamID);
     if (stream) {
       if (stream.status != 'Completed') {
         let joined = stream.userList != null ? stream.userList : [];

@@ -325,7 +325,7 @@ const seller_go_live = async (req) => {
       });
       token.status = 'On-Going';
       token.save();
-      // req.io.emit(token._id + 'stream_on_going', demostream);
+      req.io.emit(his._id + 'stream_on_going', token);
     }
 
   }
@@ -417,12 +417,12 @@ const seller_go_live_details = async (req) => {
         "postType": 1,
         "priceExp": 1,
         "propertyType": 1,
-        linkstatus:1,
-        tenantType:1,
-        ageOfProperty:1,
-        otp_verifiyed:1,
-        finish:1,
-        streamDate:1,
+        linkstatus: 1,
+        tenantType: 1,
+        ageOfProperty: 1,
+        otp_verifiyed: 1,
+        finish: 1,
+        streamDate: 1,
         userName: "$demousers.userName",
         mobileNumber: "$demousers.mobileNumber",
         locationss: "$demousers.location",
@@ -432,6 +432,8 @@ const seller_go_live_details = async (req) => {
         actualEnd: "$demostreamhis.actualEnd",
         streamStatus: "$demostreamhis.status",
         agoraAppId: "$demostreamhis.agoraAppId",
+        agora: "$demostreamhis.agoraappids",
+        stream: "$demostreamhis.demostreamtokens",
         streamID: "$demostreamhis._id"
       }
     }
@@ -452,7 +454,6 @@ const start_cloud = async (req) => {
 
 const geenerate_rtc_token = async (chennel, uid, role, expirationTimestamp, agoraID) => {
   let agoraToken = await AgoraAppId.findById(agoraID);
-  console.log(chennel, uid, role, expirationTimestamp, agoraID, agoraToken);
   return Agora.RtcTokenBuilder.buildTokenWithUid(
     agoraToken.appID.replace(/\s/g, ''),
     agoraToken.appCertificate.replace(/\s/g, ''),
@@ -847,10 +848,141 @@ const get_buyer_join_stream = async (req) => {
   if (post.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
-  return post[0];
+  return { post: post[0], token };
 }
 
 
+const buyer_go_live_stream = async (req) => {
+  let demotoken = await DemostreamToken.findById(req.query.id);
+  if (!demotoken) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+  const stream = await MutibleDemo.findById(demotoken.streamID);
+  console.log(stream)
+  if (stream) {
+    if (demotoken.token == null && stream.agoraAppId != null) {
+      const uid = await generateUid();
+      const role = Agora.RtcRole.SUBSCRIBER;
+      let expirationTimestamp = stream.end / 1000;
+      const token = await geenerate_rtc_token(stream._id, uid, role, expirationTimestamp, stream.agoraAppId);
+      demotoken.expirationTimestamp = stream.end;
+      demotoken.uid = uid;
+      demotoken.token = token;
+      demotoken.save();
+    }
+  }
+  return demotoken;
+};
+
+
+const byer_get_stream_details = async (req) => {
+  let demotoken = await DemostreamToken.findById(req.query.id);
+  if (!demotoken) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+  const stream = await MutibleDemo.findById(demotoken.streamID);
+  const agora = await AgoraAppId.findById(stream.agoraAppId);
+
+  let post = await DemoPost.aggregate([
+    { $match: { $and: [{ _id: { $eq: stream.streamId } }] } },
+    {
+      $lookup: {
+        from: 'demousers',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'demousers',
+      },
+    },
+    {
+      $unwind: '$demousers',
+    },
+    {
+      $lookup: {
+        from: 'demointresteds',
+        localField: '_id',
+        foreignField: 'streamHis',
+        as: 'demointresteds',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demointresteds',
+      },
+    },
+    {
+      $addFields: {
+        intrested: { $ifNull: ['$demointresteds.intrested', false] },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
+        linkstatus: 1,
+        tenantType: 1,
+        ageOfProperty: 1,
+        otp_verifiyed: 1,
+        finish: 1,
+        streamDate: 1,
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        intrested:1
+      }
+    }
+  ])
+
+  if (post.length == 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+  return { post: post[0], stream, agora, demotoken };
+};
+
+
+
+const buyer_interested = async (req) => {
+  let demotoken = await DemostreamToken.findById(req.body.id);
+  if (!demotoken) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
+  }
+
+  let instrest = await DemoInstested.findOne({
+    streamID: demotoken.streamID,
+    streamHis: demotoken.demoPost,
+    userID: demotoken.userID,
+    joinedUSER: demotoken._id
+  });
+  if (!instrest) {
+    instrest = await DemoInstested.create({
+      streamID: demotoken.streamID,
+      streamHis: demotoken.demoPost,
+      userID: demotoken.userID,
+      joinedUSER: demotoken._id,
+      intrested: true,
+
+    });
+  }
+
+  return instrest;
+
+}
 module.exports = {
   getDatas,
   get_stream_details,
@@ -863,5 +995,8 @@ module.exports = {
   start_cloud,
   end_stream,
   buyer_join_stream,
-  get_buyer_join_stream
+  get_buyer_join_stream,
+  buyer_go_live_stream,
+  byer_get_stream_details,
+  buyer_interested
 };

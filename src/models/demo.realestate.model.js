@@ -241,7 +241,7 @@ const demointrestedschema = mongoose.Schema({
   time: {
     type: Number,
   },
-  productID: {
+  streamHis: {
     type: String,
   },
   streamID: {
@@ -256,6 +256,7 @@ const demointrestedschema = mongoose.Schema({
   intrested: {
     type: Boolean,
   },
+
 });
 const DemoInstested = mongoose.model('demointrested', demointrestedschema);
 
