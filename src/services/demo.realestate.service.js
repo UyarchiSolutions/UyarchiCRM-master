@@ -147,6 +147,23 @@ const get_my_post = async (req) => {
       },
     },
     {
+      $lookup: {
+        from: 'demostreamhis',
+        localField: '_id',
+        foreignField: 'streamId',
+        pipeline: [
+          { $group: { _id: null, count: { $sum: 1 } } }
+        ],
+        as: 'demostreamhis_count',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demostreamhis_count',
+      },
+    },
+    {
       $addFields: {
         userName: "$demousers.userName",
         mobileNumber: "$demousers.mobileNumber",
@@ -158,9 +175,11 @@ const get_my_post = async (req) => {
         streamStatus: "$demostreamhis.status",
         agoraAppId: "$demostreamhis.agoraAppId",
         streamID: "$demostreamhis._id",
+        Number_of_streams: { $ifNull: ["$demostreamhis_count.count", 0] }
       },
     },
     { $unset: "demostreamhis" }
+    { $unset: "demostreamhis_count" }
 
 
   ])
