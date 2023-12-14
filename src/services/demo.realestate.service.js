@@ -127,11 +127,60 @@ const getUsers = async (req) => {
   return values;
 };
 
+const get_my_post = async (req) => {
+  let userId = req.query.id;
+  let date = new Date().getTime();
+  let values = await DemoPost.aggregate([
+    { $match: { $and: [{ userId: { $eq: userId } }] } },
+    {
+      $lookup: {
+        from: 'demostreamhis',
+        localField: 'runningStream',
+        foreignField: '_id',
+        as: 'demostreamhis',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demostreamhis',
+      },
+    },
+    {
+      $addFields: {
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        start: "$demostreamhis.start",
+        end: "$demostreamhis.end",
+        actualEnd: "$demostreamhis.actualEnd",
+        // streamStatus: "$demostreamhis.status",
+        agoraAppId: "$demostreamhis.agoraAppId",
+        streamID: "$demostreamhis._id",
+        streamStatus: {
+          $cond: {
+            if: { $and: { $gte: ["$demostreamhis.end", date] } },
+            then: '$demostreamhis.status',
+            else: "Completed"
+          },
+        },
+      },
+    },
+    { $unset: "demostreamhis" }
+
+
+  ])
+  return values;
+};
+
+
 module.exports = {
   createDemoUser,
   createDemoPost,
   updatePostById,
   imageUploadForPost,
   getUsers,
-  image_upload_multiple
+  image_upload_multiple,
+  get_my_post
 };

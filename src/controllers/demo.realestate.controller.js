@@ -32,11 +32,18 @@ const getUsers = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const get_my_post= catchAsync(async (req, res) => {
+  const data = await DemoUserService.get_my_post(req);
+  res.send(data);
+});
+
+
 module.exports = {
   createDemoUser,
   createDemoPost,
   updatePostById,
   imageUploadForPost,
   getUsers,
-  image_upload_multiple
+  image_upload_multiple,
+  get_my_post
 };

@@ -17,4 +17,8 @@ router.route('/image/:id').put(upload, DemoUserController.imageUploadForPost);
 router.route('/image/group/:id').put(arrayImage, DemoUserController.image_upload_multiple);
 router.route('/getUsers').get(DemoUserController.getUsers);
 
+
+router.route('/get/my/post').get(DemoUserController.get_my_post);
+
+
 module.exports = router;
