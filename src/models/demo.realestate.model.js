@@ -68,11 +68,11 @@ const DemoPostSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "Pending",
+      default: 'Pending',
     },
     linkstatus: {
       type: String,
-      default: "Pending",
+      default: 'Pending',
     },
     otp_verifiyed: {
       type: String,
@@ -81,17 +81,20 @@ const DemoPostSchema = new mongoose.Schema(
       type: String,
     },
     streamStart: {
-      type: Number
+      type: Number,
     },
     actualEnd: {
-      type: Number
+      type: Number,
     },
     streamEnd: {
-      type: Number
+      type: Number,
     },
     runningStream: {
       type: String,
-    }
+    },
+    sqft: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
@@ -126,9 +129,6 @@ const DemoUserSchema = mongoose.Schema(
 
 const DemoUser = mongoose.model('DemoUser', DemoUserSchema);
 
-
-
-
 const Demobuyerschema = mongoose.Schema({
   _id: {
     type: String,
@@ -155,12 +155,10 @@ const Demobuyerschema = mongoose.Schema({
   },
   type: {
     type: String,
-  }
+  },
 });
 
 const Demobuyer = mongoose.model('demobuyer', Demobuyerschema);
-
-
 
 const Demostreamchema = mongoose.Schema({
   _id: {
@@ -217,12 +215,10 @@ const Demostreamchema = mongoose.Schema({
   },
   demoPost: {
     type: String,
-  }
+  },
 });
 
 const DemostreamToken = mongoose.model('demostreamtoken', Demostreamchema);
-
-
 
 const demointrestedschema = mongoose.Schema({
   _id: {
@@ -256,11 +252,8 @@ const demointrestedschema = mongoose.Schema({
   intrested: {
     type: Boolean,
   },
-
 });
 const DemoInstested = mongoose.model('demointrested', demointrestedschema);
-
-
 
 const demootp = mongoose.Schema({
   _id: {
@@ -301,9 +294,6 @@ const demootp = mongoose.Schema({
   },
 });
 const Demootpverify = mongoose.model('demootp', demootp);
-
-
-
 
 const democloud_record = mongoose.Schema({
   _id: {
@@ -432,46 +422,38 @@ const democloud_record = mongoose.Schema({
   },
 });
 
-
-
 const Democloudrecord = mongoose.model('democloundrecord', democloud_record);
 
-
-
-
-
-
-const mutibleDemoschema = mongoose.Schema({
-  _id: {
-    type: String,
-    default: v4,
+const mutibleDemoschema = mongoose.Schema(
+  {
+    _id: {
+      type: String,
+      default: v4,
+    },
+    status: {
+      type: String,
+      default: 'Pending',
+    },
+    streamId: {
+      type: String,
+    },
+    agoraAppId: {
+      type: String,
+    },
+    start: {
+      type: Number,
+    },
+    end: {
+      type: Number,
+    },
+    actualEnd: {
+      type: Number,
+    },
   },
-  status: {
-    type: String,
-    default: "Pending"
-  },
-  streamId: {
-    type: String,
-  },
-  agoraAppId: {
-    type: String,
-  },
-  start: {
-    type: Number
-  },
-  end: {
-    type: Number
-  },
-  actualEnd: {
-    type: Number
-  },
-}, { timestamps: true }
+  { timestamps: true }
 );
 
-
-
 const MutibleDemo = mongoose.model('demostreamhis', mutibleDemoschema);
-
 
 module.exports = {
   DemoPost,
@@ -481,5 +463,5 @@ module.exports = {
   DemoInstested,
   Demootpverify,
   Democloudrecord,
-  MutibleDemo
+  MutibleDemo,
 };
