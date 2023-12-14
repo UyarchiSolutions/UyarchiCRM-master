@@ -1000,7 +1000,7 @@ const getStreamDetails = async (req) => {
       $lookup: {
         from: 'demointresteds',
         localField: 'streamId',
-        foreignField: 'streamId',
+        foreignField: 'streamHis',
         as: 'intrest',
       },
     },
