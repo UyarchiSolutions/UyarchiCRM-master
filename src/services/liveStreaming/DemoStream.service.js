@@ -944,7 +944,7 @@ const byer_get_stream_details = async (req) => {
         mobileNumber: "$demousers.mobileNumber",
         locationss: "$demousers.location",
         mail: "$demousers.mail",
-        intrested:1
+        intrested: 1
       }
     }
   ])
@@ -978,6 +978,10 @@ const buyer_interested = async (req) => {
       intrested: true,
 
     });
+  }
+  else {
+    instrest.intrested = !instrest.intrested;
+    instrest.save();
   }
 
   return instrest;
