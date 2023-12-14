@@ -61,8 +61,6 @@ const imageUploadForPost = async (req, res) => {
   });
 };
 
-
-
 const image_upload_multiple = async (req, res) => {
   let id = req.params.id;
   if (!req.files) {
@@ -73,9 +71,7 @@ const image_upload_multiple = async (req, res) => {
   let findById = await DemoPost.findByIdAndUpdate({ _id: id }, { imageArr: images }, { new: true });
 
   return findById;
-
 };
-
 
 const multible_image_array = (filePaths) => {
   const uploadPromises = filePaths.map(async (filePath, index) => await uploadToS3(filePath, index));
@@ -91,7 +87,6 @@ const multible_image_array = (filePaths) => {
       console.error(error);
     });
 };
-
 
 function uploadToS3(filePath) {
   const s3 = new AWS.S3({
@@ -151,9 +146,7 @@ const get_my_post = async (req) => {
         from: 'demostreamhis',
         localField: '_id',
         foreignField: 'streamId',
-        pipeline: [
-          { $group: { _id: null, count: { $sum: 1 } } }
-        ],
+        pipeline: [{ $group: { _id: null, count: { $sum: 1 } } }],
         as: 'demostreamhis_count',
       },
     },
@@ -165,24 +158,22 @@ const get_my_post = async (req) => {
     },
     {
       $addFields: {
-        userName: "$demousers.userName",
-        mobileNumber: "$demousers.mobileNumber",
-        locationss: "$demousers.location",
-        mail: "$demousers.mail",
-        start: "$demostreamhis.start",
-        end: "$demostreamhis.end",
-        actualEnd: "$demostreamhis.actualEnd",
-        streamStatus: "$demostreamhis.status",
-        agoraAppId: "$demostreamhis.agoraAppId",
-        streamID: "$demostreamhis._id",
-        Number_of_streams: { $ifNull: ["$demostreamhis_count.count", 0] }
+        userName: '$demousers.userName',
+        mobileNumber: '$demousers.mobileNumber',
+        locationss: '$demousers.location',
+        mail: '$demousers.mail',
+        start: '$demostreamhis.start',
+        end: '$demostreamhis.end',
+        actualEnd: '$demostreamhis.actualEnd',
+        streamStatus: '$demostreamhis.status',
+        agoraAppId: '$demostreamhis.agoraAppId',
+        streamID: '$demostreamhis._id',
+        Number_of_streams: { $ifNull: ['$demostreamhis_count.count', 0] },
       },
     },
-    { $unset: "demostreamhis" },
-    { $unset: "demostreamhis_count" }
-
-
-  ])
+    { $unset: 'demostreamhis' },
+    { $unset: 'demostreamhis_count' },
+  ]);
   return values;
 };
 
@@ -194,5 +185,5 @@ module.exports = {
   imageUploadForPost,
   getUsers,
   image_upload_multiple,
-  get_my_post
+  get_my_post,
 };
