@@ -131,7 +131,7 @@ const get_my_post = async (req) => {
   let userId = req.query.id;
   let date = new Date().getTime();
   let values = await DemoPost.aggregate([
-    { $match: { $and: [{ userId: { $eq: userId } }] } },
+    { $match: { $and: [{ userId: { $eq: userId } }, { finish: { $eq: true } }] } },
     {
       $lookup: {
         from: 'demostreamhis',
