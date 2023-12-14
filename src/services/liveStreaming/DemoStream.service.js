@@ -982,6 +982,40 @@ const getStreamDetails = async (req) => {
         as: 'post',
       },
     },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$post',
+      },
+    },
+    {
+      $lookup: {
+        from: 'demostreamtokens',
+        localField: 'streamId',
+        foreignField: 'streamID',
+        as: 'View',
+      },
+    },
+    {
+      $lookup: {
+        from: 'demointresteds',
+        localField: 'streamId',
+        foreignField: 'streamId',
+        as: 'intrest',
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        streamName: 'Bharathi Will Add',
+        createdDate: '$createdAt',
+        streamDate: '$start',
+        streamStatus: '$status',
+        linkStatus: '$post.linkstatus',
+        view: { $size: '$View' },
+        intrest: { $size: '$intrest' },
+      },
+    },
   ]);
   return post;
 };
