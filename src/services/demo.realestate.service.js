@@ -178,7 +178,7 @@ const get_my_post = async (req) => {
         Number_of_streams: { $ifNull: ["$demostreamhis_count.count", 0] }
       },
     },
-    { $unset: "demostreamhis" }
+    { $unset: "demostreamhis" },
     { $unset: "demostreamhis_count" }
 
 
