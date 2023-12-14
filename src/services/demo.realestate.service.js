@@ -155,16 +155,9 @@ const get_my_post = async (req) => {
         start: "$demostreamhis.start",
         end: "$demostreamhis.end",
         actualEnd: "$demostreamhis.actualEnd",
-        // streamStatus: "$demostreamhis.status",
+        streamStatus: "$demostreamhis.status",
         agoraAppId: "$demostreamhis.agoraAppId",
         streamID: "$demostreamhis._id",
-        streamStatus: {
-          $cond: {
-            if: { $and: { $gte: ["$demostreamhis.end", date] } },
-            then: '$demostreamhis.status',
-            else: "Completed"
-          },
-        },
       },
     },
     { $unset: "demostreamhis" }
