@@ -419,11 +419,11 @@ const seller_go_live_details = async (req) => {
         path: '$demointresteds',
       },
     },
-    {
-      $addFields: {
-        intrested: { $ifNull: ['$demointresteds.count', 0] },
-      },
-    },
+    // {
+    //   $addFields: {
+    //     intrested: { $ifNull: ['$demointresteds.count', 0] },
+    //   },
+    // },
     {
       $project: {
         _id: 1,
@@ -517,7 +517,7 @@ const cloude_recording_stream = async (stream, app, endTime) => {
           )}/cloud_recording/resourceid/${resource}/sid/${sid}/mode/${mode}/query`,
           { headers: { Authorization } }
         )
-        .then((res) => {})
+        .then((res) => { })
         .catch(async (error) => {
           console.log('error');
           await Democloudrecord.findByIdAndUpdate({ _id: record._id }, { recoredStart: 'stop' }, { new: true });
