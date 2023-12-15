@@ -417,12 +417,23 @@ const seller_go_live_details = async (req) => {
         localField: 'runningStream',
         foreignField: 'streamID',
         pipeline: [
-          { $match: { $and: [{ intrested: { $eq: true } }] } }
+          { $match: { $and: [{ intrested: { $eq: true } }] } },
+          { $group: { _id: null, count: { $sum: 1 } } }
         ],
         as: 'demointresteds',
       },
     },
-
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demointresteds',
+      },
+    },
+    {
+      $addFields: {
+        intrested: { $ifNull: ['$demointresteds.count', 0] },
+      },
+    },
 
     {
       $project: {
@@ -461,7 +472,7 @@ const seller_go_live_details = async (req) => {
         agora: "$demostreamhis.agoraappids",
         stream: "$demostreamhis.demostreamtokens",
         streamID: "$demostreamhis._id",
-        demointresteds: "$demointresteds"
+        intrested: 1
       }
     }
   ])
