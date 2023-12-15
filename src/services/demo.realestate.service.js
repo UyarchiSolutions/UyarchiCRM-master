@@ -169,6 +169,7 @@ const get_my_post = async (req) => {
         agoraAppId: '$demostreamhis.agoraAppId',
         streamID: '$demostreamhis._id',
         Number_of_streams: { $ifNull: ['$demostreamhis_count.count', 0] },
+        sqft: 1,
       },
     },
     { $unset: 'demostreamhis' },
@@ -176,7 +177,6 @@ const get_my_post = async (req) => {
   ]);
   return values;
 };
-
 
 module.exports = {
   createDemoUser,

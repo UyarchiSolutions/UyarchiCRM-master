@@ -932,6 +932,7 @@ const byer_get_stream_details = async (req) => {
         locationss: '$demousers.location',
         mail: '$demousers.mail',
         intrested: 1,
+        sqft:1,
       },
     },
   ]);
