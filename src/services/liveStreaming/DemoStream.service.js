@@ -411,17 +411,17 @@ const seller_go_live_details = async (req) => {
     {
       $unwind: '$demostreamhis',
     },
-    // {
-    //   $lookup: {
-    //     from: 'demointresteds',
-    //     localField: 'runningStream',
-    //     foreignField: 'streamID',
-    //     pipeline: [
-    //       { $match: { $and: [{ $eq: { intrested: true } }] } }
-    //     ],
-    //     as: 'demointresteds',
-    //   },
-    // },
+    {
+      $lookup: {
+        from: 'demointresteds',
+        localField: 'runningStream',
+        foreignField: 'streamID',
+        pipeline: [
+          { $match: { $and: [{ intrested: { $eq: true } }] } }
+        ],
+        as: 'demointresteds',
+      },
+    },
 
 
     {
@@ -461,7 +461,7 @@ const seller_go_live_details = async (req) => {
         agora: "$demostreamhis.agoraappids",
         stream: "$demostreamhis.demostreamtokens",
         streamID: "$demostreamhis._id",
-        // demointresteds: "$demointresteds"
+        demointresteds: "$demointresteds"
       }
     }
   ])
