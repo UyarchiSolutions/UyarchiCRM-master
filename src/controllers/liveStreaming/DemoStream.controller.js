@@ -27,12 +27,10 @@ const select_data_time = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
-
 const add_one_more_time = catchAsync(async (req, res) => {
   const TechIssue = await demostream.add_one_more_time(req);
   res.status(httpStatus.OK).send(TechIssue);
 });
-
 
 const end_stream = catchAsync(async (req, res) => {
   const category = await demostream.end_stream(req);
@@ -44,19 +42,15 @@ const seller_go_live = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(TechIssue);
 });
 
-
 const seller_go_live_details = catchAsync(async (req, res) => {
   const TechIssue = await demostream.seller_go_live_details(req);
   res.status(httpStatus.OK).send(TechIssue);
 });
 
-
 const start_cloud = catchAsync(async (req, res) => {
   const TechIssue = await demostream.start_cloud(req);
   res.status(httpStatus.OK).send(TechIssue);
 });
-
-
 
 const buyer_join_stream = catchAsync(async (req, res) => {
   const TechIssue = await demostream.buyer_join_stream(req);
@@ -83,6 +77,10 @@ const buyer_interested = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(data);
 });
 
+const getStreamDetails = catchAsync(async (req, res) => {
+  const data = await demostream.getStreamDetails(req);
+  res.send(data);
+});
 
 module.exports = {
   getDatas,
@@ -99,5 +97,6 @@ module.exports = {
   get_buyer_join_stream,
   buyer_go_live_stream,
   byer_get_stream_details,
-  buyer_interested
+  buyer_interested,
+  getStreamDetails,
 };
