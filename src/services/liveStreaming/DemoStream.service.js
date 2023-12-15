@@ -12,7 +12,7 @@ const {
   DemoInstested,
   Demootpverify,
   Democloudrecord,
-  MutibleDemo,
+  MutibleDemo
 } = require('../../models/demo.realestate.model');
 const jwt = require('jsonwebtoken');
 const agoraToken = require('../AgoraAppId.service');
@@ -68,6 +68,7 @@ const get_stream_details = async (req) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
 
+
   stream = await DemoPost.aggregate([
     { $match: { $and: [{ _id: { $eq: stream._id } }] } },
     {
@@ -98,42 +99,41 @@ const get_stream_details = async (req) => {
     {
       $project: {
         _id: 1,
-        imageArr: 1,
-        status: 1,
-        newsPaper: 1,
-        Edition: 1,
-        dateOfAd: 1,
-        createdAt: 1,
-        updatedAt: 1,
-        image: 1,
-        Description: 1,
-        bhkBuilding: 1,
-        category: 1,
-        furnitionStatus: 1,
-        location: 1,
-        postType: 1,
-        priceExp: 1,
-        propertyType: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
         linkstatus: 1,
         tenantType: 1,
         ageOfProperty: 1,
         otp_verifiyed: 1,
         finish: 1,
         streamDate: 1,
-        sqft: 1,
-        userName: '$demousers.userName',
-        mobileNumber: '$demousers.mobileNumber',
-        locationss: '$demousers.location',
-        mail: '$demousers.mail',
-        start: '$demostreamhis.start',
-        end: '$demostreamhis.end',
-        actualEnd: '$demostreamhis.actualEnd',
-        streamStatus: '$demostreamhis.status',
-        agoraAppId: '$demostreamhis.agoraAppId',
-        streamID: '$demostreamhis._id',
-      },
-    },
-  ]);
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        start: "$demostreamhis.start",
+        end: "$demostreamhis.end",
+        actualEnd: "$demostreamhis.actualEnd",
+        streamStatus: "$demostreamhis.status",
+        agoraAppId: "$demostreamhis.agoraAppId",
+        streamID: "$demostreamhis._id"
+      }
+    }
+  ])
   if (stream.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
@@ -141,7 +141,7 @@ const get_stream_details = async (req) => {
 };
 
 const send_otp = async (req) => {
-  console.log(req.query.id);
+  console.log(req.query.id)
   let stream = await DemoPost.findById(req.query.id);
   if (!stream) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
@@ -150,6 +150,8 @@ const send_otp = async (req) => {
   let res = await send_otp_now(stream);
   return res;
 };
+
+
 
 const verify_otp = async (req) => {
   let { otp, id } = req.body;
@@ -219,8 +221,11 @@ const send_otp_now = async (stream) => {
   return otpsend;
 };
 
+
+
+
 const select_data_time = async (req) => {
-  let { date, id, verify } = req.body;
+  let { date, id, verify, } = req.body;
   const token = await DemoPost.findById(id);
   if (!token) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Link');
@@ -232,10 +237,8 @@ const select_data_time = async (req) => {
   //   throw new ApiError(httpStatus.NOT_FOUND, 'Time Already Selected');
   // }
 
-  let history = await MutibleDemo.updateMany(
-    { streamId: token._id, status: { $in: ['Pending', 'OnGoing'] } },
-    { status: 'Completed', end: new Date().getTime() }
-  );
+  let history = await MutibleDemo.updateMany({ streamId: token._id, status: { $in: ['Pending', 'OnGoing'] } }, { status: "Completed", end: new Date().getTime() });
+
 
   let start = new Date(date).getTime();
   let end = new Date(moment(date).add(30, 'minutes')).getTime();
@@ -244,14 +247,14 @@ const select_data_time = async (req) => {
     streamId: token._id,
     start: start,
     end: end,
-    actualEnd: end,
-  });
+    actualEnd: end
+  })
   token.runningStream = history._id;
   token.status = 'Scheduled';
   token.save();
 
   return history;
-};
+}
 
 const add_one_more_time = async (req) => {
   let { post } = req.body;
@@ -286,13 +289,15 @@ const end_stream = async (req) => {
   if (!his) {
     throw new ApiError(httpStatus.NOT_FOUND, 'History not found');
   }
-  his.status = 'Completed';
+  his.status = "Completed";
   his.end = new Date().getTime();
   his.save();
+
 
   req.io.emit(req.query.id + '_stream_end', { value: true });
   return value;
 };
+
 
 const seller_go_live = async (req) => {
   let { post } = req.body;
@@ -312,6 +317,7 @@ const seller_go_live = async (req) => {
       his.agoraAppId = agoraID.element._id;
       his.save();
     }
+
   }
 
   if (token.status == 'Ready') {
@@ -334,11 +340,14 @@ const seller_go_live = async (req) => {
       token.save();
       req.io.emit(his._id + 'stream_on_going', token);
     }
+
   }
 
   await cloude_recording_stream(token._id, his.agoraAppId, his.end);
 
   return token;
+
+
 };
 const seller_go_live_details = async (req) => {
   let { id } = req.query;
@@ -374,7 +383,9 @@ const seller_go_live_details = async (req) => {
               from: 'demostreamtokens',
               localField: '_id',
               foreignField: 'channel',
-              pipeline: [{ $match: { $and: [{ type: { $eq: 'HOST' } }] } }],
+              pipeline: [
+                { $match: { $and: [{ type: { $eq: "HOST" } }] } }
+              ],
               as: 'demostreamtokens',
             },
           },
@@ -407,8 +418,7 @@ const seller_go_live_details = async (req) => {
         localField: 'runningStream',
         foreignField: 'streamID',
         pipeline: [
-          { $match: { $and: [{ $eq: { intrested: true } }] } },
-          { $group: { _id: null, count: { $sum: 1 } } }
+          { $match: { $and: [{ $eq: { intrested: true } }] } }
         ],
         as: 'demointresteds',
       },
@@ -419,30 +429,26 @@ const seller_go_live_details = async (req) => {
         path: '$demointresteds',
       },
     },
-    // {
-    //   $addFields: {
-    //     intrested: { $ifNull: ['$demointresteds.count', 0] },
-    //   },
-    // },
+
     {
       $project: {
         _id: 1,
-        imageArr: 1,
-        status: 1,
-        newsPaper: 1,
-        Edition: 1,
-        dateOfAd: 1,
-        createdAt: 1,
-        updatedAt: 1,
-        image: 1,
-        Description: 1,
-        bhkBuilding: 1,
-        category: 1,
-        furnitionStatus: 1,
-        location: 1,
-        postType: 1,
-        priceExp: 1,
-        propertyType: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
         linkstatus: 1,
         tenantType: 1,
         ageOfProperty: 1,
@@ -461,8 +467,7 @@ const seller_go_live_details = async (req) => {
         agora: "$demostreamhis.agoraappids",
         stream: "$demostreamhis.demostreamtokens",
         streamID: "$demostreamhis._id",
-        demointresteds: "$demointresteds",
-        intrested: 1
+        demointresteds:"$demointresteds"
       }
     }
   ])
@@ -472,11 +477,13 @@ const seller_go_live_details = async (req) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
   return streampost[0];
+
 };
 const start_cloud = async (req) => {
   let start = await recording_start(req.query.post);
   return start;
 };
+
 
 const geenerate_rtc_token = async (chennel, uid, role, expirationTimestamp, agoraID) => {
   let agoraToken = await AgoraAppId.findById(agoraID);
@@ -495,7 +502,13 @@ const generateUid = async () => {
   return randomNo;
 };
 
+
+
+
+
+
 const cloude_recording_stream = async (stream, app, endTime) => {
+
   const stremRequiest = await DemoPost.findById(stream);
   let his = await MutibleDemo.findById(stremRequiest.runningStream);
 
@@ -547,7 +560,7 @@ const cloude_recording_stream = async (stream, app, endTime) => {
       const role = Agora.RtcRole.SUBSCRIBER;
       const expirationTimestamp = endTime / 1000;
       const token = await geenerate_rtc_token(his._id, uid, role, expirationTimestamp, agoraToken._id);
-      console.log(stremRequiest);
+      console.log(stremRequiest)
       record = await Democloudrecord.create({
         date: moment().format('YYYY-MM-DD'),
         time: moment().format('HHMMSS'),
@@ -560,9 +573,10 @@ const cloude_recording_stream = async (stream, app, endTime) => {
         token: token,
         streamId: stremRequiest._id,
       });
-      console.log(record);
+      console.log(record)
 
-      record.store = record._id.replace(/[^a-zA-Z0-9]/g, '');
+
+      record.store = record._id.replace(/[^a-zA-Z0-9]/g, '')
       record.save();
       await agora_acquire(record._id, agoraToken);
       await Democloudrecord.findByIdAndUpdate(
@@ -691,17 +705,18 @@ const recording_query = async (id, agoraToken) => {
           token.videoLink_obj = query.data.serverResponse.fileList;
           let m3u8 = query.data.serverResponse.fileList[0].fileName;
           if (m3u8 != null) {
-            let mp4 = m3u8.replace('.m3u8', '_0.mp4');
+            let mp4 = m3u8.replace('.m3u8', '_0.mp4')
             token.videoLink_mp4 = mp4;
           }
           token.recoredStart = 'query';
           token.save();
-          console.log(token, 987657);
-        } else {
+          console.log(token, 987657)
+        }
+        else {
           token.videoLink = query.data.serverResponse.fileList.fileName;
           let m3u8 = query.data.serverResponse.fileList.fileName;
           if (m3u8 != null) {
-            let mp4 = m3u8.replace('.m3u8', '_0.mp4');
+            let mp4 = m3u8.replace('.m3u8', '_0.mp4')
             token.videoLink_mp4 = mp4;
           }
           token.recoredStart = 'query';
@@ -720,7 +735,10 @@ const recording_query = async (id, agoraToken) => {
   return query.data;
 };
 
+
+
 const buyer_join_stream = async (req) => {
+
   const { phoneNumber, name } = req.body;
   const streamId = req.query.id;
 
@@ -750,7 +768,7 @@ const buyer_join_stream = async (req) => {
       channel: streamId,
       dateISO: moment(),
       userID: user._id,
-      demoPost: stream.streamId,
+      demoPost: stream.streamId
     });
   }
 
@@ -762,6 +780,7 @@ const buyer_join_stream = async (req) => {
       post.save();
       stream.status = 'Ready';
       stream.save();
+
     }
   } else {
     demotoken.golive = false;
@@ -769,12 +788,13 @@ const buyer_join_stream = async (req) => {
   demotoken.status = 'resgistered';
   demotoken.save();
 
+
   setTimeout(async () => {
     register = await DemostreamToken.find({ streamID: demotoken.streamID, status: 'resgistered' }).count();
     req.io.emit(demotoken.streamID + '_buyer_registor', { register, stream });
   }, 300);
   return demotoken;
-};
+}
 
 const get_buyer_join_stream = async (req) => {
   const { streamID, verify } = req.body;
@@ -822,48 +842,48 @@ const get_buyer_join_stream = async (req) => {
     {
       $project: {
         _id: 1,
-        imageArr: 1,
-        status: 1,
-        newsPaper: 1,
-        Edition: 1,
-        dateOfAd: 1,
-        createdAt: 1,
-        updatedAt: 1,
-        image: 1,
-        Description: 1,
-        bhkBuilding: 1,
-        category: 1,
-        furnitionStatus: 1,
-        location: 1,
-        postType: 1,
-        priceExp: 1,
-        propertyType: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
         linkstatus: 1,
         tenantType: 1,
         ageOfProperty: 1,
         otp_verifiyed: 1,
         finish: 1,
         streamDate: 1,
-        userName: '$demousers.userName',
-        mobileNumber: '$demousers.mobileNumber',
-        locationss: '$demousers.location',
-        mail: '$demousers.mail',
-        start: '$demostreamhis.start',
-        end: '$demostreamhis.end',
-        actualEnd: '$demostreamhis.actualEnd',
-        streamStatus: '$demostreamhis.status',
-        agoraAppId: '$demostreamhis.agoraAppId',
-        streamID: '$demostreamhis._id',
-        sqft: 1,
-      },
-    },
-  ]);
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        start: "$demostreamhis.start",
+        end: "$demostreamhis.end",
+        actualEnd: "$demostreamhis.actualEnd",
+        streamStatus: "$demostreamhis.status",
+        agoraAppId: "$demostreamhis.agoraAppId",
+        streamID: "$demostreamhis._id"
+      }
+    }
+  ])
 
   if (post.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
   return { post: post[0], token };
-};
+}
+
 
 const buyer_go_live_stream = async (req) => {
   let demotoken = await DemostreamToken.findById(req.query.id);
@@ -871,7 +891,7 @@ const buyer_go_live_stream = async (req) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
   const stream = await MutibleDemo.findById(demotoken.streamID);
-  console.log(stream);
+  console.log(stream)
   if (stream) {
     if (demotoken.token == null && stream.agoraAppId != null) {
       const uid = await generateUid();
@@ -886,6 +906,7 @@ const buyer_go_live_stream = async (req) => {
   }
   return demotoken;
 };
+
 
 const byer_get_stream_details = async (req) => {
   let demotoken = await DemostreamToken.findById(req.query.id);
@@ -930,42 +951,44 @@ const byer_get_stream_details = async (req) => {
     {
       $project: {
         _id: 1,
-        imageArr: 1,
-        status: 1,
-        newsPaper: 1,
-        Edition: 1,
-        dateOfAd: 1,
-        createdAt: 1,
-        updatedAt: 1,
-        image: 1,
-        Description: 1,
-        bhkBuilding: 1,
-        category: 1,
-        furnitionStatus: 1,
-        location: 1,
-        postType: 1,
-        priceExp: 1,
-        propertyType: 1,
+        "imageArr": 1,
+        "status": 1,
+        "newsPaper": 1,
+        "Edition": 1,
+        "dateOfAd": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image": 1,
+        "Description": 1,
+        "bhkBuilding": 1,
+        "category": 1,
+        "furnitionStatus": 1,
+        "location": 1,
+        "postType": 1,
+        "priceExp": 1,
+        "propertyType": 1,
         linkstatus: 1,
         tenantType: 1,
         ageOfProperty: 1,
         otp_verifiyed: 1,
         finish: 1,
         streamDate: 1,
-        userName: '$demousers.userName',
-        mobileNumber: '$demousers.mobileNumber',
-        locationss: '$demousers.location',
-        mail: '$demousers.mail',
-        intrested: 1,
-      },
-    },
-  ]);
+        userName: "$demousers.userName",
+        mobileNumber: "$demousers.mobileNumber",
+        locationss: "$demousers.location",
+        mail: "$demousers.mail",
+        intrested: 1
+      }
+    }
+  ])
 
   if (post.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
   return { post: post[0], stream, agora, demotoken };
 };
+
+
 
 const buyer_interested = async (req) => {
   let demotoken = await DemostreamToken.findById(req.body.id);
@@ -977,7 +1000,7 @@ const buyer_interested = async (req) => {
     streamID: demotoken.streamID,
     streamHis: demotoken.demoPost,
     userID: demotoken.userID,
-    joinedUSER: demotoken._id,
+    joinedUSER: demotoken._id
   });
   if (!instrest) {
     instrest = await DemoInstested.create({
@@ -986,8 +1009,10 @@ const buyer_interested = async (req) => {
       userID: demotoken.userID,
       joinedUSER: demotoken._id,
       intrested: true,
+
     });
-  } else {
+  }
+  else {
     instrest.intrested = !instrest.intrested;
     instrest.save();
   }
@@ -1001,62 +1026,8 @@ const buyer_interested = async (req) => {
 
 
   return instrest;
-};
 
-const getStreamDetails = async (req) => {
-  let id = req.params.id;
-  let post = await MutibleDemo.aggregate([
-    {
-      $match: {
-        streamId: id,
-      },
-    },
-    {
-      $lookup: {
-        from: 'demoposts',
-        localField: 'streamId',
-        foreignField: '_id',
-        as: 'post',
-      },
-    },
-    {
-      $unwind: {
-        preserveNullAndEmptyArrays: true,
-        path: '$post',
-      },
-    },
-    {
-      $lookup: {
-        from: 'demostreamtokens',
-        localField: 'streamId',
-        foreignField: 'streamID',
-        as: 'View',
-      },
-    },
-    {
-      $lookup: {
-        from: 'demointresteds',
-        localField: 'streamId',
-        foreignField: 'streamHis',
-        as: 'intrest',
-      },
-    },
-    {
-      $project: {
-        _id: 1,
-        streamName: 'Bharathi Will Add',
-        createdDate: '$createdAt',
-        streamDate: '$start',
-        streamStatus: '$status',
-        linkStatus: '$post.linkstatus',
-        view: { $size: '$View' },
-        intrest: { $size: '$intrest' },
-      },
-    },
-  ]);
-  return post;
-};
-
+}
 module.exports = {
   getDatas,
   get_stream_details,
@@ -1072,6 +1043,5 @@ module.exports = {
   get_buyer_join_stream,
   buyer_go_live_stream,
   byer_get_stream_details,
-  buyer_interested,
-  getStreamDetails,
+  buyer_interested
 };
