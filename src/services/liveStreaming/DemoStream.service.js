@@ -411,7 +411,6 @@ const seller_go_live_details = async (req) => {
     {
       $unwind: '$demostreamhis',
     },
-
     {
       $lookup: {
         from: 'demointresteds',
@@ -423,12 +422,7 @@ const seller_go_live_details = async (req) => {
         as: 'demointresteds',
       },
     },
-    {
-      $unwind: {
-        preserveNullAndEmptyArrays: true,
-        path: '$demointresteds',
-      },
-    },
+
 
     {
       $project: {
@@ -467,7 +461,7 @@ const seller_go_live_details = async (req) => {
         agora: "$demostreamhis.agoraappids",
         stream: "$demostreamhis.demostreamtokens",
         streamID: "$demostreamhis._id",
-        demointresteds:"$demointresteds"
+        demointresteds: "$demointresteds"
       }
     }
   ])
