@@ -120,6 +120,7 @@ const get_stream_details = async (req) => {
         otp_verifiyed: 1,
         finish: 1,
         streamDate: 1,
+        sqft: 1,
         userName: '$demousers.userName',
         mobileNumber: '$demousers.mobileNumber',
         locationss: '$demousers.location',
@@ -826,6 +827,7 @@ const get_buyer_join_stream = async (req) => {
         streamStatus: '$demostreamhis.status',
         agoraAppId: '$demostreamhis.agoraAppId',
         streamID: '$demostreamhis._id',
+        sqft: 1,
       },
     },
   ]);
