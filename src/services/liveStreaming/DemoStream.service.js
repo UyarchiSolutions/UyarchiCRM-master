@@ -998,7 +998,7 @@ const buyer_interested = async (req) => {
       streamHis: demotoken.demoPost,
       intrested: true,
     }).count();
-    req.io.emit(demotoken.streamID + ‘_interest_count’, { value: count });
+    req.io.emit(demotoken.streamID + '_interest_count', { value: count });
   }, 400)
   return instrest;
 };
