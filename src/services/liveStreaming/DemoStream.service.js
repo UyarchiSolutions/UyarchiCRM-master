@@ -403,6 +403,29 @@ const seller_go_live_details = async (req) => {
       $unwind: '$demostreamhis',
     },
     {
+      $lookup: {
+        from: 'demointresteds',
+        localField: 'runningStream',
+        foreignField: 'streamID',
+        pipeline: [
+          { $match: { $and: [{ intrested: { $eq: true } }] } },
+          { $group: { _id: null, count: { $sum: 1 } } }
+        ],
+        as: 'demointresteds',
+      },
+    },
+    {
+      $unwind: {
+        preserveNullAndEmptyArrays: true,
+        path: '$demointresteds',
+      },
+    },
+    {
+      $addFields: {
+        intrested: { $ifNull: ['$demointresteds.count', 0] },
+      },
+    },
+    {
       $project: {
         _id: 1,
         imageArr: 1,
@@ -439,6 +462,7 @@ const seller_go_live_details = async (req) => {
         agora: '$demostreamhis.agoraappids',
         stream: '$demostreamhis.demostreamtokens',
         streamID: '$demostreamhis._id',
+        intrested:1
       },
     },
   ]);
