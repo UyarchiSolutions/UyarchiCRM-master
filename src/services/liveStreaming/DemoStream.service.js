@@ -292,6 +292,9 @@ const end_stream = async (req) => {
   his.end = new Date().getTime();
   his.save();
 
+  value.runningStream=null;
+  value.save();
+
   req.io.emit(req.query.id + '_stream_end', { value: true });
   return value;
 };
