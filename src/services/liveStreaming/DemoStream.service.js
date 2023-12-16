@@ -120,7 +120,7 @@ const get_stream_details = async (req) => {
         otp_verifiyed: 1,
         finish: 1,
         streamDate: 1,
-        sqft:1,
+        sqft: 1,
         userName: '$demousers.userName',
         mobileNumber: '$demousers.mobileNumber',
         locationss: '$demousers.location',
@@ -131,8 +131,7 @@ const get_stream_details = async (req) => {
         streamStatus: '$demostreamhis.status',
         agoraAppId: '$demostreamhis.agoraAppId',
         streamID: '$demostreamhis._id',
-        sqft:1,
-        
+        sqft: 1,
       },
     },
   ]);
@@ -292,7 +291,7 @@ const end_stream = async (req) => {
   his.end = new Date().getTime();
   his.save();
 
-  value.runningStream=null;
+  value.runningStream = null;
   value.save();
 
   req.io.emit(req.query.id + '_stream_end', { value: true });
@@ -410,10 +409,7 @@ const seller_go_live_details = async (req) => {
         from: 'demointresteds',
         localField: 'runningStream',
         foreignField: 'streamID',
-        pipeline: [
-          { $match: { $and: [{ intrested: { $eq: true } }] } },
-          { $group: { _id: null, count: { $sum: 1 } } }
-        ],
+        pipeline: [{ $match: { $and: [{ intrested: { $eq: true } }] } }, { $group: { _id: null, count: { $sum: 1 } } }],
         as: 'demointresteds',
       },
     },
@@ -465,8 +461,8 @@ const seller_go_live_details = async (req) => {
         agora: '$demostreamhis.agoraappids',
         stream: '$demostreamhis.demostreamtokens',
         streamID: '$demostreamhis._id',
-        intrested:1,
-        sqft:1,
+        intrested: 1,
+        sqft: 1,
       },
     },
   ]);
@@ -857,7 +853,7 @@ const get_buyer_join_stream = async (req) => {
         streamStatus: '$demostreamhis.status',
         agoraAppId: '$demostreamhis.agoraAppId',
         streamID: '$demostreamhis._id',
-        sqft:1,
+        sqft: 1,
       },
     },
   ]);
@@ -914,8 +910,9 @@ const byer_get_stream_details = async (req) => {
     {
       $lookup: {
         from: 'demointresteds',
-        localField: '_id',
+        localField: 'runningStream',
         foreignField: 'streamHis',
+        pipeline: [{ $match: { $and: [{ joinedUSER: { $eq: demotoken._id } }] } }],
         as: 'demointresteds',
       },
     },
@@ -960,7 +957,7 @@ const byer_get_stream_details = async (req) => {
         locationss: '$demousers.location',
         mail: '$demousers.mail',
         intrested: 1,
-        sqft:1,
+        sqft: 1,
       },
     },
   ]);
@@ -1002,7 +999,7 @@ const buyer_interested = async (req) => {
       intrested: true,
     }).count();
     req.io.emit(demotoken.streamID + '_interest_count', { value: count });
-  }, 400)
+  }, 400);
   return instrest;
 };
 
