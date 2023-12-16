@@ -992,7 +992,14 @@ const buyer_interested = async (req) => {
     instrest.intrested = !instrest.intrested;
     instrest.save();
   }
-
+  setTimeout(async () => {
+    let count = await DemoInstested.find({
+      streamID: demotoken.streamID,
+      streamHis: demotoken.demoPost,
+      intrested: true,
+    }).count();
+    req.io.emit(demotoken.streamID + ‘_interest_count’, { value: count });
+  }, 400)
   return instrest;
 };
 
