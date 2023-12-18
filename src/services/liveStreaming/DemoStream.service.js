@@ -1031,6 +1031,7 @@ const getStreamDetails = async (req) => {
         from: 'demostreamtokens',
         localField: '_id',
         foreignField: 'channel',
+        pipeline: [{ $match: { type: 'BUYER' } }],
         as: 'View',
       },
     },
