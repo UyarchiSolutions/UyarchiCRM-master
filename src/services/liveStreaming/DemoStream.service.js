@@ -18,6 +18,7 @@ const jwt = require('jsonwebtoken');
 const agoraToken = require('../AgoraAppId.service');
 
 const Agora = require('agora-access-token');
+const { pipeline } = require('nodemailer/lib/xoauth2');
 
 const getDatas = async () => {
   let stream = await DemostreamToken.aggregate([
@@ -1028,16 +1029,16 @@ const getStreamDetails = async (req) => {
     {
       $lookup: {
         from: 'demostreamtokens',
-        localField: 'streamId',
-        foreignField: 'streamID',
+        localField: '_id',
+        foreignField: 'channel',
         as: 'View',
       },
     },
     {
       $lookup: {
         from: 'demointresteds',
-        localField: 'streamId',
-        foreignField: 'streamHis',
+        localField: '_id',
+        foreignField: 'streamID',
         as: 'intrest',
       },
     },
@@ -1049,7 +1050,7 @@ const getStreamDetails = async (req) => {
         streamDate: '$start',
         streamStatus: '$status',
         linkStatus: '$post.linkstatus',
-        view: { $size: '$View' },
+        view: {$size:'$View'},
         intrest: { $size: '$intrest' },
       },
     },
