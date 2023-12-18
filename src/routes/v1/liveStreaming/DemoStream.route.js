@@ -27,6 +27,7 @@ router.route('/buyer/go/live').get(demostream.buyer_go_live_stream);
 router.route('/buyer/stream/details').get(demostream.byer_get_stream_details);
 router.route('/buyer/interest/now').post(demostream.buyer_interested);
 router.route('/getStreamDetails/:id').get(demostream.getStreamDetails);
+router.route('/getViewAndIntrestedUsersByStream/:id').get(demostream.getViewAndIntrestedUsersByStream);
 
 // router.route('').get(demostream.send_sms_now);
 

@@ -1057,6 +1057,65 @@ const getStreamDetails = async (req) => {
   return post;
 };
 
+const getViewAndIntrestedUsersByStream = async (req) => {
+  let id = req.params.id;
+  const values = await MutibleDemo.aggregate([
+    {
+      $match: {
+        _id: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'demostreamtokens',
+        localField: '_id',
+        foreignField: 'channel',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'demointresteds',
+              localField: '_id',
+              foreignField: 'joinedUSER',
+              pipeline: [{ $match: { intrested: true } }],
+              as: 'intrest',
+            },
+          },
+          {
+            $unwind: { path: '$intrest', preserveNullAndEmptyArrays: true },
+          },
+          {
+            $lookup: {
+              from: 'demobuyers',
+              localField: 'userID',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
+          {
+            $unwind: { path: '$user', preserveNullAndEmptyArrays: true },
+          },
+          {
+            $project: {
+              _id: 1,
+              streamID: 1,
+              intrest: { $ifNull: ['$intrest.intrested', false] },
+              userName: { $ifNull: ['$user.name', 'user Deleted'] },
+              UserNumber: { $ifNull: ['$user.phoneNumber', 'user Deleted'] },
+            },
+          },
+        ],
+        as: 'View',
+      },
+    },
+    {
+      $project: {
+        users: '$View',
+      },
+    },
+  ]);
+  return values;
+};
+
 module.exports = {
   getDatas,
   get_stream_details,
@@ -1074,4 +1133,5 @@ module.exports = {
   byer_get_stream_details,
   buyer_interested,
   getStreamDetails,
+  getViewAndIntrestedUsersByStream,
 };

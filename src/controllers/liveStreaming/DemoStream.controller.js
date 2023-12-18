@@ -82,6 +82,11 @@ const getStreamDetails = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getViewAndIntrestedUsersByStream = catchAsync(async (req, res) => {
+  const data = await demostream.getViewAndIntrestedUsersByStream(req);
+  res.send(data);
+});
+
 module.exports = {
   getDatas,
   get_stream_details,
@@ -99,4 +104,5 @@ module.exports = {
   byer_get_stream_details,
   buyer_interested,
   getStreamDetails,
+  getViewAndIntrestedUsersByStream,
 };
