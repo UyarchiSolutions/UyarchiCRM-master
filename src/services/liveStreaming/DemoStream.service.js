@@ -1071,6 +1071,7 @@ const getViewAndIntrestedUsersByStream = async (req) => {
         localField: '_id',
         foreignField: 'channel',
         pipeline: [
+          { $match: { type: 'BUYER' } },
           {
             $lookup: {
               from: 'demointresteds',
