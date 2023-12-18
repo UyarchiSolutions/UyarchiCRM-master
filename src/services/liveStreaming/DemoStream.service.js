@@ -1050,7 +1050,7 @@ const getStreamDetails = async (req) => {
         streamDate: '$start',
         streamStatus: '$status',
         linkStatus: '$post.linkstatus',
-        view: {$size:'$View'},
+        view: { $size: '$View' },
         intrest: { $size: '$intrest' },
       },
     },
