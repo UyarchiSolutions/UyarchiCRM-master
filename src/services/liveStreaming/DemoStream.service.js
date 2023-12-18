@@ -1045,7 +1045,6 @@ const getStreamDetails = async (req) => {
     {
       $project: {
         _id: 1,
-        streamName: 'Stream Name',
         createdDate: '$createdAt',
         streamDate: '$start',
         streamStatus: '$status',
