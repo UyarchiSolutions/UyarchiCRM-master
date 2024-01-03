@@ -112,7 +112,18 @@ function uploadToS3(filePath) {
 }
 
 const getUsers = async (req) => {
+  const { key } = req.query;
+  let searchQuery = { _id: { $ne: null } };
+  console.log(key);
+  if (key && key != 'null' && key != '') {
+    searchQuery = {
+      $or: [{ userName: { $regex: key, $options: 'i' } }, { mobileNumber: { $in: [parseInt(key)] } }],
+    };
+  }
   let values = await DemoUser.aggregate([
+    {
+      $match: searchQuery,
+    },
     {
       $sort: {
         createdAt: -1,

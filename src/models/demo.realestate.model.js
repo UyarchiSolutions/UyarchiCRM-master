@@ -16,6 +16,9 @@ const DemoPostSchema = new mongoose.Schema(
     dateOfAd: {
       type: String,
     },
+    adtype: {
+      type: String,
+    },
     postType: {
       type: String,
     },
