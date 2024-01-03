@@ -517,7 +517,7 @@ const cloude_recording_stream = async (stream, app, endTime) => {
           )}/cloud_recording/resourceid/${resource}/sid/${sid}/mode/${mode}/query`,
           { headers: { Authorization } }
         )
-        .then((res) => {})
+        .then((res) => { })
         .catch(async (error) => {
           console.log('error');
           await Democloudrecord.findByIdAndUpdate({ _id: record._id }, { recoredStart: 'stop' }, { new: true });
@@ -1118,6 +1118,16 @@ const getViewAndIntrestedUsersByStream = async (req) => {
   return values;
 };
 
+const get_cloud = async (req) => {
+  let id = req.query.id;
+  let cloud = await Democloudrecord.aggregate({ $match: { $and: [{ chennel: { $eq: id } }, { videoLink: { $ne: null } }] } });
+
+  return cloud;
+}
+
+
+
+
 module.exports = {
   getDatas,
   get_stream_details,
@@ -1136,4 +1146,5 @@ module.exports = {
   buyer_interested,
   getStreamDetails,
   getViewAndIntrestedUsersByStream,
+  get_cloud
 };

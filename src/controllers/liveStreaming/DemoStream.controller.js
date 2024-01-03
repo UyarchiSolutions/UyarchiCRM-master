@@ -87,6 +87,12 @@ const getViewAndIntrestedUsersByStream = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const get_cloud = catchAsync(async (req, res) => {
+  const data = await demostream.get_cloud(req);
+  res.send(data);
+});
+
+
 module.exports = {
   getDatas,
   get_stream_details,
@@ -105,4 +111,5 @@ module.exports = {
   buyer_interested,
   getStreamDetails,
   getViewAndIntrestedUsersByStream,
+  get_cloud,
 };

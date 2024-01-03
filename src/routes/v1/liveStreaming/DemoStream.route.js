@@ -29,6 +29,11 @@ router.route('/buyer/interest/now').post(demostream.buyer_interested);
 router.route('/getStreamDetails/:id').get(demostream.getStreamDetails);
 router.route('/getViewAndIntrestedUsersByStream/:id').get(demostream.getViewAndIntrestedUsersByStream);
 
+router.route('/get/cloud/records').get(demostream.get_cloud);
+
+
+
+
 // router.route('').get(demostream.send_sms_now);
 
 module.exports = router;
