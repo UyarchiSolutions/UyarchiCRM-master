@@ -1120,7 +1120,7 @@ const getViewAndIntrestedUsersByStream = async (req) => {
 
 const get_cloud = async (req) => {
   let id = req.query.id;
-  let cloud = await Democloudrecord.aggregate([{ $match: { $and: [{ chennel: { $eq: id } }, { videoLink: { $ne: null } }] } }]);
+  let cloud = await Democloudrecord.aggregate([{ $match: { $and: [{ chennel: { $eq: id } }, { videoLink_mp4: { $ne: null } }] } }]);
 
   return cloud;
 }
