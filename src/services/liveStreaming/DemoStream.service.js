@@ -462,6 +462,7 @@ const seller_go_live_details = async (req) => {
         agora: '$demostreamhis.agoraappids',
         stream: '$demostreamhis.demostreamtokens',
         streamID: '$demostreamhis._id',
+        current_watching_stream: '$demostreamhis.current_watching_stream',
         intrested: 1,
         sqft: 1,
       },
