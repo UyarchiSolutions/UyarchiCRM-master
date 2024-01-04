@@ -387,6 +387,15 @@ const democloud_record = mongoose.Schema({
   videoLink_obj: {
     type: Array,
   },
+  videoLink: {
+    type: String,
+  },
+  videoLink_array: {
+    type: Array,
+  },
+  videoLink_mp4: {
+    type: String,
+  },
   recoredStart: {
     type: String,
     default: 'Pending',
