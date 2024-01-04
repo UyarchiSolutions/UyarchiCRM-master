@@ -79,11 +79,10 @@ const chat_room_create_host_demo_sub = async (req, io) => {
 }
 
 const livejoined_now = async (req, io, type) => {
-  console.log(req)
 
   let temp = await DemostreamToken.findById(req.user);
   if (temp) {
-    let stream = await DemoPost.findById(temp.streamID);
+    let stream = await MutibleDemo.findById(temp.streamID);
     if (stream) {
       if (stream.status != 'Completed') {
         let joined = stream.userList != null ? stream.userList : [];
@@ -102,6 +101,7 @@ const livejoined_now = async (req, io, type) => {
         stream.userList = joined;
         stream.current_watching_stream = joined.length
         stream.save();
+        console.log(stream)
         io.sockets.emit(stream._id + "_stream_joins", stream);
       }
     }

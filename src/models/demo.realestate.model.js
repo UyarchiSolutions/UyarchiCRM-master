@@ -461,6 +461,13 @@ const mutibleDemoschema = mongoose.Schema(
     actualEnd: {
       type: Number,
     },
+    userList: {
+      type: Array
+    },
+    current_watching_stream: {
+      type: Number,
+      default:0
+    }
   },
   { timestamps: true }
 );
