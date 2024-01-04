@@ -209,9 +209,9 @@ const send_otp_now = async (stream) => {
       expired: false,
       otpExpiedTime: exp,
     });
-    let message = `Dear ${token.userName},thank you for the registration to the event AgriExpoLive2023 .Your OTP for logging into the account is ${OTPCODE}- AgriExpoLive2023(An Ookam company event)`;
+    let message = `${OTPCODE}  is the Onetime password(OTP) for mobile number verification . This is usable once and valid for 5 minutes from the request- India Property Expo(An Ookam company expo)`;
     let reva = await axios.get(
-      `http://panel.smsmessenger.in/api/mt/SendSMS?user=ookam&password=ookam&senderid=OOKAMM&channel=Trans&DCS=0&flashsms=0&number=${token.mobileNumber}&text=${message}&route=6&peid=1701168700339760716&DLTTemplateId=1707168958877302526`
+      `http://panel.smsmessenger.in/api/mt/SendSMS?user=ookam&password=ookam&senderid=OOKAMM&channel=Trans&DCS=0&flashsms=0&number=${token.mobileNumber}&text=${message}&route=6&peid=1701168700339760716&DLTTemplateId=1707170322910143638`
     );
     console.log(reva.data);
     otpsend = { otpExpiedTime: otp.otpExpiedTime };
