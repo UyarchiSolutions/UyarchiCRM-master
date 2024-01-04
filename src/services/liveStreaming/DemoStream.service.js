@@ -198,7 +198,7 @@ const send_otp_now = async (stream) => {
       { $set: { verify: true, expired: true } },
       { new: true }
     );
-    let exp = moment().add(3, 'minutes');
+    let exp = moment().add(5, 'minutes');
     let otp = await Demootpverify.create({
       OTP: OTPCODE,
       verify: false,
