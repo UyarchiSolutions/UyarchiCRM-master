@@ -341,7 +341,7 @@ const seller_go_live = async (req) => {
     }
   }
 
-  await cloude_recording_stream(token._id, his.agoraAppId, his.end);
+  await cloude_recording_stream(his._id, his.agoraAppId, his.end);
 
   return token;
 };
@@ -501,9 +501,9 @@ const cloude_recording_stream = async (stream, app, endTime) => {
   let his = await MutibleDemo.findById(stremRequiest.runningStream);
 
   let agoraToken = await AgoraAppId.findById(app);
-  let record = await Democloudrecord.findOne({ streamId: stream, recoredStart: { $eq: 'acquire' } });
+  let record = await Democloudrecord.findOne({ chennel: his._id, recoredStart: { $eq: 'acquire' } });
   if (!record) {
-    record = await Democloudrecord.findOne({ streamId: stream, recoredStart: { $in: ['query', 'start'] } });
+    record = await Democloudrecord.findOne({ chennel: his._id, recoredStart: { $in: ['query', 'start'] } });
     if (record) {
       let token = record;
       const resource = token.resourceId;
@@ -540,7 +540,7 @@ const cloude_recording_stream = async (stream, app, endTime) => {
             streamId: stremRequiest._id,
           });
           record.save();
-          // await agora_acquire(record._id, agoraToken);
+          await agora_acquire(record._id, agoraToken);
         });
     } else {
       await Democloudrecord.updateMany({ chennel: his._id }, { recoredStart: 'stop' }, { new: true });
