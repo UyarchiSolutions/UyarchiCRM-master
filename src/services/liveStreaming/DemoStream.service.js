@@ -977,11 +977,12 @@ const buyer_interested = async (req) => {
   }
 
   let instrest = await DemoInstested.findOne({
-    streamID: demotoken.streamID,
+    // streamID: demotoken.streamID,
     streamHis: demotoken.demoPost,
     userID: demotoken.userID,
     joinedUSER: demotoken._id,
   });
+  console.log(instrest,98798)
   if (!instrest) {
     instrest = await DemoInstested.create({
       streamID: demotoken.streamID,
