@@ -341,7 +341,7 @@ const seller_go_live = async (req) => {
     }
   }
 
-  await cloude_recording_stream(his._id, his.agoraAppId, his.end);
+  await cloude_recording_stream(token._id, his.agoraAppId, his.end);
 
   return token;
 };
