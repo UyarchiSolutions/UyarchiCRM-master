@@ -295,7 +295,7 @@ const end_stream = async (req) => {
   value.runningStream = null;
   value.save();
 
-  req.io.emit(req.query.id + '_stream_end', { value: true });
+  req.io.emit(his._id + '_stream_end', { value: true });
   return value;
 };
 
