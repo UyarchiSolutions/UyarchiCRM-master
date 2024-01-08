@@ -913,7 +913,7 @@ const byer_get_stream_details = async (req) => {
       $lookup: {
         from: 'demointresteds',
         localField: 'runningStream',
-        foreignField: 'streamHis',
+        foreignField: 'streamID',
         pipeline: [{ $match: { $and: [{ joinedUSER: { $eq: demotoken._id } }] } }],
         as: 'demointresteds',
       },
@@ -960,6 +960,8 @@ const byer_get_stream_details = async (req) => {
         mail: '$demousers.mail',
         intrested: 1,
         sqft: 1,
+        // demointresteds:"$demointresteds",
+        // runningStream:1
       },
     },
   ]);
