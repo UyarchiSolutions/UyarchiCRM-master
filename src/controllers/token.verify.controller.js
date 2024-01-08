@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const tokenService = require('../services/token.service');
 const config = require('../config/config');
 const { Users } = require('../models/B2Busers.model');
+
 const authorization = async (req, res, next) => {
   const token = req.headers.auth;
   console.log(token);
