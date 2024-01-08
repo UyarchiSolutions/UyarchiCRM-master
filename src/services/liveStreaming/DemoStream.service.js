@@ -739,9 +739,9 @@ const buyer_join_stream = async (req) => {
   if (!stream) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
-  if (stream.status == 'Completed') {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Stream Completed');
-  }
+  // if (stream.status == 'Completed' || ) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, 'Stream Completed');
+  // }
   let demotoken = await DemostreamToken.findOne({ userID: user._id, streamID: stream._id });
   if (!demotoken) {
     demotoken = await DemostreamToken.create({
