@@ -983,7 +983,7 @@ const buyer_interested = async (req) => {
     userID: demotoken.userID,
     joinedUSER: demotoken._id,
   });
-  console.log(instrest, 98798)
+  console.log(instrest, 98798);
   if (!instrest) {
     instrest = await DemoInstested.create({
       streamID: demotoken.streamID,
@@ -1043,6 +1043,7 @@ const getStreamDetails = async (req) => {
         from: 'demointresteds',
         localField: '_id',
         foreignField: 'streamID',
+        pipeline: [{ $match: { intrested: true } }],
         as: 'intrest',
       },
     },

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { v4 } = require('uuid');
-const { timeStamp } = require('console');
 
 const agoraAppIdschema = mongoose.Schema(
   {
