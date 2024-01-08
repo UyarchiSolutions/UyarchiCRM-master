@@ -863,7 +863,7 @@ const get_buyer_join_stream = async (req) => {
   if (post.length == 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Stream not found');
   }
-  return { post: post[0], token };
+  return { post: post[0], token, stream };
 };
 
 const buyer_go_live_stream = async (req) => {
@@ -984,7 +984,7 @@ const buyer_interested = async (req) => {
     userID: demotoken.userID,
     joinedUSER: demotoken._id,
   });
-  console.log(instrest, 98798);
+  console.log(instrest, 98798)
   if (!instrest) {
     instrest = await DemoInstested.create({
       streamID: demotoken.streamID,
