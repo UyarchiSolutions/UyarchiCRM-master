@@ -18,7 +18,6 @@ const jwt = require('jsonwebtoken');
 const agoraToken = require('../AgoraAppId.service');
 
 const Agora = require('agora-access-token');
-const { pipeline } = require('nodemailer/lib/xoauth2');
 
 const getDatas = async () => {
   let stream = await DemostreamToken.aggregate([
